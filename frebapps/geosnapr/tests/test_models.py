@@ -47,6 +47,12 @@ class ProfileCreateTestCase(TestCase):
 
         self.assertEqual(p, None)
 
+    def test_create_email_exists(self):
+        p,err = Profile.create(username='jlbrooks', email='foo@bar.com', password='test', 
+            first_name='jacob', last_name='brooks')
+
+        self.assertEqual(p, None)
+
     # Create success
 
     def test_create_profile(self):

@@ -101,3 +101,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = 'media'
+
+LOGIN_URL = '/login/'
+
+LOGIN_REDIRECT_URL = ''
+
+LOGOUT_URL = '/logout/'

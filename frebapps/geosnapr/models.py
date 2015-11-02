@@ -5,8 +5,13 @@ class Profile(models.Model):
     user = models.OneToOneField(User)
 
     @classmethod
-    def create_profile(cls, email, password, first_name, last_name):
+    def create(cls, username, email, password, first_name, last_name):
         err = []
+
+        # Username must exist
+        if not username:
+            err.append('Username must not be blank')
+
         # First name must exist
         if not first_name:
             err.append('First name must not be blank')
@@ -19,19 +24,24 @@ class Profile(models.Model):
         if not password:
             err.append('Password must not be blank')
 
-        # See if this email already exists
-        try:
-            User.objects.get(email=email)
-            err.append('Email already exists')
-        except:
-            pass
+        # Email must exist
+        if not email:
+            err.append('Email must not be blank')
+
+        # See if this email already exists in the db
+        if username:
+            try:
+                User.objects.get(username=username)
+                err.append('Username already exists')
+            except:
+                pass
 
         # Return if we have any errors
         if err:
             return None,err
 
         # Create user object
-        user = User.objects.create(password=password, first_name=first_name,
+        user = User.objects.create(username=username, password=password, first_name=first_name,
             last_name=last_name, email=email)
         user.save()
 

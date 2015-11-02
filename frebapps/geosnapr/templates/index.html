@@ -29,8 +29,9 @@
   <div class="columns large-4 large-offset-4">
     <h3>Login</h3>
     <form data-abide action="/login" method="POST">
-      <input type="email" placeholder="Email" required/>
-      <input type="password" placeholder="Password" required/>
+      {% csrf_token %}
+      <input type="text" name="username" placeholder="Username" required/>
+      <input type="password" name="password" placeholder="Password" required/>
       <button type="submit">Submit</button>
     </form>
   </div>
@@ -43,12 +44,13 @@
   <div class="columns large-4 large-offset-4">
     <h3>Register</h3>
     <form data-abide action="/register" method="POST">
-      <input type="text" placeholder="First Name" required/>
-      <input type="text" placeholder="Last Name" required/>
-      <input type="text" placeholder="Username" required/>
-      <input type="email" placeholder="Email" required/>
-      <input type="password" placeholder="Password" required/>
-      <input type="password" placeholder="Confirm Password" required/>
+      {% csrf_token %}
+      <input type="text" name="first_name" placeholder="First Name" required/>
+      <input type="text" name="last_name" placeholder="Last Name" required/>
+      <input type="text" name="username" placeholder="Username" required/>
+      <input type="email" name="email" placeholder="Email" required/>
+      <input type="password" name="password" placeholder="Password" required/>
+      <input type="password" name="confirm_password" placeholder="Confirm Password" required/>
       <button type="submit">Submit</button>
     </form>
   </div>

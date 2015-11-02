@@ -42,7 +42,7 @@ class Profile(models.Model):
             return None,err
 
         # Create user object
-        user = User.objects.create(username=username, password=password, first_name=first_name,
+        user = User.objects.create_user(username=username, password=password, first_name=first_name,
             last_name=last_name, email=email)
         user.save()
 

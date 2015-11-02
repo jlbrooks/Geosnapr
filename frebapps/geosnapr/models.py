@@ -61,3 +61,33 @@ class Image(models.Model):
     lng = models.DecimalField(max_digits=8, decimal_places=6)
 
     caption = models.CharField(max_length=100)
+
+    @classmethod
+    def create(cls, image, lat, lng, caption):
+        err = []
+
+        # Image must exist
+        if not image:
+            err.append('Image must be present')
+
+        # Lat must exist
+        if not lat:
+            err.append('Latitude must be present')
+
+        # Lat must exist
+        if not lng:
+            err.append('Longitude must be present')
+
+        # Set caption to empty string if not present
+        if not caption:
+            caption = ''
+
+        # Return if we have any errors
+        if err:
+            return None,err
+
+        # Create the pic object
+        pic = cls.objects.create(image=image, lat=lat, lng=lng, caption=caption)
+        pic.save()
+
+        return pic,None

@@ -16,13 +16,19 @@
     <link rel="stylesheet" href="{% static "foundation/css/normalize.css" %}">
     <link rel="stylesheet" href="{% static "css/geosnapr.css" %}">
 
-    <script src="{% static "foundation/js/modernizr.js" %}"></script>
-    <script src="{% static "foundation/js/foundation.js" %}"></script>
-    <script src="{% static "foundation/js/fastclick.js" %}"></script>
     <script src="{% static "foundation/js/jquery.js" %}"></script>
+    <script src="{% static "foundation/js/modernizr.js" %}"></script>
+    <script src="{% static "foundation/js/foundation.min.js" %}"></script>
+    <script src="{% static "foundation/js/fastclick.js" %}"></script>
+    <script src="{% static "js/geosnapr.js" %}"></script>
 
   </head>
   <body>
     {% block content %}{% endblock content %}
+
+    <script type="text/javascript">
+        $(document).foundation();
+        console.log("loaded");
+    </script>
   </body>
 </html>

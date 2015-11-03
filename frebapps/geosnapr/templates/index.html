@@ -19,14 +19,11 @@
 <body>
 
 <div class="row">
-  <div class="columns large-4">
+  <div class="columns large-6">
     <h1>GEOSNAPR</h1>
   </div>
   <form data-abide action="/login" method="POST" class="login-bar">
     {% csrf_token %}
-    <div class="columns small-2">
-      <h4 class="right inline">Login:</h4>
-    </div>
     <div class="columns small-2">
       <input type="text" name="username" placeholder="Username" required/>
     </div>
@@ -34,7 +31,7 @@
       <input type="password" name="password" placeholder="Password" required/>
     </div>
     <div class="columns small-2">
-      <button type="submit" class="button small">Submit</button>
+      <button type="submit" class="button button-inline">Log In</button>
     </div>
   </form>
 </div>

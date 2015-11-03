@@ -10,6 +10,11 @@ def index(request):
     else:
         return main_map(request)
 
+def logout_view(request):
+    logout(request)
+
+    return redirect(index)
+
 def login_view(request):
     if request.method != 'POST':
         return redirect(index)

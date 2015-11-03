@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="{% static "foundation/css/foundation.css" %}">
 <link rel="stylesheet" href="{% static "foundation/css/geosnapr.css" %}">
 <link rel="stylesheet" href="{% static "foundation/css/normalize.css" %}">
+<link rel="stylesheet" href="{% static "css/geosnapr.css" %}">
 <script src="{% static "foundation/js/modernizr.js" %}"></script>
 <script src="{% static "foundation/js/foundation.js" %}"></script>
 <script src="{% static "foundation/js/fastclick.js" %}"></script>
@@ -18,24 +19,24 @@
 <body>
 
 <div class="row">
-  <div class="columns large-12">
+  <div class="columns large-4">
     <h1>GEOSNAPR</h1>
   </div>
-</div>
-
-<div class="row background">
-  <div class="columns large-4">
-  </div>
-  <div class="columns large-4 large-offset-4">
-    <h3>Login</h3>
-    <form data-abide action="/login" method="POST">
-      {% csrf_token %}
+  <form data-abide action="/login" method="POST" class="login-bar">
+    {% csrf_token %}
+    <div class="columns small-2">
+      <h4 class="right inline">Login:</h4>
+    </div>
+    <div class="columns small-2">
       <input type="text" name="username" placeholder="Username" required/>
+    </div>
+    <div class="columns small-2">
       <input type="password" name="password" placeholder="Password" required/>
-      <button type="submit">Submit</button>
-    </form>
-  </div>
-  <div class="columns large-4">
+    </div>
+    <div class="columns small-2">
+      <button type="submit" class="button small">Submit</button>
+    </div>
+  </form>
 </div>
 
 <div class="row background">

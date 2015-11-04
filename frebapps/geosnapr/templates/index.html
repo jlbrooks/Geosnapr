@@ -17,9 +17,9 @@
 <div class="row full">
   <div class="columns large-12 no-pad-left no-pad-right hideoverflowx">
     <div class="background-carousel viewport">
-      <div class="viewport"><img src="{% static "img/background3.jpg" %}" class="min-height-img"/></div>
-      <div class="viewport"><img src="{% static "img/background5.jpg" %}"/></div>
-      <div class="viewport"><img src="{% static "img/background2.jpg" %}"/></div>
+      <div><img src="{% static "img/background3.jpg" %}" class="min-height-img"/></div>
+      <div><img src="{% static "img/background5.jpg" %}"/></div>
+      <div><img src="{% static "img/background2.jpg" %}"/></div>
       <div><img src="{% static "img/background4.jpg" %}"/></div>
       <div><img src="{% static "img/background1.jpg" %}"/></div>
       <div><img src="{% static "img/background6.jpg" %}"/></div>
@@ -31,10 +31,11 @@
     <h6 class="josefin font-small">Share and explore your own world.</h6>
   </div>
   <div class="columns large-6 large-offset-3 medium-10 medium-offset-1 small-12 overlay">
-    <form data-abide>
+    <form data-abide action="/login" method="POST">
+      {% csrf_token %}
       <input type="text" placeholder="Email" required/>
       <input type="text" placeholder="Password" required/>
-      <button type="submit">Submit</button>
+      <button type="submit">Log In</button>
     </form>
   </div>
 </div>

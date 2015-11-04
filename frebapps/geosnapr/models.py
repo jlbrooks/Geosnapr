@@ -28,20 +28,21 @@ class Profile(models.Model):
         if not email:
             err.append('Email must not be blank')
 
-        # See if this email already exists in the db
-        if username:
-            try:
-                User.objects.get(username=username)
+        # See if this username or email already exists in the db
+        if username and email:
+            u = User.objects.filter(username=username)
+            if u:
                 err.append('Username already exists')
-            except:
-                pass
+            u = User.objects.filter(email=email)
+            if u:
+                err.append('Email already exists')
 
         # Return if we have any errors
         if err:
             return None,err
 
         # Create user object
-        user = User.objects.create(username=username, password=password, first_name=first_name,
+        user = User.objects.create_user(username=username, password=password, first_name=first_name,
             last_name=last_name, email=email)
         user.save()
 

@@ -49,6 +49,48 @@
   <p> This is some text and some stuff describing our page.</p>
 </div>
 
+{% extends "_base.html" %}
+{% block content %}
+<div class="row">
+  <div class="columns large-6">
+    <h1>GEOSNAPR</h1>
+  </div>
+  <form data-abide action="/login" method="POST" class="login-bar">
+    {% csrf_token %}
+    <div class="columns small-2">
+      <input type="text" name="username" placeholder="Username" required/>
+    </div>
+    <div class="columns small-2">
+      <input type="password" name="password" placeholder="Password" required/>
+    </div>
+    <div class="columns small-2">
+      <button type="submit" class="button button-inline">Log In</button>
+    </div>
+  </form>
+</div>
+
+<div class="row background">
+  <div class="columns large-6 large-offset-2">
+    <h3>Register</h3>
+    <form data-abide action="/register" method="POST">
+      {% csrf_token %}
+      <input type="text" name="first_name" placeholder="First Name" required/>
+      <input type="text" name="last_name" placeholder="Last Name" required/>
+      <input type="text" name="username" placeholder="Username" required/>
+      <input type="email" name="email" placeholder="Email" required/>
+      <input type="password" name="password" placeholder="Password" required/>
+      <input type="password" name="confirm_password" placeholder="Confirm Password" required/>
+      <button type="submit">Register</button>
+    </form>
+  </div>
+</div>
+{% endblock content %}
+
+
+
+
+
+
 <script src="{% static "foundation/js/jquery.js" %}"></script>
 <script type="text/javascript" src="{% static "slick/slick.js" %}"></script>
 

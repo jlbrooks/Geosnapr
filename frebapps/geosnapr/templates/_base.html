@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load staticfiles %}
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Login page for the GeoSnapr web application.">
+    <meta name="author" content="FrebApps">
+    <meta name="copyright" content="I don't know how to get a copyright.">
+
+    <title>Login | GeoSnapr</title>
+
+    <link rel="stylesheet" href="{% static "foundation/css/foundation.css" %}">
+    <link rel="stylesheet" href="{% static "foundation/css/geosnapr.css" %}">
+    <link rel="stylesheet" href="{% static "foundation/css/normalize.css" %}">
+    <link rel="stylesheet" href="{% static "css/geosnapr.css" %}">
+
+    <script src="{% static "foundation/js/jquery.js" %}"></script>
+    <script src="{% static "foundation/js/modernizr.js" %}"></script>
+    <script src="{% static "foundation/js/foundation.min.js" %}"></script>
+    <script src="{% static "foundation/js/fastclick.js" %}"></script>
+    <script src="{% static "js/geosnapr.js" %}"></script>
+
+  </head>
+  <body>
+    {% block content %}{% endblock content %}
+
+    <script type="text/javascript">
+        $(document).foundation();
+        console.log("loaded");
+    </script>
+  </body>
+</html>

@@ -1,13 +1,43 @@
 {% extends "_base.html" %}
+
+{% block resources %}
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBBymT1deOyItH-JCJdSX5nL0VpH1mHes&callback=initialize"></script>
+{% endblock resources %}
+
+
 {% block content %}
-<a href="#" data-reveal-id="myModal">Image upload modal</a>
+<div class="mapsize" id="map-canvas">
+</div>
+
+
+<div class="row">
+  <div class="column large-4">
+    <form>
+      <label><input type="text" placeholder="Search..."/></label>
+    </form>
+  </div>
+</div>
+
+<div class="row">
+  <div class="columns large-6">
+    <a href="#" data-reveal-id="myModal">Image upload modal</a>
+  </div>
+</div>
+
+
 
 <div id="myModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
     <h2 id="modalTitle">Upload new image</h2>
-    <form>          
+    <form>
         <input type="file" class="file-input" id="upload-file">
         <img id="upload-img" />
     </form>
     <a class="close-reveal-modal" aria-label="Close">&#215;</a>
 </div>
+
+<script type="text/javascript">
+    function initialize() {
+      var map = new google.maps.Map(document.getElementById('map-canvas'), {center: {lat: -34.397, lng: 150.644}, zoom: 8})
+    };
+</script>
 {% endblock content %}

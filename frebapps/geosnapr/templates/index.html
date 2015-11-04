@@ -1,25 +1,19 @@
-<!DOCTYPE html>
+{% extends "_base.html" %}
+
 {% load staticfiles %}
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login | GeoSnapr</title>
-<meta name="description" content="Login page for the GeoSnapr web application.">
-<meta name="author" content="FrebApps">
-<meta name="copyright" content="I don't know how to get a copyright.">
+
+
+{% block title %}Login | GeoSnapr{% endblock title %}
+
+{% block description %}"Login page for the GeoSnapr web application."{% endblock description %}
+
+{% block resources %}
 <link href='https://fonts.googleapis.com/css?family=Josefin+Sans:700,400' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" href="{% static "foundation/css/foundation.css" %}">
-<link rel="stylesheet" href="{% static "geosnapr.css" %}">
-<link rel="stylesheet" href="{% static "foundation/css/normalize.css" %}">
 <link rel="stylesheet" href="{% static "slick/slick.css" %}">
 <link rel="stylesheet" href="{% static "slick/slick-theme.css" %}">
-<script src="{% static "foundation/js/modernizr.js" %}"></script>
-<script src="{% static "foundation/js/foundation.js" %}"></script>
-<script src="{% static "foundation/js/fastclick.js" %}"></script>
-<script src="{% static "foundation/js/jquery.js" %}"></script>
+{% endblock resources %}
 
-<body class="background">
-
+{% block content %}
 <div class="row full">
   <div class="columns large-12 no-pad-left no-pad-right hideoverflowx">
     <div class="background-carousel viewport">
@@ -49,8 +43,6 @@
   <p> This is some text and some stuff describing our page.</p>
 </div>
 
-{% extends "_base.html" %}
-{% block content %}
 <div class="row">
   <div class="columns large-6">
     <h1>GEOSNAPR</h1>
@@ -84,16 +76,9 @@
     </form>
   </div>
 </div>
-{% endblock content %}
-
-
-
-
-
 
 <script src="{% static "foundation/js/jquery.js" %}"></script>
 <script type="text/javascript" src="{% static "slick/slick.js" %}"></script>
-
 
 <script type="text/javascript">
   $(document).ready(function(){
@@ -104,4 +89,4 @@
   });
 </script>
 
-</body>
+{% endblock content %}

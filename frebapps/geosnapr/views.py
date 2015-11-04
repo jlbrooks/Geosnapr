@@ -34,7 +34,7 @@ def login_view(request):
 
 def register(request):
     if request.method != 'POST':
-        return redirect(index)
+        return render(request, 'register.html')
     context = {}
     errs = []
     context['errors'] = errs

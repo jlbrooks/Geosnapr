@@ -5,7 +5,7 @@
 
 {% block title %}Login | GeoSnapr{% endblock title %}
 
-{% block description %}"Login page for the GeoSnapr web application."{% endblock description %}
+{% block description %}Login page for the GeoSnapr web application.{% endblock description %}
 
 {% block resources %}
 <link href='https://fonts.googleapis.com/css?family=Josefin+Sans:700,400' rel='stylesheet' type='text/css'>
@@ -37,6 +37,8 @@
       <input type="text" placeholder="Password" required/>
       <button type="submit">Log In</button>
     </form>
+
+    <a href={% url 'register' %}><button type="submit">Sign Up</a></button>
   </div>
 </div>
 

@@ -27,17 +27,23 @@
 
 
 <div id="myModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-    <h2 id="modalTitle">Upload new image</h2>
-    <form>
-        <input type="file" class="file-input" id="upload-file">
-        <img id="upload-img" />
-    </form>
-    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+  <h2 id="modalTitle">Upload new image</h2>
+  <form action="/upload" method="POST">
+    <input type="file" class="file-input" id="upload-file">
+    <img id="upload-img" />
+
+    <fieldset class="hidden" id="img-loc-form">
+      <input type="text" placeholder="Search Google Maps....">
+      <button type="submit">Add Image!</button>
+    </fieldset>
+  </form>
+  <a class="close-reveal-modal" aria-label="Close">&#215;</a>
 </div>
 
 <script type="text/javascript">
     function initialize() {
       var map = new google.maps.Map(document.getElementById('map-canvas'), {center: {lat: -34.397, lng: 150.644}, zoom: 8})
     };
+    window.initialize = initialize;
 </script>
 {% endblock content %}

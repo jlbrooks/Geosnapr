@@ -80,3 +80,7 @@ padding-right: 0;
 .no-pad-left{
 padding-left: 0;
 }
+
+fieldset.hidden {
+  display: none;
+}

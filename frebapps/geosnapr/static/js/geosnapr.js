@@ -1,4 +1,4 @@
-function displayImg() {
+function imageChosen() {
     var reader = new FileReader();
 
     reader.onload = function (e) {
@@ -8,9 +8,11 @@ function displayImg() {
 
     // read the image file as a data URL.
     reader.readAsDataURL(this.files[0]);
+
+    $("#img-loc-form").removeClass("hidden")
 }
 
 $(document).ready(function () {
     // Display the image when we choose a file
-    document.getElementById("upload-file").onchange = displayImg
+    document.getElementById("upload-file").onchange = imageChosen
 });

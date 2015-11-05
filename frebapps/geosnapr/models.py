@@ -66,7 +66,7 @@ class Image(models.Model):
     user = models.ForeignKey(User)
 
     @classmethod
-    def create(cls, image, lat, lng, caption):
+    def create(cls, username, image, lat, lng, caption):
         err = []
 
         # Image must exist
@@ -85,12 +85,18 @@ class Image(models.Model):
         if not caption:
             caption = ''
 
+        # User must exist
+        try:
+            user = User.objects.get(username=username)
+        except:
+            err.append('User does not exist')
+
         # Return if we have any errors
         if err:
             return None,err
 
-        # Create the pic object
-        pic = cls.objects.create(image=image, lat=lat, lng=lng, caption=caption)
+        # Create the image object
+        pic = cls.objects.create(image=image, lat=lat, lng=lng, caption=caption, user=user)
         pic.save()
 
         return pic,None

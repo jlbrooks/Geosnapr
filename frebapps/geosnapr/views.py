@@ -24,10 +24,8 @@ def login_view(request):
 
     user = authenticate(username=username, password=password)
     if user is not None:
-        print('logging in')
         login(request,user)
     else:
-        print('no user')
         return redirect(index)
 
     return redirect(index)
@@ -80,16 +78,17 @@ def upload(request):
     pic = request.FILES.get('pic')
     lat = request.POST.get('lat')
     lng = request.POST.get('lng')
-    caption = request.post.get('caption')
+    caption = request.POST.get('caption')
     user = request.user
 
-    image,errors = Image.create(username=user.usernam, image=pic, lat=lat, lng=lng, caption=caption)
+    image,errors = Image.create(username=user.username, image=pic, lat=lat, lng=lng, caption=caption)
 
     if errors:
+        print(errors)
         errs.extend(errors)
     else:
         context['message'] = "Image successfully uploaded!"
 
-    return render(request, 'map.html', context)
+    return redirect(index)
 
 

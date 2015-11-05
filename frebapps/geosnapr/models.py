@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from decimal import Decimal
 
 class Profile(models.Model):
     user = models.OneToOneField(User)
@@ -98,7 +99,7 @@ class Image(models.Model):
             return None,err
 
         # Create the image object
-        pic = cls.objects.create(image=image, lat=lat, lng=lng, caption=caption, user=user)
+        pic = cls.objects.create(image=image, lat=Decimal(lat), lng=Decimal(lng), caption=caption, user=user)
         pic.save()
 
         return pic,None

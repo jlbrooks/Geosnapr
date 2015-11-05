@@ -28,12 +28,15 @@
 
 <div id="myModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
   <h2 id="modalTitle">Upload new image</h2>
-  <form action="/upload" method="POST">
-    <input type="file" class="file-input" id="upload-file">
+  <form action="/upload" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="pic" class="file-input" id="upload-file">
     <img id="upload-img" />
 
     <fieldset class="hidden" id="img-loc-form">
-      <input type="text" placeholder="Search Google Maps....">
+      <input type="text" name="lat" placeholder="latitude">
+      <input type="text" name="lng" placeholder="longitude">
+      <input type="text" name="caption" placeholder="caption">
       <button type="submit">Add Image!</button>
     </fieldset>
   </form>

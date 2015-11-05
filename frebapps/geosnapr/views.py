@@ -68,3 +68,28 @@ def register(request):
 @login_required
 def main_map(request):
     return render(request, 'map.html')
+
+@login_required
+def upload(request):
+    if request.method != 'POST':
+        return redirect(main_map)
+    context = {}
+    errs = []
+    context['errors'] = errs
+
+    pic = request.FILES.get('pic')
+    lat = request.POST.get('lat')
+    lng = request.POST.get('lng')
+    caption = request.post.get('caption')
+    user = request.user
+
+    image,errors = Image.create(username=user.usernam, image=pic, lat=lat, lng=lng, caption=caption)
+
+    if errors:
+        errs.extend(errors)
+    else:
+        context['message'] = "Image successfully uploaded!"
+
+    return render(request, 'map.html', context)
+
+

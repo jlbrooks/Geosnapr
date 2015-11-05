@@ -63,6 +63,8 @@ class Image(models.Model):
 
     caption = models.CharField(max_length=100)
 
+    user = models.ForeignKey(User)
+
     @classmethod
     def create(cls, image, lat, lng, caption):
         err = []

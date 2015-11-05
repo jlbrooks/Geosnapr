@@ -53,17 +53,19 @@ class Profile(models.Model):
         # Return the created profile
         return profile,None
 
+def upload_to(instance, filename):
+    return 'images/%s/%s' % (instance.user.username, filename)
 
 class Image(models.Model):
-    image = models.ImageField(upload_to="pics")
+    user = models.ForeignKey(User)
+
+    image = models.ImageField(upload_to=upload_to)
 
     lat = models.DecimalField(max_digits=8, decimal_places=6)
 
     lng = models.DecimalField(max_digits=8, decimal_places=6)
 
     caption = models.CharField(max_length=100)
-
-    user = models.ForeignKey(User)
 
     @classmethod
     def create(cls, username, image, lat, lng, caption):

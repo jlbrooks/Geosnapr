@@ -24,5 +24,6 @@ urlpatterns = [
     url(r'^register$', views.register, name='register'),
     url(r'^map$', views.main_map, name='map'),
     url(r'^upload$', views.upload, name='upload'),
+    url(r'^edit_profile$', views.edit_profile, name='edit_profile'),
     url(r'^$', views.index, name='index'),
 ]

@@ -68,6 +68,11 @@ def main_map(request):
     return render(request, 'map.html')
 
 @login_required
+def edit_profile(request):
+    if request.method != 'POST':
+        return redirect(main_map)
+
+@login_required
 def upload(request):
     if request.method != 'POST':
         return redirect(main_map)

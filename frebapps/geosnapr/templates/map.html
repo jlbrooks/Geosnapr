@@ -11,22 +11,28 @@
 
 
 <div class="row">
-  <div class="column large-4">
+  <div class="column large-8">
     <form>
       <label><input type="text" placeholder="Search..."/></label>
     </form>
   </div>
+  <div class="columns large-3">
+    <a href="{%url 'logout' %}">Logout</a>
+  </div>
+  <div class="columns large-1">
+    <a href="#" data-reveal-id="editProfileModal">Edit Profile</a>
+  </div>
 </div>
 
 <div class="row">
-  <div class="columns large-6">
-    <a href="#" data-reveal-id="myModal">Image upload modal</a>
+  <div class="column large-4">
+    <a href="#" data-reveal-id="uploadModal">Image upload modal</a>
   </div>
 </div>
 
 
 
-<div id="myModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+<div id="uploadModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
   <h2 id="modalTitle">Upload new image</h2>
   <form action="/upload" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
@@ -39,6 +45,23 @@
       <input type="text" name="caption" placeholder="caption">
       <button type="submit">Add Image!</button>
     </fieldset>
+  </form>
+  <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+</div>
+
+<div id="editProfileModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+  <h2 id="modalTitle">Edit Profile</h1>
+  <form data-abide action="/login" method="POST">
+    {% csrf_token %}
+    <input type="text" placeholder="Email" required/>
+    <input type="text" placeholder="Password" required/>
+    <input type="text" name="first_name" placeholder="First Name" required/>
+    <input type="text" name="last_name" placeholder="Last Name" required/>
+    <input type="text" name="username" placeholder="Username" required/>
+    <input type="email" name="email" placeholder="Email" required/>
+    <input type="password" name="password" placeholder="Password" required/>
+    <input type="password" name="confirm_password" placeholder="Confirm Password" required/>
+    <button type="submit">Edit</button>
   </form>
   <a class="close-reveal-modal" aria-label="Close">&#215;</a>
 </div>

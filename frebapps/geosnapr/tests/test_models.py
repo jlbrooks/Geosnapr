@@ -65,6 +65,84 @@ class ProfileCreateTestCase(TestCase):
         self.assertEqual(p.user.last_name, 'brooks')
         self.assertEqual(p.user.email, 'test@example.com')
 
+class ProfileUpdateTestCase(TestCase):
+
+    def setUp(self):
+        user = User.objects.create(username='foobar', first_name='foo', last_name='bar', 
+            email='foo@bar.com', password='password')
+        Profile.objects.create(user=user)
+
+        other_user = User.objects.create(username='test', first_name='test', last_name='testy', 
+            email='test@test.com', password='password')
+        Profile.objects.create(user=other_user)
+
+    # Update failures
+
+    def test_update_no_username(self):
+        p,err = Profile.update(username='', first_name='foo', last_name='bar', 
+            email='foo@bar.com', password='password')
+
+        self.assertEqual(p, None)
+
+    def test_update_username_doesnt_exist(self):
+        p,err = Profile.update(username='jlbrooks', first_name='foo', last_name='bar', 
+            email='foo@bar.com', password='password')
+
+        self.assertEqual(p, None)
+
+    def test_update_no_first_name(self):
+        p,err = Profile.update(username='foobar', first_name='', last_name='bar', 
+            email='foo@bar.com', password='password')
+
+        self.assertEqual(p, None)
+
+    def test_update_no_last_name(self):
+        p,err = Profile.update(username='foobar', first_name='foo', last_name='', 
+            email='foo@bar.com', password='password')
+
+        self.assertEqual(p, None)
+
+    def test_update_no_password(self):
+        p,err = Profile.update(username='foobar', first_name='foo', last_name='bar', 
+            email='foo@bar.com', password='')
+
+        self.assertEqual(p, None)
+
+    def test_update_no_email(self):
+        p,err = Profile.update(username='foobar', first_name='foo', last_name='bar', 
+            email='', password='password')
+
+        self.assertEqual(p, None)
+
+    def test_update_email_exists(self):
+        p,err = Profile.update(username='foobar', first_name='foo', last_name='bar', 
+            email='test@test.com', password='password')
+
+        self.assertEqual(p, None)
+
+    # Update success
+
+    def test_update_no_change(self):
+        p,err = Profile.update(username='foobar', first_name='foo', last_name='bar', 
+            email='foo@bar.com', password='password')
+
+        self.assertEqual(err, None)
+        self.assertEqual(p.user.username, 'foobar')
+        self.assertEqual(p.user.first_name, 'foo')
+        self.assertEqual(p.user.last_name, 'bar')
+        self.assertEqual(p.user.email, 'foo@bar.com')
+
+    def test_update_change(self):
+        p,err = Profile.update(username='foobar', first_name='jacob', last_name='brooks', 
+            email='jacobbro@andrew.cmu.edu', password='password')
+
+        self.assertEqual(err, None)
+        self.assertEqual(p.user.username, 'foobar')
+        self.assertEqual(p.user.first_name, 'jacob')
+        self.assertEqual(p.user.last_name, 'brooks')
+        self.assertEqual(p.user.email, 'jacobbro@andrew.cmu.edu')
+
+
 class ImageCreateTestCase(TestCase):
 
     def setUp(self):

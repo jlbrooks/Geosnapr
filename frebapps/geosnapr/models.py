@@ -55,13 +55,13 @@ class Profile(models.Model):
         return profile,None
 
     @classmethod
-    def edit(cls, username, email, password, first_name, last_name):
+    def update(cls, username, email, password, first_name, last_name):
         err = []
 
         try:
             u = User.objects.get(username=username)
         except:
-            err.append['User does not exist']
+            err.append('User does not exist')
             return None, err
 
         # First name must exist
@@ -81,8 +81,9 @@ class Profile(models.Model):
             err.append('Email must not be blank')
         else:
             try:
-                u = User.objects.get(email=email)
-                errs.append['User with that email already exists']
+                other_u = User.objects.get(email=email)
+                if u != other_u:
+                    err.append('User with that email already exists')
             except:
                 pass
 
@@ -94,8 +95,8 @@ class Profile(models.Model):
         u.password = password
         u.email = email
         u.save()
-        
-        return u,None
+
+        return u.profile,None
 
 
 def upload_to(instance, filename):

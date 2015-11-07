@@ -1,7 +1,11 @@
 {% extends "_base.html" %}
 
+{% load staticfiles %}
+
+{% block title %}GeoSnapr{% endblock title %}
+
 {% block resources %}
-  <script src="{% static "js/geosnapr.js" %}"></script>
+<script src="{% static "js/maps.js" %}"></script>
 {% endblock resources %}
 
 {% block content %}

@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from geosnapr.models import Profile, Image
 
 def index(request):
@@ -71,6 +72,32 @@ def main_map(request):
 def edit_profile(request):
     if request.method != 'POST':
         return redirect(main_map)
+
+    context = {}
+    errs = []
+    context['errors'] = errs
+
+    username = request.user.username
+    first_name = request.POST.get('first_name')
+    last_name = request.POST.get('last_name')
+    email = request.POST.get('email')
+    password = request.POST.get('password')
+    confirm_password = request.POST.get('confirm_password')
+
+    if password != confirm_password:
+        errs.append('Passwords do not match!')
+        return JsonResponse(context)
+
+    profile,errors = Profile.edit(username=username, email=email,
+        password=password, first_name=first_name, last_name=last_name)
+
+    if errors:
+        errs.extend(errors)
+        print(errors)
+        return JsonResponse(context)
+
+    context['msg' = 'Profile successfully updated']
+    return JsonResponse(context)
 
 @login_required
 def upload(request):

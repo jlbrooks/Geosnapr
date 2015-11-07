@@ -54,6 +54,50 @@ class Profile(models.Model):
         # Return the created profile
         return profile,None
 
+    @classmethod
+    def edit(cls, username, email, password, first_name, last_name):
+        err = []
+
+        try:
+            u = User.objects.get(username=username)
+        except:
+            err.append['User does not exist']
+            return None, err
+
+        # First name must exist
+        if not first_name:
+            err.append('First name must not be blank')
+
+        # Last name must exist
+        if not last_name:
+            err.append('Last name must not be blank')
+
+        # Password must exist
+        if not password:
+            err.append('Password must not be blank')
+
+        # Email must exist
+        if not email:
+            err.append('Email must not be blank')
+        else:
+            try:
+                u = User.objects.get(email=email)
+                errs.append['User with that email already exists']
+            except:
+                pass
+
+        if err:
+            return None,err
+
+        u.first_name = first_name
+        u.last_name = last_name
+        u.password = password
+        u.email = email
+        u.save()
+        
+        return u,None
+
+
 def upload_to(instance, filename):
     return 'images/%s/%s' % (instance.user.username, filename)
 

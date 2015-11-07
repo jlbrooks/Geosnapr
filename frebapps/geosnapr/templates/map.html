@@ -1,9 +1,5 @@
 {% extends "_base.html" %}
 
-{% block resources %}
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBBymT1deOyItH-JCJdSX5nL0VpH1mHes&callback=initialize"></script>
-{% endblock resources %}
-
 
 {% block content %}
 <div class="mapsize" id="map-canvas">
@@ -62,11 +58,4 @@
   </form>
   <a class="close-reveal-modal" aria-label="Close">&#215;</a>
 </div>
-
-<script type="text/javascript">
-    function initialize() {
-      var map = new google.maps.Map(document.getElementById('map-canvas'), {center: {lat: -34.397, lng: 150.644}, zoom: 8})
-    };
-    window.initialize = initialize;
-</script>
 {% endblock content %}

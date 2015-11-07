@@ -96,7 +96,7 @@ def edit_profile(request):
         print(errors)
         return JsonResponse(context)
 
-    context['msg' = 'Profile successfully updated']
+    context['msg'] = 'Profile successfully updated'
     return JsonResponse(context)
 
 @login_required

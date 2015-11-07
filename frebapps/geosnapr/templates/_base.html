@@ -13,14 +13,14 @@
     <link rel="stylesheet" href="{% static "foundation/css/foundation.css" %}">
     <link rel="stylesheet" href="{% static "foundation/css/normalize.css" %}">
     <link rel="stylesheet" href="{% static "css/geosnapr.css" %}">
-    {% block resources %}
-    {% endblock resources %}
 
     <script src="{% static "foundation/js/jquery.js" %}"></script>
     <script src="{% static "foundation/js/modernizr.js" %}"></script>
     <script src="{% static "foundation/js/foundation.min.js" %}"></script>
     <script src="{% static "foundation/js/fastclick.js" %}"></script>
-    <script src="{% static "js/geosnapr.js" %}"></script>
+
+    {% block resources %}
+    {% endblock resources %}
 
   </head>
   <body>

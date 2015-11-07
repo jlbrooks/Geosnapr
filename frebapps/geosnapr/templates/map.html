@@ -1,5 +1,8 @@
 {% extends "_base.html" %}
 
+{% block resources %}
+  <script src="{% static "js/geosnapr.js" %}"></script>
+{% endblock resources %}
 
 {% block content %}
 <div class="mapsize" id="map-canvas">

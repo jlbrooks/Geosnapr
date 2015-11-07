@@ -11,6 +11,7 @@
 <link href='https://fonts.googleapis.com/css?family=Josefin+Sans:700,400' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="{% static "slick/slick.css" %}">
 <link rel="stylesheet" href="{% static "slick/slick-theme.css" %}">
+<script src="{% static "js/index.js" %}"></script>
 {% endblock resources %}
 
 {% block content %}
@@ -31,65 +32,32 @@
     <h6 class="josefin font-small">Share and explore your own world.</h6>
   </div>
   <div class="columns large-6 large-offset-3 medium-10 medium-offset-1 small-12 overlay">
-    <form data-abide action="/login" method="POST">
+    <form action="{% url 'login' %}" method="POST">
       {% csrf_token %}
-      <input type="text" placeholder="Email" required/>
-      <input type="text" placeholder="Password" required/>
+      <input type="text" placeholder="Username" required/>
+      <input type="password" placeholder="Password" required/>
       <button type="submit">Log In</button>
     </form>
 
-    <a href={% url 'register' %}><button type="submit">Sign Up</a></button>
+    <a href="#" data-reveal-id="registerModal" class="button">Sign Up</a>
   </div>
 </div>
 
-<div class="row">
-  <p> This is some text and some stuff describing our page.</p>
-</div>
-
-<div class="row">
-  <div class="columns large-6">
-    <h1>GEOSNAPR</h1>
-  </div>
-  <form data-abide action="/login" method="POST" class="login-bar">
+<div id="registerModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+  <h3 id="modalTitle">Register</h3>
+  <form data-abide action="{% url 'register' %}" method="POST">
     {% csrf_token %}
-    <div class="columns small-2">
-      <input type="text" name="username" placeholder="Username" required/>
-    </div>
-    <div class="columns small-2">
-      <input type="password" name="password" placeholder="Password" required/>
-    </div>
-    <div class="columns small-2">
-      <button type="submit" class="button button-inline">Log In</button>
-    </div>
+    <input type="text" name="first_name" placeholder="First Name" required/>
+    <input type="text" name="last_name" placeholder="Last Name" required/>
+    <input type="text" name="username" placeholder="Username" required/>
+    <input type="email" name="email" placeholder="Email" required/>
+    <input type="password" name="password" placeholder="Password" required/>
+    <input type="password" name="confirm_password" placeholder="Confirm Password" required/>
+    <button type="submit">Register</button>
   </form>
+  <a class="close-reveal-modal" aria-label="Close">&#215;</a>
 </div>
 
-<div class="row background">
-  <div class="columns large-6 large-offset-2">
-    <h3>Register</h3>
-    <form data-abide action="/register" method="POST">
-      {% csrf_token %}
-      <input type="text" name="first_name" placeholder="First Name" required/>
-      <input type="text" name="last_name" placeholder="Last Name" required/>
-      <input type="text" name="username" placeholder="Username" required/>
-      <input type="email" name="email" placeholder="Email" required/>
-      <input type="password" name="password" placeholder="Password" required/>
-      <input type="password" name="confirm_password" placeholder="Confirm Password" required/>
-      <button type="submit">Register</button>
-    </form>
-  </div>
-</div>
-
-<script src="{% static "foundation/js/jquery.js" %}"></script>
 <script type="text/javascript" src="{% static "slick/slick.js" %}"></script>
-
-<script type="text/javascript">
-  $(document).ready(function(){
-    $('.background-carousel').slick({
-      autoplay: true,
-      autoplaySpeed: 3000
-    });
-  });
-</script>
 
 {% endblock content %}

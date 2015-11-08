@@ -9,6 +9,12 @@
   margin-bottom: 1%;
 }
 
+.upper-right {
+  position: fixed;
+  top: 1%;
+  right: 1%;
+}
+
 .button-inline {
     padding: 0.725rem 1.75rem 0.7775rem 1.75rem;
     font-size: 0.8125rem;

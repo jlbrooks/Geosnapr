@@ -15,17 +15,16 @@
 
 
 <div class="row">
-  <div class="column large-8">
+  <div class="column large-7">
     <form>
       <label><input type="text" id="locationsearch" placeholder="Search..."/></label>
     </form>
   </div>
-  <div class="columns large-3">
-    <a href="{%url 'logout' %}">Logout</a>
-  </div>
-  <div class="columns large-1">
-    <a href="#" data-reveal-id="editProfileModal">Edit Profile</a>
-  </div>
+</div>
+
+<div class="upper-right">
+  <a href="#" data-reveal-id="editProfileModal" class="button small radius">Edit Profile</a>
+  <a href="{%url 'logout' %}" class="button small radius">Logout</a>
 </div>
 
 <a href="#" data-reveal-id="uploadModal" class="button large round bottom-left">Upload New Image</a>

@@ -62,6 +62,7 @@ function upload_image(event) {
       console.log(data);
     }
   });
+
 }
 
 // Maps functions
@@ -79,7 +80,8 @@ function initialize() {
 
   var markers = [];
 
-  google.maps.event.addListener(map, 'bounds_changed', function() {
+
+  google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
     loadImages(map, markers);
   });
 

@@ -1,0 +1,1 @@
+[{% for image in images %}{% include 'json/image.json' %}{% if not forloop.last %}, {% endif %}{%endfor %}]

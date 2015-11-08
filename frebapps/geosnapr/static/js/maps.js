@@ -43,6 +43,11 @@ function edit_profile(event) {
     })
 }
 
+function upload_image(event) {
+  event.preventDefault();
+  
+}
+
 // Maps functions
 
 function initialize() {
@@ -79,7 +84,7 @@ function hideImage(map, marker, markers) {
 function showImage(map, marker, markers) {
   console.log(marker);
   var infowindow = new google.maps.InfoWindow({
-    content: '<IMG BORDER="0" height="42" class="thumbnail" SRC="media/' + marker.image.image + '">'
+    content: '<IMG BORDER="0" height="42" class="thumbnail" SRC="' + marker.image.image + '">'
   });
   for (var i = 0; i < markers.length; ++i) {
     if (markers[i].infoWindow != undefined) {

@@ -45,7 +45,7 @@ function edit_profile(event) {
 
 function upload_image(event) {
   event.preventDefault();
-  
+
 }
 
 // Maps functions
@@ -63,7 +63,8 @@ function initialize() {
 
   var markers = [];
 
-  google.maps.event.addListener(map, 'bounds_changed', function() {
+
+  google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
     loadImages(map, markers);
   });
 

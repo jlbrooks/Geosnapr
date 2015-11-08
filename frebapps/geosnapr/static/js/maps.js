@@ -9,6 +9,11 @@ function imageChosen() {
   // read the image file as a data URL.
   reader.readAsDataURL(this.files[0]);
 
+  $(this).fileExif(function (exifObject) {
+    console.log("fn");
+    console.log(exifObject);
+  });
+
   $("#img-loc-form").removeClass("hidden");
 }
 

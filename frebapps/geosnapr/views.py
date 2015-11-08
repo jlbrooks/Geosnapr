@@ -133,16 +133,21 @@ def upload(request):
     return redirect(index)
 
 def get_images(request):
+    print "here"
     if request.method == "POST":
+        print "here2"
         user = request.user
+        print "here3"
         images = Image.objects.filter(user=user)
+        print "here4"
         response = []
+        print "here5"
         for i in images:
             picture = i.image
             lat = i.lat
             lng = i.lng
             response.append({'image':str(picture),'lat':int(lat),'lng':int(lng)})
-
+        print "here6"
         return HttpResponse(json.dumps(response), content_type="application/json")
     print "reached here"
     return JsonResponse({})

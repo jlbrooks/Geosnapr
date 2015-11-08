@@ -83,7 +83,6 @@
   top: 10em;
 }
 
-
 .no-pad-right {
 padding-right: 0;
 }
@@ -101,4 +100,9 @@ fieldset.hidden {
 
 .error {
   color: red;
+}
+
+.thumbnail {
+  width: 20em;
+  height: auto;
 }

@@ -60,12 +60,25 @@ function initialize() {
   google.maps.event.addListener(map, 'bounds_changed', function() {
     loadImages(map, markers);
   });
+
+  var input = (document.getElementById('locationsearch'));
+  console.log(input)
+  var autocomplete = new google.maps.places.Autocomplete(input);
+  autocomplete.bindTo('bounds', map);
+}
+
+function hideImage(map, marker, markers) {
+  for (var i = 0; i < markers.length; ++i) {
+    if (markers[i].infoWindow != undefined) {
+      markers[i].infoWindow.close();
+    }
+  }
 }
 
 function showImage(map, marker, markers) {
   console.log(marker);
   var infowindow = new google.maps.InfoWindow({
-    content: '<IMG BORDER="0" ALIGN="Left" SRC="/media/' + marker.image.image + '">' + marker.position.toString()
+    content: '<IMG BORDER="0" height="42" class="thumbnail" SRC="media/' + marker.image.image + '">'
   });
   for (var i = 0; i < markers.length; ++i) {
     if (markers[i].infoWindow != undefined) {
@@ -121,6 +134,11 @@ function addMarkers(map, markers, json) {
           showImage(map, markers[key2], markers);
         }
       }(key));
+      google.maps.event.addListener(markers[key],'mouseout', function(key2) {
+        return function() {
+          hideImage(map, markers[key2], markers);
+        }
+      }(key));
     }
 }
 
@@ -163,7 +181,7 @@ function loadScript() {
   console.log('loading');
   var script = document.createElement('script');
   script.type = 'text/javascript';
-  script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyCBBymT1deOyItH-JCJdSX5nL0VpH1mHes&callback=initialize";
+  script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyCBBymT1deOyItH-JCJdSX5nL0VpH1mHes&libraries=places&callback=initialize";
   document.body.appendChild(script);
 }
 

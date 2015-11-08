@@ -66,7 +66,11 @@ def register(request):
 
 @login_required
 def main_map(request):
-    return render(request, 'map.html')
+    context = {
+        'user': request.user
+    }
+
+    return render(request, 'map.html', context)
 
 @login_required
 def edit_profile(request):
@@ -84,11 +88,15 @@ def edit_profile(request):
     password = request.POST.get('password')
     confirm_password = request.POST.get('confirm_password')
 
+    if not password and not confirm_password:
+        password = request.user.password
+        confirm_password = request.user.password
+
     if password != confirm_password:
         errs.append('Passwords do not match!')
         return JsonResponse(context)
 
-    profile,errors = Profile.edit(username=username, email=email,
+    profile,errors = Profile.update(username=username, email=email,
         password=password, first_name=first_name, last_name=last_name)
 
     if errors:

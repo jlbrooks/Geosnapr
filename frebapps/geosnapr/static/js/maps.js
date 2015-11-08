@@ -12,6 +12,32 @@ function imageChosen() {
   $("#img-loc-form").removeClass("hidden");
 }
 
+function edit_profile(event) {
+    event.preventDefault();
+    var form = $("#edit-profile-form");
+    
+    $.ajax({
+        type: form.attr('method'),
+        url: form.attr('action'),
+        data: form.serialize(),
+        success: function (data) {
+            var msg = $('#profile-notification');
+            console.log(data)
+            if (data.errors.length > 0) { 
+              msg.html(data.errors[0]);
+              msg.addClass("error");
+            } else {
+              msg.html(data.msg);
+              msg.addClass("success");
+            }
+            msg.removeClass("hidden");
+        },
+        error: function (data) {
+            console.log(data);
+        }
+    })
+}
+
 // Maps functions
 
 function initialize() {
@@ -40,4 +66,9 @@ $(document).ready(function () {
     document.getElementById("upload-file").onchange = imageChosen;
 
     loadScript();
+
+    $(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
+      $(document).foundation('abide', 'reflow');
+      $("#edit-profile-form").on('valid.fndtn.abide', edit_profile);
+    });
 });

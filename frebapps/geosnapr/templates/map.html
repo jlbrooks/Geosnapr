@@ -33,11 +33,11 @@
   </div>
 </div>
 
-
+<!-- Pop-up modals -->
 
 <div id="uploadModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
   <h2 id="modalTitle">Upload new image</h2>
-  <form action="/upload" method="POST" enctype="multipart/form-data">
+  <form action="{% url 'upload' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="file" name="pic" class="file-input" id="upload-file">
     <img id="upload-img" />
@@ -53,15 +53,37 @@
 </div>
 
 <div id="editProfileModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-  <h2 id="modalTitle">Edit Profile</h1>
-  <form data-abide action="/login" method="POST">
+  <h2 id="modalTitle">Edit Profile</h2>
+  <p class="hidden" id="profile-notification"></p>
+  <form id="edit-profile-form" data-abide="ajax" action="{% url 'edit_profile' %}" method="POST">
     {% csrf_token %}
-    <input type="text" name="first_name" placeholder="First Name" required/>
-    <input type="text" name="last_name" placeholder="Last Name" required/>
-    <input type="email" name="email" placeholder="Email" required/>
-    <input type="password" name="password" placeholder="Password" required/>
-    <input type="password" name="confirm_password" placeholder="Confirm Password" required/>
-    <button type="submit">Edit</button>
+    <div class="input-wrapper">
+      <label for="first_name">First Name:
+        <input type="text" name="first_name" placeholder="First Name" value="{{user.first_name}}" required>
+      </label>
+      <small class="error">First name is required.</small>
+    </div>
+    <div class="input-wrapper">
+      <label for="last_name">Last Name:
+        <input type="text" name="last_name" placeholder="Last Name" value="{{user.last_name}}" required>
+      </label>
+      <small class="error">Last name is required.</small>
+    </div>
+    <div class="input-wrapper">
+      <label for="email">Email:
+        <input type="email" name="email" placeholder="Email" value="{{user.email}}" required>
+      </label>
+      <small class="error">Email is required.</small>
+    </div>
+    <div class="input-wrapper">
+      <input id="password" type="password" name="password" placeholder="New Password">
+    </div>
+    <div class="input-wrapper">
+      <input type="password" name="confirm_password" placeholder="Confirm New Password" data-equalto="password">
+      <small class="error">Passwords must match</small>
+    </div>
+
+    <button type="submit" id="edit-profile-btn">Edit</button>
   </form>
   <a class="close-reveal-modal" aria-label="Close">&#215;</a>
 </div>

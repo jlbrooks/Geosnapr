@@ -94,3 +94,11 @@ padding-left: 0;
 fieldset.hidden {
   display: none;
 }
+
+.success {
+  color: green;
+}
+
+.error {
+  color: red;
+}

@@ -2,6 +2,13 @@
     margin-top: 25px;
 }
 
+.bottom-left {
+  position: fixed;
+  bottom: 0;
+  margin-left: 1%;
+  margin-bottom: 1%;
+}
+
 .button-inline {
     padding: 0.725rem 1.75rem 0.7775rem 1.75rem;
     font-size: 0.8125rem;

@@ -28,17 +28,13 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="column large-4">
-    <a href="#" data-reveal-id="uploadModal">Image upload modal</a>
-  </div>
-</div>
+<a href="#" data-reveal-id="uploadModal" class="button large round bottom-left">Upload New Image</a>
 
 <!-- Pop-up modals -->
 
 <div id="uploadModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
   <h2 id="modalTitle">Upload new image</h2>
-  <form action="{% url 'upload' %}" method="POST" enctype="multipart/form-data">
+  <form id="upload-img-form" action="{% url 'upload' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="file" name="pic" class="file-input" id="upload-file">
     <img id="upload-img" />

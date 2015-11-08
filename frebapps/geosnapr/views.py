@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from geosnapr.models import Profile, Image
+import json
 
 def index(request):
     if not request.user.is_authenticated():
@@ -131,4 +132,17 @@ def upload(request):
 
     return redirect(index)
 
+def get_images(request):
+    if request.method == "POST":
+        user = request.user
+        images = Image.objects.filter(user=user)
+        response = []
+        for i in images:
+            picture = i.image
+            lat = i.lat
+            lng = i.lng
+            response.append({'image':str(picture),'lat':int(lat),'lng':int(lng)})
 
+        return HttpResponse(json.dumps(response), content_type="application/json")
+    print "reached here"
+    return JsonResponse({})

@@ -13,7 +13,6 @@ function imageChosen() {
   reader.readAsDataURL(this.files[0]);
 
   $(this).fileExif(function (exifObject) {
-    console.log("fn");
     console.log(exifObject);
 
     if (exifObject.GPSLatitude && exifObject.GPSLongitude) {
@@ -47,7 +46,6 @@ function imageChosen() {
           if (results[1]) {
             var placeInput = $('#imagelocation');
             placeInput.val(results[1].formatted_address);
-            console.log(results[1].formatted_address);
           }
         } else {
           console.log("Geocoder failed due to: " + status);
@@ -97,8 +95,8 @@ function upload_image(event) {
     processData: false,
     contentType: false,
     success: function (data) {
-      // Add a new marker?
-
+      // Add a new marker
+      addMarkers(map, markers, [data.image]);
       // Close the modal
       $('#uploadModal').foundation('reveal', 'close');
     },

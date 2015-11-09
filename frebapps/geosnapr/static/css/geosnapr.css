@@ -131,3 +131,7 @@ fieldset.hidden {
 .top-margin {
   margin-top: 2em;
 }
+
+.top-margin-small {
+  margin-top: 1em;
+}

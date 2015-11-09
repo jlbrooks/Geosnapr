@@ -142,7 +142,6 @@ function initialize() {
   });
 
   var imageinput = (document.getElementById('imagelocation'));
-  console.log(imageinput);
   var imageautocomplete = new google.maps.places.Autocomplete(imageinput);
 
   imageautocomplete.addListener('place_changed', function() {
@@ -165,7 +164,6 @@ function hideImage(map, marker, markers) {
 }
 
 function showImage(map, marker, markers) {
-  console.log(marker);
   var infowindow = new google.maps.InfoWindow({
     content: '<img border="0" height="42" class="thumbnail" src="' + marker.image.image + '">' +"\n" + "<p>" + marker.image.caption + "</p>"
   });
@@ -227,7 +225,9 @@ function addMarkers(map, markers, json) {
 
       bounds.extend(marker.position)
     }
-    map.fitBounds(bounds);
+    if (markers.length > 0) {
+      map.fitBounds(bounds);
+    }
 }
 
 function loadImages(map, markers) {

@@ -1,7 +1,6 @@
 var map;
 var markers;
 
-
 function imageChosen() {
   var reader = new FileReader();
 
@@ -113,13 +112,13 @@ function initialize() {
     loadImages(map, markers);
   });
 
+  // creates objects for autcomplete search fields
   var input = (document.getElementById('locationsearch'));
   var autocomplete = new google.maps.places.Autocomplete(input);
   autocomplete.bindTo('bounds', map);
 
   autocomplete.addListener('place_changed', function() {
     var place = autocomplete.getPlace();
-
     if (place.geometry) {
       map.setCenter(place.geometry.location);
       map.setZoom(17);
@@ -140,8 +139,7 @@ function initialize() {
         latform.value = place.geometry.location.lat();
         lngform.value = place.geometry.location.lng();
       }
-
-  })
+  });
 }
 
 function hideImage(map, marker, markers) {
@@ -157,11 +155,6 @@ function showImage(map, marker, markers) {
   var infowindow = new google.maps.InfoWindow({
     content: '<img border="0" height="42" class="thumbnail" src="' + marker.image.image + '">'
   });
-  for (var i = 0; i < markers.length; ++i) {
-    if (markers[i].infoWindow != undefined) {
-      markers[i].infoWindow.close();
-    }
-  }
   infowindow.open(map, marker);
   marker.infoWindow = infowindow;
 }

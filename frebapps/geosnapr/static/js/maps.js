@@ -1,5 +1,6 @@
 var map;
 var markers;
+var imagecount=0;
 
 function imageChosen() {
   var reader = new FileReader();
@@ -193,12 +194,7 @@ function getCookie(name) {
 }
 
 function addMarkers(map, markers, json) {
-    var bounds = new google.maps.LatLngBounds();
 
-    for (var i = 0; i < markers.length; ++i) {
-      markers[i].setMap(null);
-    }
-    markers.length = 0;
     for (var i = 0; i < json.length; ++i) {
       var image = json[i];
       var latitude = image['lat'];
@@ -210,7 +206,7 @@ function addMarkers(map, markers, json) {
       });
       marker.image=image;
       markers.push(marker);
-      var key = i;
+      var key = imagecount;
 
       google.maps.event.addListener(markers[key],'mouseover', function(key2) {
         return function() {
@@ -222,14 +218,18 @@ function addMarkers(map, markers, json) {
           hideImage(map, markers[key2], markers);
         }
       }(key));
-
-      bounds.extend(marker.position)
+      imagecount = imagecount+1;
     }
     if (markers.length > 0) {
+      var bounds = new google.maps.LatLngBounds();
+      for (var i = 0; i < markers.length; ++i) {
+        var marker = markers[i];
+        bounds.extend(marker.position);
+      }
       map.fitBounds(bounds);
       var listener = google.maps.event.addListenerOnce(map, "idle", function() {
           if (map.getZoom() > 8) map.setZoom(8);
-      })
+      });
     }
     else {
       map.fitBounds(new google.maps.LatLng(40, -79));

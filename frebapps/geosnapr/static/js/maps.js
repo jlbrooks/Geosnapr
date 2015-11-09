@@ -101,10 +101,19 @@ function initialize() {
   });
 
   var imageinput = (document.getElementById('imagelocation'));
+  console.log(imageinput);
   var imageautocomplete = new google.maps.places.Autocomplete(imageinput);
-  imageautocomplete.bindTo('bounds', map);
 
-  autocomplete.addListener('place_changed', function() {
+  imageautocomplete.addListener('place_changed', function() {
+    var place = imageautocomplete.getPlace();
+    console.log(place);
+      if (place.geometry) {
+        var latform = document.getElementById("autolat");
+        console.log(latform);
+        var lngform = document.getElementById("autolng");
+        latform.value = place.geometry.location.lat();
+        lngform.value = place.geometry.location.lng();
+      }
 
   })
 }

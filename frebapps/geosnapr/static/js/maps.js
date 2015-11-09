@@ -55,14 +55,14 @@ function upload_image(event) {
     processData: false,
     contentType: false,
     success: function (data) {
-      console.log(data);
       // Add a new marker?
 
       // Close the modal
-      $('#myModal').foundation('reveal', 'close');
+      $('#uploadModal').foundation('reveal', 'close');
     },
     error: function (data) {
       console.log(data);
+      console.log("fail");
     }
   });
 

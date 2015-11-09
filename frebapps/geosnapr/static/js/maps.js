@@ -137,7 +137,7 @@ function initialize() {
     var place = autocomplete.getPlace();
     if (place.geometry) {
       map.setCenter(place.geometry.location);
-      map.setZoom(17);
+      map.setZoom(14);
     }
   });
 

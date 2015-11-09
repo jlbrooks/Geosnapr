@@ -1,0 +1,5 @@
+{
+    "image": {% if image %}{% include 'json/image.json' %}{% else %}null{%endif%},
+    "message": "{{message}}",
+    "errors": {% include 'json/errors.json' %}
+}

@@ -123,6 +123,7 @@ def upload(request):
     user = request.user
 
     image,errors = Image.create(username=user.username, image=pic, lat=lat, lng=lng, caption=caption)
+    context['image'] = image
 
     if errors:
         print(errors)
@@ -130,7 +131,7 @@ def upload(request):
     else:
         context['message'] = "Image successfully uploaded!"
 
-    return redirect(index)
+    return render(request, 'json/upload_response.json', context, content_type="application/json")
 
 def get_images(request):
     if request.method == "POST":

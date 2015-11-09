@@ -46,11 +46,14 @@ function edit_profile(event) {
 function upload_image(event) {
   event.preventDefault();
   var form = $("#upload-img-form");
+  var formData = new FormData(document.getElementById("upload-img-form"));
 
  $.ajax({
     type: form.attr('method'),
     url: form.attr('action'),
-    data: form.serialize(),
+    data: formData,
+    processData: false,
+    contentType: false,
     success: function (data) {
       console.log(data);
       // Add a new marker?
@@ -220,6 +223,6 @@ $(document).ready(function () {
     $(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
       $(document).foundation('abide', 'reflow');
       $("#edit-profile-form").on('valid.fndtn.abide', edit_profile);
-      $("#upload-img-form").on('click', upload_image);
+      $("#upload-img-btn").on('click', upload_image);
     });
 });

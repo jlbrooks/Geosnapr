@@ -12,6 +12,27 @@ function imageChosen() {
   $(this).fileExif(function (exifObject) {
     console.log("fn");
     console.log(exifObject);
+
+    if (exifObject.GPSLatitude && exifObject.GPSLongitude) {
+      var latArray = exifObject.GPSLatitude;
+      var lngArray = exifObject.GPSLongitude;
+
+      // Convert lat/lng to decimal
+      var latDecimal = latArray[0] + (latArray[1]/60) + (latArray[2]/3600);
+
+      var lngDecimal = lngArray[0] + (lngArray[1]/60) + (lngArray[2]/3600);
+
+      // N/S/E/W
+      if (exifObject.GPSLatitudeRef === "S") {
+        latDecimal = latDecimal * -1;
+      }
+      if (exifObject.GPSLongitudeRef === "W") {
+        lngDecimal = lngDecimal * -1;
+      }
+
+      $("#lat-field").val(latDecimal);
+      $("#lng-field").val(lngDecimal);
+    }
   });
 
   $("#img-loc-form").removeClass("hidden");
@@ -93,7 +114,7 @@ function initialize() {
 
   autocomplete.addListener('place_changed', function() {
     var place = autocomplete.getPlace();
-    console.log(place);
+
     if (place.geometry) {
       map.setCenter(place.geometry.location);
       map.setZoom(17);

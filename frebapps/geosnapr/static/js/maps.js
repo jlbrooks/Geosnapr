@@ -227,10 +227,16 @@ function addMarkers(map, markers, json) {
     }
     if (markers.length > 0) {
       map.fitBounds(bounds);
+      var listener = google.maps.event.addListenerOnce(map, "idle", function() {
+          if (map.getZoom() > 8) map.setZoom(8);
+      })
     }
     else {
       map.fitBounds(new google.maps.LatLng(40, -79));
     }
+
+
+
 }
 
 function loadImages(map, markers) {

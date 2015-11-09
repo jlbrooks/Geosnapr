@@ -119,3 +119,7 @@ fieldset.hidden {
   width: 20em;
   height: auto;
 }
+
+.top-margin {
+  margin-top: 2em;
+}

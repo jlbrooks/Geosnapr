@@ -14,7 +14,7 @@
 {% endblock resources %}
 
 {% block content %}
-<div class="row full">
+<div class="row viewport">
   <div class="columns large-12 no-pad-left no-pad-right hideoverflowx min-height">
     <div class="background-carousel viewport min-height">
       <div><img src="{% static "img/background3.jpg" %}" class="min-height"/></div>
@@ -26,19 +26,25 @@
       <div><img src="{% static "img/background7.jpg" %}"/></div>
     </div>
   </div>
-  <div class="columns large-6 large-offset-3 medium-10 medium-offset-1 small-12 logo-overlay">
-    <h1 class="josefin font-large">GeoSnapr</h1>
-    <h6 class="josefin font-small">Share and explore your own world.</h6>
+  <div class="row viewport">
+    <div class="columns large-6 large-offset-3 medium-10 medium-offset-1 small-12 logo-overlay">
+      <h2 class="josefin font-large">GeoSnapr</h2>
+      <h6 class="josefin font-small">Your photos. Your world.</h6>
+    </div>
   </div>
-  <div class="columns large-6 large-offset-3 medium-10 medium-offset-1 small-12 overlay">
-    <form action="{% url 'login' %}" method="POST">
-      {% csrf_token %}
-      <input type="text" name="username" placeholder="Username" required/>
-      <input type="password" name="password" placeholder="Password" required/>
-      <button type="submit">Log In</button>
-    </form>
+  <div class="row viewport">
+    <div class="columns large-6 large-offset-3 medium-10 medium-offset-1 small-12 overlay top-margin">
+      <form action="{% url 'login' %}" method="POST">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username" required/>
+        <input type="password" name="password" placeholder="Password" required/>
+        <button type="submit" class="button">Log In</button>
+      </form>
 
-    <a href="#" data-reveal-id="registerModal" class="button">Sign Up</a>
+      <p class="josefin top-margin">Or if you don't have an account:</p>
+
+      <a href="#" data-reveal-id="registerModal" class="button">Sign Up</a>
+    </div>
   </div>
 </div>
 

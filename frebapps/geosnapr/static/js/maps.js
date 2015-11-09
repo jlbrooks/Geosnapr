@@ -36,6 +36,24 @@ function imageChosen() {
 
       $("#autolat").val(latDecimal);
       $("#autolng").val(lngDecimal);
+
+      // Try to reverse geocode
+      var geocoder = new google.maps.Geocoder;
+      var loc = {
+        lat: latDecimal,
+        lng: lngDecimal
+      };
+      geocoder.geocode({'location': loc}, function(results, status) {
+        if (status === google.maps.GeocoderStatus.OK) {
+          if (results[1]) {
+            var placeInput = $('#imagelocation');
+            placeInput.val(results[1].formatted_address);
+            console.log(results[1].formatted_address);
+          }
+        } else {
+          console.log("Geocoder failed due to: " + status);
+        }
+      })
     }
   });
 

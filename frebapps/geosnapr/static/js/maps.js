@@ -147,10 +147,8 @@ function initialize() {
 
   imageautocomplete.addListener('place_changed', function() {
     var place = imageautocomplete.getPlace();
-    console.log(place);
       if (place.geometry) {
         var latform = document.getElementById("autolat");
-        console.log(latform);
         var lngform = document.getElementById("autolng");
         latform.value = place.geometry.location.lat();
         lngform.value = place.geometry.location.lng();
@@ -169,7 +167,7 @@ function hideImage(map, marker, markers) {
 function showImage(map, marker, markers) {
   console.log(marker);
   var infowindow = new google.maps.InfoWindow({
-    content: '<img border="0" height="42" class="thumbnail" src="' + marker.image.image + '">'
+    content: '<img border="0" height="42" class="thumbnail" src="' + marker.image.image + '">' +"\n" + "<p>" + marker.image.caption + "</p>"
   });
   infowindow.open(map, marker);
   marker.infoWindow = infowindow;

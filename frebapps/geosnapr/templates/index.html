@@ -26,20 +26,25 @@
       <div><img src="{% static "img/background7.jpg" %}"/></div>
     </div>
   </div>
-  <div class="columns large-6 large-offset-3 medium-10 medium-offset-1 small-12 logo-overlay">
-    <h1 class="josefin font-large">GeoSnapr</h1>
-    <h6 class="josefin font-small">Share and explore your own world.</h6>
+  <div class="row" >
+    <div class="columns large-6 large-offset-4 logo-overlay header">
+      <h4 class="josefin font-large">GeoSnapr</h1>
+      <h6 class="josefin font-small">Share and explore your own world.</h6>
+    </div>
   </div>
-  <div class="columns large-6 large-offset-3 medium-10 medium-offset-1 small-12 overlay">
-    <form action="{% url 'login' %}" method="POST">
-      {% csrf_token %}
-      <input type="text" name="username" placeholder="Username" required/>
-      <input type="password" name="password" placeholder="Password" required/>
-      <button type="submit">Log In</button>
-    </form>
+  <div class="row">
+    <div class="columns large-4 large-offset-4 overlay" id="login-form">
+      <form action="{% url 'login' %}" method="POST">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username" required/>
+        <input type="password" name="password" placeholder="Password" required/>
+        <button type="submit" class="button radius">Log In</button>
+      </form>
 
-    <a href="#" data-reveal-id="registerModal" class="button">Sign Up</a>
+      <a href="#" data-reveal-id="registerModal" class="button radius upper-right">Sign Up</a>
   </div>
+  </div>
+  
 </div>
 
 <div id="registerModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">

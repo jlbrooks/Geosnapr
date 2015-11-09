@@ -1,7 +1,6 @@
 var map;
 var markers;
 
-
 function imageChosen() {
   var reader = new FileReader();
 
@@ -116,7 +115,7 @@ function upload_image(event) {
 function initialize() {
   var mapOptions = {
     zoom: 8,
-    center: new google.maps.LatLng(10.397, 10.644),
+    center: new google.maps.LatLng(33.8650, 151.2094),
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     mapTypeControl: false,
     streetViewControl: false
@@ -131,13 +130,13 @@ function initialize() {
     loadImages(map, markers);
   });
 
+  // creates objects for autcomplete search fields
   var input = (document.getElementById('locationsearch'));
   var autocomplete = new google.maps.places.Autocomplete(input);
   autocomplete.bindTo('bounds', map);
 
   autocomplete.addListener('place_changed', function() {
     var place = autocomplete.getPlace();
-
     if (place.geometry) {
       map.setCenter(place.geometry.location);
       map.setZoom(17);
@@ -158,8 +157,7 @@ function initialize() {
         latform.value = place.geometry.location.lat();
         lngform.value = place.geometry.location.lng();
       }
-
-  })
+  });
 }
 
 function hideImage(map, marker, markers) {
@@ -175,11 +173,6 @@ function showImage(map, marker, markers) {
   var infowindow = new google.maps.InfoWindow({
     content: '<img border="0" height="42" class="thumbnail" src="' + marker.image.image + '">'
   });
-  for (var i = 0; i < markers.length; ++i) {
-    if (markers[i].infoWindow != undefined) {
-      markers[i].infoWindow.close();
-    }
-  }
   infowindow.open(map, marker);
   marker.infoWindow = infowindow;
 }
@@ -206,7 +199,8 @@ function getCookie(name) {
 }
 
 function addMarkers(map, markers, json) {
-    console.log(markers.length);
+    var bounds = new google.maps.LatLngBounds();
+
     for (var i = 0; i < markers.length; ++i) {
       markers[i].setMap(null);
     }
@@ -234,7 +228,10 @@ function addMarkers(map, markers, json) {
           hideImage(map, markers[key2], markers);
         }
       }(key));
+
+      bounds.extend(marker.position)
     }
+    map.fitBounds(bounds);
 }
 
 function loadImages(map, markers) {

@@ -2,6 +2,10 @@
     margin-top: 25px;
 }
 
+.pac-container {
+  z-index: 1050 !important;
+}
+
 .bottom-left {
   position: fixed;
   bottom: 0;

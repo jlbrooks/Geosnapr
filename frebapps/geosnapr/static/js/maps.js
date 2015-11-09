@@ -83,15 +83,22 @@ function initialize() {
 
   var markers = [];
 
-
   google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
     loadImages(map, markers);
   });
 
   var input = (document.getElementById('locationsearch'));
-  console.log(input)
   var autocomplete = new google.maps.places.Autocomplete(input);
   autocomplete.bindTo('bounds', map);
+
+  autocomplete.addListener('place_changed', function() {
+    var place = autocomplete.getPlace();
+    console.log(place);
+    if (place.geometry) {
+      map.setCenter(place.geometry.location);
+      map.setZoom(17);
+    }
+  });
 }
 
 function hideImage(map, marker, markers) {

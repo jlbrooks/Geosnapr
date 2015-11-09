@@ -1,3 +1,7 @@
+var map;
+var markers;
+
+
 function imageChosen() {
   var reader = new FileReader();
 
@@ -78,10 +82,10 @@ function initialize() {
     mapTypeControl: false
   };
 
-  var map = new google.maps.Map(document.getElementById('map-canvas'),
+  map = new google.maps.Map(document.getElementById('map-canvas'),
     mapOptions);
 
-  var markers = [];
+  markers = [];
 
   google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
     loadImages(map, markers);
@@ -129,7 +133,7 @@ function hideImage(map, marker, markers) {
 function showImage(map, marker, markers) {
   console.log(marker);
   var infowindow = new google.maps.InfoWindow({
-    content: '<IMG BORDER="0" height="42" class="thumbnail" SRC="' + marker.image.image + '">'
+    content: '<img border="0" height="42" class="thumbnail" src="' + marker.image.image + '">'
   });
   for (var i = 0; i < markers.length; ++i) {
     if (markers[i].infoWindow != undefined) {

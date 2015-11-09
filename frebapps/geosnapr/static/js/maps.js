@@ -100,7 +100,8 @@ function initialize() {
     zoom: 8,
     center: new google.maps.LatLng(10.397, 10.644),
     mapTypeId: google.maps.MapTypeId.ROADMAP,
-    mapTypeControl: false
+    mapTypeControl: false,
+    streetViewControl: false
   };
 
   map = new google.maps.Map(document.getElementById('map-canvas'),

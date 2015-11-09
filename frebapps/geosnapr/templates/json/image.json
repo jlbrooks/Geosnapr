@@ -1,1 +1,1 @@
-{"image": "{{image.image.url}}", "lat": {{image.lat}}, "lng": {{image.lng}, "caption": "{{image.caption}}"}}
+{"image": "{{image.image.url}}", "lat": {{image.lat}}, "lng": {{image.lng}}, "caption": "{{image.caption}}"}

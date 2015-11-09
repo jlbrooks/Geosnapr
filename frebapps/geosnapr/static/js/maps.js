@@ -99,6 +99,14 @@ function initialize() {
       map.setZoom(17);
     }
   });
+
+  var imageinput = (document.getElementById('imagelocation'));
+  var imageautocomplete = new google.maps.places.Autocomplete(imageinput);
+  imageautocomplete.bindTo('bounds', map);
+
+  autocomplete.addListener('place_changed', function() {
+
+  })
 }
 
 function hideImage(map, marker, markers) {

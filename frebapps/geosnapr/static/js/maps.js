@@ -113,7 +113,7 @@ function upload_image(event) {
 function initialize() {
   var mapOptions = {
     zoom: 8,
-    center: new google.maps.LatLng(33.8650, 151.2094),
+    center: new google.maps.LatLng(40, -79),
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     mapTypeControl: false,
     streetViewControl: false
@@ -137,7 +137,7 @@ function initialize() {
     var place = autocomplete.getPlace();
     if (place.geometry) {
       map.setCenter(place.geometry.location);
-      map.setZoom(14);
+      map.setZoom(8);
     }
   });
 
@@ -227,6 +227,9 @@ function addMarkers(map, markers, json) {
     }
     if (markers.length > 0) {
       map.fitBounds(bounds);
+    }
+    else {
+      map.fitBounds(new google.maps.LatLng(40, -79));
     }
 }
 

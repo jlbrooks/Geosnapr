@@ -27,8 +27,6 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['geosnapr.com']
 
-CSRF_COOKIE_HTTPONLY = True
-
 USE_X_FORWARDED_HOST = True
 
 

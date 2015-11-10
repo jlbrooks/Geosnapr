@@ -1,4 +1,4 @@
-#!bin/bash
+#!/bin/bash
 
 # Change to the frebapps directory
 cd /opt/Team177/frebapps/

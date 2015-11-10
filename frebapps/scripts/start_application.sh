@@ -7,6 +7,7 @@ cd /opt/Team177/frebapps/
 cp frebapps/settings.prod.py frebapps/settings.py
 
 # Collect static
+python manage.py collectstatic
 
 # Restart gunicorn
 service gunicorn restart

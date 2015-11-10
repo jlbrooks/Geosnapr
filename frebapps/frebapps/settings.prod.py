@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'geosnapr',
+    'storages',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -109,14 +110,35 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
-STATIC_URL = '/static/'
+#STATIC_URL = '/static/'
 
-MEDIA_URL = '/media/'
+#MEDIA_URL = '/media/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 LOGIN_URL = '/login/'
 
 LOGIN_REDIRECT_URL = ''
 
 LOGOUT_URL = '/logout/'
+
+# AWS S3 STORAGE INFO
+
+AWS_STORAGE_BUCKET_NAME = 'geosnapr'
+
+AWS_ACCESS_KEY_ID = 'AKIAJ7VBAHLVGLYCLLWA'
+
+with open('/etc/aws_secret_key.txt') as f:
+    AWS_SECRET_ACCESS_KEY = f.read().strip()
+
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+
+# Static storage locs in the bucket
+STATICFILES_LOCATION = 'static'
+STATICFILES_STORAGE = 'custom_storages.StaticStorage'
+STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, STATICFILES_LOCATION)
+
+# Media storage locs in the bucket
+MEDIAFILES_LOCATION = 'media'
+MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
+DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'

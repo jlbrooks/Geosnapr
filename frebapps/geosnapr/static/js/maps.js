@@ -232,7 +232,8 @@ function addMarkers(map, markers, json) {
       });
     }
     else {
-      map.fitBounds(new google.maps.LatLng(40, -79));
+      map.setCenter(new google.maps.LatLng(40, -79));
+      map.setZoom(8);
     }
 
 

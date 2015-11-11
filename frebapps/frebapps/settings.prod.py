@@ -29,6 +29,7 @@ ALLOWED_HOSTS = ['geosnapr.com']
 
 USE_X_FORWARDED_HOST = True
 
+SESSION_COOKIE_SECURE = True
 
 # Application definition
 

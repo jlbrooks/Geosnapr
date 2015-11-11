@@ -92,7 +92,7 @@ class Profile(models.Model):
 
         u.first_name = first_name
         u.last_name = last_name
-        u.password = password
+        u.set_password(password)
         u.email = email
         u.save()
 

@@ -27,6 +27,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+INSTAGRAM_APP_ID = '643e9ed337374c15b605d64d86b7acde'
+
+with open(os.path.join(BASE_DIR, 'instagram_secret.txt') as f:
+    INSTAGRAM_APP_SECRET = f.read().strip()
 
 # Application definition
 

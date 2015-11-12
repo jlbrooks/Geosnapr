@@ -88,10 +88,12 @@ def edit_profile(request):
     email = request.POST.get('email')
     password = request.POST.get('password')
     confirm_password = request.POST.get('confirm_password')
+    updated_password = True
 
     if not password and not confirm_password:
         password = request.user.password
         confirm_password = request.user.password
+        updated_password = False
 
     if password != confirm_password:
         errs.append('Passwords do not match!')
@@ -99,6 +101,9 @@ def edit_profile(request):
 
     profile,errors = Profile.update(username=username, email=email,
         password=password, first_name=first_name, last_name=last_name)
+
+    if updated_password:
+        update_session_auth_hash(request, profile.user)
 
     if errors:
         errs.extend(errors)

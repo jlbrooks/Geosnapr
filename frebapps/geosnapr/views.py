@@ -78,7 +78,8 @@ def main_map(request):
         '&response_type=code')
     context = {
         'user': request.user,
-        'insta_auth_url': insta_auth_url
+        'insta_auth_url': insta_auth_url,
+        'insta_account_url': 'https://instagram.com/accounts/manage_access/'
     }
 
     return render(request, 'map.html', context)

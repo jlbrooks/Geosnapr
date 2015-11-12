@@ -28,6 +28,10 @@
   height: 42px;
 }
 
+.faded {
+  opacity: .5;
+}
+
 #login-form {
   margin-top: 7%;
 }

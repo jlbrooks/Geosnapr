@@ -23,6 +23,11 @@
   margin-top: 5%;
 }
 
+.oauth-img {
+  width: 42px;
+  height: 42px;
+}
+
 #login-form {
   margin-top: 7%;
 }

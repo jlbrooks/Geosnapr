@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
+from django.core.urlresolvers import reverse_lazy, reverse
 from django.conf import settings
 from geosnapr.models import Profile, Image
 from instagram import client
@@ -12,7 +13,7 @@ import json
 instagram_config = {
     'client_id': settings.INSTAGRAM_APP_ID,
     'client_secret': settings.INSTAGRAM_APP_SECRET,
-    'redirect_uri': reverse('instagram_callback'),
+    'redirect_uri': reverse_lazy('instagram_callback'),
 }
 
 # API request object
@@ -79,8 +80,14 @@ def register(request):
 
 @login_required
 def main_map(request):
+    # Auth url link for instagram
+    insta_auth_url = ('https://api.instagram.com/oauth/authorize/' +
+        '?client_id=' + settings.INSTAGRAM_APP_ID +
+        '&redirect_uri=' + request.build_absolute_uri(reverse(instagram_callback)) +
+        '&response_type=code')
     context = {
-        'user': request.user
+        'user': request.user,
+        'insta_auth_url': insta_auth_url
     }
 
     return render(request, 'map.html', context)
@@ -177,8 +184,10 @@ def instagram_callback(request):
             user.profile.save()
 
             # Return to the map
+            return redirect(main_map)
         else:
             # Return the user information to assist with account creation
             print(user_info)
+            return redirect(index)
     except Exception as e:
         print(e)

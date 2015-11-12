@@ -3,21 +3,12 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
-from django.core.urlresolvers import reverse_lazy, reverse
+from django.core.urlresolvers import reverse
 from django.conf import settings
 from geosnapr.models import Profile, Image
 from instagram import client
 import json
 
-# Config for the base api calls
-instagram_config = {
-    'client_id': settings.INSTAGRAM_APP_ID,
-    'client_secret': settings.INSTAGRAM_APP_SECRET,
-    'redirect_uri': reverse_lazy('instagram_callback'),
-}
-
-# API request object
-unauthenticated_api = client.InstagramAPI(**instagram_config)
 
 def index(request):
     if not request.user.is_authenticated():
@@ -171,7 +162,20 @@ def get_images(request):
 # Instagram oauth views
 
 def instagram_callback(request):
-    code = request.GET.get(code)
+    # Callback URI
+    insta_callback_uri = request.build_absolute_uri(reverse(instagram_callback))
+
+    # Config for the base api calls
+    instagram_config = {
+        'client_id': settings.INSTAGRAM_APP_ID,
+        'client_secret': settings.INSTAGRAM_APP_SECRET,
+        'redirect_uri': insta_callback_uri,
+    }
+
+    # API request object
+    unauthenticated_api = client.InstagramAPI(**instagram_config)
+
+    code = request.GET.get('code')
     if not code:
         print(request.GET)
     try:
@@ -191,3 +195,5 @@ def instagram_callback(request):
             return redirect(index)
     except Exception as e:
         print(e)
+
+    return redirect(index)

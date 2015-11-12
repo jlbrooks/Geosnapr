@@ -3,8 +3,20 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
+from django.conf import settings
 from geosnapr.models import Profile, Image
+from instagram import client
 import json
+
+# Config for the base api calls
+instagram_config = {
+    'client_id': settings.INSTAGRAM_APP_ID,
+    'client_secret': settings.INSTAGRAM_APP_SECRET,
+    'redirect_uri': reverse('instagram_callback'),
+}
+
+# API request object
+unauthenticated_api = client.InstagramAPI(**instagram_config)
 
 def index(request):
     if not request.user.is_authenticated():
@@ -148,3 +160,13 @@ def get_images(request):
         }
         return render(request, 'json/images.json', context, content_type="application/json")
     return JsonResponse({})
+
+# Instagram oauth views
+
+def instagram_callback(request):
+    code = request.GET.get(code)
+    if not code:
+        print(request.GET)
+    try:
+        access_token, user_info = unauthenticated_api.exchange_code_for_access_token(code)
+        

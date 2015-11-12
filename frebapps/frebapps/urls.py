@@ -29,4 +29,5 @@ urlpatterns = [
     url(r'^edit_profile$', views.edit_profile, name='edit_profile'),
     url(r'^$', views.index, name='index'),
     url(r'^get_images$', views.get_images, name='get_images'),
+    url(r'^instagram_callback', views.instagram_callback, name='instagram_callback')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -5,6 +5,8 @@ from decimal import Decimal
 class Profile(models.Model):
     user = models.OneToOneField(User)
 
+    insta_access_key = models.CharField(max_length=100, default='')
+
     @classmethod
     def create(cls, username, email, password, first_name, last_name):
         err = []

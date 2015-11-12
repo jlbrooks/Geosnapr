@@ -169,4 +169,16 @@ def instagram_callback(request):
         print(request.GET)
     try:
         access_token, user_info = unauthenticated_api.exchange_code_for_access_token(code)
-        
+        # Is this an authenticated user, or anonymous?
+        user = request.user
+        if user.is_authenticated():
+            # Add the access key to their account
+            user.profile.insta_access_key = access_token
+            user.profile.save()
+
+            # Return to the map
+        else:
+            # Return the user information to assist with account creation
+            print(user_info)
+    except Exception as e:
+        print(e)

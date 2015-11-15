@@ -8,44 +8,50 @@
 
 {% block resources %}
 <link href='https://fonts.googleapis.com/css?family=Josefin+Sans:700,400' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" href="{% static "slick/slick.css" %}">
-<link rel="stylesheet" href="{% static "slick/slick-theme.css" %}">
+<link href="{% static "slick/slick.css" %}" rel="stylesheet" type='text/css'>
+<link href="{% static "slick/slick-theme.css" %}" rel="stylesheet" type='text/css'>
 <script src="{% static "js/index.js" %}"></script>
 {% endblock resources %}
 
 {% block content %}
-<div class="row viewport">
-  <div class="columns large-12 no-pad-left no-pad-right hideoverflowx min-height">
-    <div class="background-carousel viewport min-height">
+<div class="row viewport carousel-back">
+  <div class="columns large-12 medium-12 small-12 no-pad-left no-pad-right hideoverflowx">
+    <div class="background-carousel">
       <div><img src="{% static "img/background3.jpg" %}" class="min-height"/></div>
-      <div><img src="{% static "img/background5.jpg" %}"/></div>
-      <div><img src="{% static "img/background2.jpg" %}"/></div>
-      <div><img src="{% static "img/background4.jpg" %}"/></div>
-      <div><img src="{% static "img/background1.jpg" %}"/></div>
-      <div><img src="{% static "img/background6.jpg" %}"/></div>
-      <div><img src="{% static "img/background7.jpg" %}"/></div>
+      <div><img src="{% static "img/background5.jpg" %}" class="min-height"/></div>
+      <div><img src="{% static "img/background2.jpg" %}" class="min-height"/></div>
+      <div><img src="{% static "img/background4.jpg" %}" class="min-height"/></div>
+      <div><img src="{% static "img/background1.jpg" %}" class="min-height"/></div>
+      <div><img src="{% static "img/background6.jpg" %}" class="min-height"/></div>
+      <div><img src="{% static "img/background7.jpg" %}" class="min-height"/></div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay">
+  <div class="row full-width no-pad-left no-pad-right">
+    <div class="columns large-2 large-offset-10 medium-2 medium-offset-10 small-2 small-offset-10 no-pad-left no-pad-right sign-up-top-margin">
+      <a href="#" data-reveal-id="registerModal" class="button radius">Sign Up</a>
     </div>
   </div>
 
   <div class="row" >
-    <div class="columns large-6 large-offset-4 logo-overlay header">
+    <div class="columns large-6 large-offset-4 medium-8 medium-offset-2 small-12">
       <h4 class="josefin font-large">GeoSnapr</h1>
       <h6 class="josefin font-small">Your photos. Your world.</h6>
     </div>
   </div>
+
   <div class="row">
-    <div class="columns large-4 large-offset-4 overlay" id="login-form">
+    <div class="columns large-4 large-offset-4 medium-8 medium-offset-2 small-12" id="login-form">
       <form action="{% url 'login' %}" method="POST">
         {% csrf_token %}
         <input type="text" name="username" placeholder="Username" required/>
         <input type="password" name="password" placeholder="Password" required/>
         <button type="submit" class="button radius">Log In</button>
       </form>
-
-      <a href="#" data-reveal-id="registerModal" class="button radius upper-right">Sign Up</a>
+    </div>
   </div>
-  </div>
-  
 </div>
 
 <div id="registerModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">

@@ -173,3 +173,14 @@ fieldset.hidden {
 .top-margin-small {
   margin-top: 1em;
 }
+
+.slick-prev:after {
+  content: "<";
+  color: red;
+  font-size: 30px;
+}
+.slick-next:after {
+  content: ">";
+  color: red;
+  font-size: 30px;
+}

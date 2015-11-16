@@ -307,6 +307,9 @@ function getInstaImages() {
   });
 }
 
+// For now, just do the get once
+var gotInsta = false;
+
 // Set up all bindings
 
 $(document).ready(function () {
@@ -317,18 +320,24 @@ $(document).ready(function () {
 
     $(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
       $(document).foundation('abide', 'reflow');
+      $(document).foundation('tab', 'reflow');
       $("#edit-profile-form").on('valid.fndtn.abide', edit_profile);
       $("#upload-img-btn").on('click', upload_image);
-      $("#insta-images").slick("setPosition",0);
+    });
+
+    // Load insta images on toggled tab
+    $("#panel2").on('toggled', function(e, tab) {
+      $("#insta-images").slick('setPosition');
+      if (!gotInsta) {
+        getInstaImages();
+        gotInsta = true;
+      }
     });
 
     // Set up slick for instagram
     $("#insta-images").slick({
       infinite: true,
       slidesToShow: 3,
-      slidesToScroll: 3
+      slidesToScroll: 1,
     });
-
-    // Load insta images on toggled tab
-    $("#panel2").on('toggled', getInstaImages);
 });

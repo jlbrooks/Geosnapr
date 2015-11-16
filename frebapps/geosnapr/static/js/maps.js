@@ -283,6 +283,30 @@ function loadScript() {
   document.body.appendChild(script);
 }
 
+function getInstaImages() {
+  var url = "/get_insta_images";
+
+  $.ajax({
+    type: "GET",
+    url: url,
+
+    success: function(data) {
+      var parent = $('#insta-images');
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        for (i = 0; i < data.photos.length; i++) {
+          var photo = data.photos[i];
+          parent.slick('slickAdd','<div><img src="' + photo.image + '"></div>');
+        }
+      }
+    },
+    error: function(data) {
+      console.log(data);
+    }
+  });
+}
+
 // Set up all bindings
 
 $(document).ready(function () {
@@ -295,5 +319,16 @@ $(document).ready(function () {
       $(document).foundation('abide', 'reflow');
       $("#edit-profile-form").on('valid.fndtn.abide', edit_profile);
       $("#upload-img-btn").on('click', upload_image);
+      $("#insta-images").slick("setPosition",0);
     });
+
+    // Set up slick for instagram
+    $("#insta-images").slick({
+      infinite: true,
+      slidesToShow: 3,
+      slidesToScroll: 3
+    });
+
+    // Load insta images on toggled tab
+    $("#panel2").on('toggled', getInstaImages);
 });

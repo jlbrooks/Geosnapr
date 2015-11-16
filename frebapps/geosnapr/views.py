@@ -198,3 +198,33 @@ def instagram_callback(request):
         print(e)
 
     return redirect(index)
+
+@login_required
+def get_insta_images(request):
+    data = {}
+
+    access_token = request.user.profile.insta_access_key
+    if not access_token:
+        data['error'] = "You haven't linked your Geosnapr and Instagram accounts yet."
+
+    try:
+        api = client.InstagramAPI(access_token=access_token,
+            client_secret=settings.INSTAGRAM_APP_SECRET)
+
+        recent_media, next = api.user_recent_media()
+        photos = []
+        data['photos'] = photos
+        for media in recent_media:
+            if (media.type != 'video'):
+                img = {}
+                img['image'] = media.get_thumbnail_url()
+                if hasattr(media, 'location'):
+                    img['lat'] = media.location.point.latitude
+                    img['lng'] = media.location.point.longitude
+                if hasattr(media, 'caption'):
+                    img['caption'] = media.caption.text
+                photos.append(img)
+    except Exception as e:
+        print(e)
+
+    return JsonResponse(data)

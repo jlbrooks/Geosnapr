@@ -5,6 +5,8 @@
 {% block title %}GeoSnapr{% endblock title %}
 
 {% block resources %}
+<link href="{% static "slick/slick.css" %}" rel="stylesheet" type='text/css'>
+<link href="{% static "slick/slick-theme.css" %}" rel="stylesheet" type='text/css'>
 <script src="{% static "js/maps.js" %}"></script>
 <script src="{% static "jQuery-fileExif/jquery.exif.js" %}"></script>
 {% endblock resources %}
@@ -41,7 +43,21 @@
   <h2 id="modalTitle">Upload new image</h2>
   <form id="upload-img-form" action="{% url 'upload' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    <input type="file" name="pic" class="file-input" id="upload-file">
+    {# Tabs for the different image upload types #}
+    <ul class="tabs" data-tab>
+      <li class="tab-title active"><a href="#panel1">Local File</a></li>
+      <li class="tab-title active"><a href="#panel2">Instagram</a></li>
+    </ul>
+    <div class="tabs-content">
+      <div class="content active" id="panel1">
+        <input type="file" name="pic" class="file-input" id="upload-file">
+      </div>
+      <div class="content active" id="panel2">
+        <div id="insta-images">
+        </div>
+      </div>
+    </div>
+    
     <img id="upload-img" />
 
     <fieldset class="hidden" id="img-loc-form">
@@ -94,4 +110,6 @@
   </form>
   <a class="close-reveal-modal" aria-label="Close">&#215;</a>
 </div>
+
+<script type="text/javascript" src="{% static "slick/slick.js" %}"></script>
 {% endblock content %}

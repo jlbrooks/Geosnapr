@@ -184,3 +184,7 @@ fieldset.hidden {
   color: red;
   font-size: 30px;
 }
+
+#upload-img {
+  width: 150px;
+}

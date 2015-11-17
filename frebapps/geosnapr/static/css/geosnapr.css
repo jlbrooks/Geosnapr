@@ -164,3 +164,19 @@ fieldset.hidden {
 .top-margin-small {
   margin-top: 1em;
 }
+
+
+
+
+
+/* Map Display CSS */
+
+.thumbnail-container {
+  max-height: 10vh;
+  max-width: 10vw;
+  overflow: hidden;
+}
+
+.thumbnail {
+  width: 100%;
+}

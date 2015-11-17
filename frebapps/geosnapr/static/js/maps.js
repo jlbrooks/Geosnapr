@@ -109,6 +109,13 @@ function upload_image(event) {
 
 }
 
+
+
+
+
+
+
+
 // Maps functions
 
 function initialize() {
@@ -166,7 +173,7 @@ function hideImage(map, marker, markers) {
 
 function showImage(map, marker, markers) {
   var infowindow = new google.maps.InfoWindow({
-    content: '<img border="0" height="42" class="thumbnail" src="' + marker.image.image + '">' +"\n" + "<p>" + marker.image.caption + "</p>"
+    content: '<div class="thumbnail-container"><img border="0" class="thumbnail" src="' + marker.image.image + '">' +"\n" + "<p>" + marker.image.caption + "</p></div>"
   });
   infowindow.open(map, marker);
   marker.infoWindow = infowindow;
@@ -202,7 +209,8 @@ function addMarkers(map, markers, json) {
       var latlng = new google.maps.LatLng({lat:latitude, lng:longitude});
       var marker = new google.maps.Marker({
         position:latlng,
-        map:map
+        map:map,
+        icon: 'static/img/marker_picture_small.png'
       });
       marker.image=image;
       markers.push(marker);
@@ -236,7 +244,13 @@ function addMarkers(map, markers, json) {
       map.setZoom(8);
     }
 
-
+    var markerstyles = [{url: '/static/img/marker_album_small.png',
+                          height: 64,
+                          width: 64}]
+    var options = {
+      styles: markerstyles
+    }
+    markerclusterer = new MarkerClusterer(map, markers, options);
 
 }
 
@@ -274,6 +288,20 @@ function loadImages(map, markers) {
   // get images as JSON object
   // show images on the map
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function loadScript() {
   console.log('loading');

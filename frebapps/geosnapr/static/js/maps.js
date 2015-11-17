@@ -226,8 +226,18 @@ function addMarkers(map, markers, json) {
           hideImage(map, markers[key2], markers);
         }
       }(key));
+      google.maps.event.addListener(markers[key],'click', function(key2) {
+        return function() {
+          console.log(markers[key2]);
+          var src = markers[key2].image.image;
+          console.log(src);
+          $('#photo-modal-link').attr("src",src);
+          $('#photo-modal').foundation('reveal','open');
+        }
+      }(key));
       imagecount = imagecount+1;
     }
+
     if (markers.length > 0) {
       var bounds = new google.maps.LatLngBounds();
       for (var i = 0; i < markers.length; ++i) {
@@ -251,6 +261,13 @@ function addMarkers(map, markers, json) {
       styles: markerstyles
     }
     markerclusterer = new MarkerClusterer(map, markers, options);
+
+    google.maps.event.addListener(markerclusterer, 'mouseover', function(cluster) {
+      console.log(cluster.getMarkers());
+    });
+    google.maps.event.addListener(markerclusterer, 'clusterclick', function(cluster) {
+      console.log(cluster);
+    });
 
 }
 

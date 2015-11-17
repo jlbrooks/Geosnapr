@@ -32,6 +32,10 @@
 
 <!-- Pop-up modals -->
 
+<div id="photo-modal" class="reveal-modal tiny" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+  <img id="photo-modal-link" src="" class="image-fit">
+</div>
+
 <div id="uploadModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
   <h2 id="modalTitle">Upload new image</h2>
   <form id="upload-img-form" action="{% url 'upload' %}" method="POST" enctype="multipart/form-data">

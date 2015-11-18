@@ -131,8 +131,12 @@ def upload(request):
     context = {}
     errs = []
     context['errors'] = errs
-
-    pic = request.FILES.get('pic')
+    print(request.POST)
+    if request.POST.get('external'):
+        print(request.POST.get('url'))
+        return render(request, 'json/upload_response.json', context, content_type="application/json")
+    else:
+        pic = request.FILES.get('pic')
     lat = request.POST.get('lat')
     lng = request.POST.get('lng')
     caption = request.POST.get('caption')

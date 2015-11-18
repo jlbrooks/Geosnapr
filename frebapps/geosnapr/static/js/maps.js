@@ -86,10 +86,23 @@ function edit_profile(event) {
   });
 }
 
+function clearImageForm() {
+  $("#autolat").val('');
+  $("#autolng").val('');
+  $("#imagelocation").val('');
+  $("#caption").val('');
+}
+
 function upload_image(event) {
   event.preventDefault();
   var form = $("#upload-img-form");
   var formData = new FormData(document.getElementById("upload-img-form"));
+  // Are we in the instagram tab?
+  console.log($("#panel2").attr('aria-hidden'));
+  if ($("#panel2").attr('aria-hidden') == 'false') {
+    formData.append('external', true);
+    formData.append('url', $("#selected-img").attr('src'));
+  }
 
  $.ajax({
     type: form.attr('method'),
@@ -101,10 +114,7 @@ function upload_image(event) {
       // Add a new marker
       addMarkers(map, markers, [data.image]);
       // Remove the form data
-      $("#autolat").val('');
-      $("#autolng").val('');
-      $("#imagelocation").val('');
-      $("#caption").val('');
+      clearImageForm();
       //$("#upload-img").val(null);
       $("#upload-img").attr('src', '');
       $("#upload-file").replaceWith($("#upload-file").clone(true));
@@ -330,6 +340,13 @@ function toggleSelectedImage() {
 
   $(this).attr('id', "selected-img");
   current.attr('id', "");
+
+  if ($(this).attr('id') == 'selected-img') {
+    $("#img-loc-form").removeClass("hidden");
+    clearImageForm();
+  } else {
+    $("#img-loc-form").addClass("hidden");
+  }
 }
 
 // Set up all bindings

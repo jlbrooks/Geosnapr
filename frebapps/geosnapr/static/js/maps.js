@@ -1,5 +1,5 @@
 var map;
-var markers;
+var markerclusterer;
 var imagecount=0;
 
 function imageChosen() {
@@ -112,23 +112,18 @@ function upload_image(event) {
 
 
 
-
-
-
-
 // Maps functions
 
 function initialize() {
-
-
   var mapOptions = {
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     zoom: 16,
-    minZoom: 3,
-    maxZoom: 20,
+    minZoom: 3, // most the map can zoom out
+    maxZoom: 20, // most the map can zoom in
     center: new google.maps.LatLng(40, -79),
     mapTypeControl: false,
-    streetViewControl: false
+    streetViewControl: false,
+    zoomControl: false
   };
 
   map = new google.maps.Map(document.getElementById('map-canvas'),
@@ -140,17 +135,7 @@ function initialize() {
     loadImages(map, markers);
   });
 
-  google.maps.event.addListener(map, 'zoom_changed', function() {
-    console.log(map.getZoom());
-  });
-
-  // google.maps.event.addListener(map, 'zoom_changed', function() {
-  //   if (map.getZoom() < 4) {
-  //     map.setZoom(4);
-  //   }
-  // });
-
-  // creates objects for autcomplete search fields
+  // creates objects for map location search
   var input = (document.getElementById('locationsearch'));
   var autocomplete = new google.maps.places.Autocomplete(input);
   autocomplete.bindTo('bounds', map);
@@ -163,6 +148,7 @@ function initialize() {
     }
   });
 
+  // creates objects for image location search
   var imageinput = (document.getElementById('imagelocation'));
   var imageautocomplete = new google.maps.places.Autocomplete(imageinput);
 
@@ -175,17 +161,49 @@ function initialize() {
         lngform.value = place.geometry.location.lng();
       }
   });
+
+  // changes icon for the cluster icon
+  var markerstyles = [{url: '/static/img/marker_album_small.png',
+                        height: 64,
+                        width: 64}]
+  var clustererOptions = {
+    styles: markerstyles
+  }
+
+  markerclusterer = new MarkerClusterer(map, [], clustererOptions);
+
+  google.maps.event.addListener(markerclusterer, 'mouseover', function(cluster) {
+    var markers = cluster.getMarkers();
+    var content = "";
+    for (var i = 0; i < markers.length; ++i) {
+      content = content + '<div class="thumbnail-container"><img border="0" class="thumbnail" src="' + markers[i].image.image + '">' +"\n" + "<p>" + markers[i].image.caption + "</p></div>";
+    };
+    var infowindow = new google.maps.InfoWindow({
+      content: content,
+      position: (cluster.getCenter())
+    });
+    infowindow.open(map);
+    cluster.infoWindow = infowindow;
+  });
+
+  google.maps.event.addListener(markerclusterer, 'mouseout', function(cluster) {
+    if (cluster.infoWindow != undefined) {
+      cluster.infoWindow.close();
+    }
+  });
+
+  google.maps.event.addListener(markerclusterer, 'clusterclick', function(cluster) {
+    console.log(cluster);
+  });
 }
 
-function hideImage(map, marker, markers) {
-  for (var i = 0; i < markers.length; ++i) {
-    if (markers[i].infoWindow != undefined) {
-      markers[i].infoWindow.close();
-    }
+function hideImageInfoWindow(marker) {
+  if (marker.infoWindow != undefined) {
+    marker.infoWindow.close();
   }
 }
 
-function showImage(map, marker, markers) {
+function showImageInfoWindow(map, marker) {
   var infowindow = new google.maps.InfoWindow({
     content: '<div class="thumbnail-container"><img border="0" class="thumbnail" src="' + marker.image.image + '">' +"\n" + "<p>" + marker.image.caption + "</p></div>"
   });
@@ -214,10 +232,8 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function addMarkers(map, markers, json) {
-
+function addMarkers(json) {
     for (var i = 0; i < json.length; ++i) {
-      console.log(json[i])
       var image = json[i];
       var latitude = image['lat'];
       var longitude = image['lng'];
@@ -228,33 +244,37 @@ function addMarkers(map, markers, json) {
         icon: 'static/img/marker_picture_small.png'
       });
       marker.image=image;
-      markers.push(marker);
+      markerclusterer.addMarker(marker);
+      var markers = markerclusterer.getMarkers();
+      console.log(markerclusterer);
       var key = imagecount;
 
       google.maps.event.addListener(markers[key],'mouseover', function(key2) {
         return function() {
-          showImage(map, markers[key2], markers);
+          showImageInfoWindow(map, markers[key2]);
         }
       }(key));
+
       google.maps.event.addListener(markers[key],'mouseout', function(key2) {
         return function() {
-          hideImage(map, markers[key2], markers);
+          hideImageInfoWindow(markers[key2]);
         }
       }(key));
+
       google.maps.event.addListener(markers[key],'click', function(key2) {
         return function() {
-          console.log(markers[key2]);
           var src = markers[key2].image.image;
           var caption = markers[key2].image.caption;
-          console.log(src);
           $('#photo-modal-link').attr("src",src);
           $('#photo-modal-comment').text(caption);
           $('#photo-modal').foundation('reveal','open');
         }
       }(key));
-      imagecount = imagecount+1;
+
+      imagecount++;
     }
 
+    // rezooms based on what was added
     if (markers.length > 0) {
       var bounds = new google.maps.LatLngBounds();
       for (var i = 0; i < markers.length; ++i) {
@@ -270,43 +290,11 @@ function addMarkers(map, markers, json) {
       map.setCenter(new google.maps.LatLng(40, -79));
       map.setZoom(8);
     }
-
-    var markerstyles = [{url: '/static/img/marker_album_small.png',
-                          height: 64,
-                          width: 64}]
-    var options = {
-      styles: markerstyles
-    }
-    markerclusterer = new MarkerClusterer(map, markers, options);
-
-    google.maps.event.addListener(markerclusterer, 'mouseover', function(cluster) {
-      var markers = cluster.getMarkers();
-      var content = "";
-      for (var i = 0; i < markers.length; ++i) {
-        content = content + '<div class="thumbnail-container"><img border="0" class="thumbnail" src="' + markers[i].image.image + '">' +"\n" + "<p>" + marker.image.caption + "</p></div>";
-      };
-      var infowindow = new google.maps.InfoWindow({
-        content: content,
-        position: (cluster.getCenter())
-      });
-      infowindow.open(map);
-      cluster.infoWindow = infowindow;
-    });
-
-    google.maps.event.addListener(markerclusterer, 'mouseout', function(cluster) {
-      if (cluster.infoWindow != undefined) {
-        cluster.infoWindow.close();
-      }
-    });
-
-    google.maps.event.addListener(markerclusterer, 'clusterclick', function(cluster) {
-      console.log(cluster);
-    });
-
 }
 
 function loadImages(map, markers) {
   var bounds = map.getBounds();
+
   var latlngNE = map.getBounds().getNorthEast();
   var latlngSW = map.getBounds().getSouthWest();
   var latN = latlngNE.lat();
@@ -330,29 +318,13 @@ function loadImages(map, markers) {
       data: {"latN":latN,"latS":latS,"lngE":lngE,"lngW":lngW},
 
       success: function(json) {
-          addMarkers(map, markers, json);
+          addMarkers(json);
       },
       error: function(json) {
           console.log(json);
       }
   });
-  // get images as JSON object
-  // show images on the map
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 function loadScript() {
   console.log('loading');

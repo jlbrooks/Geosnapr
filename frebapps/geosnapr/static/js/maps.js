@@ -266,8 +266,25 @@ function addMarkers(map, markers, json) {
     markerclusterer = new MarkerClusterer(map, markers, options);
 
     google.maps.event.addListener(markerclusterer, 'mouseover', function(cluster) {
-      console.log(cluster.getMarkers());
+      var markers = cluster.getMarkers();
+      var content = "";
+      for (var i = 0; i < markers.length; ++i) {
+        content = content + '<div class="thumbnail-container"><img border="0" class="thumbnail" src="' + markers[i].image.image + '">' +"\n" + "<p>" + marker.image.caption + "</p></div>";
+      };
+      var infowindow = new google.maps.InfoWindow({
+        content: content,
+        position: (cluster.getCenter())
+      });
+      infowindow.open(map);
+      cluster.infoWindow = infowindow;
     });
+
+    google.maps.event.addListener(markerclusterer, 'mouseout', function(cluster) {
+      if (cluster.infoWindow != undefined) {
+        cluster.infoWindow.close();
+      }
+    });
+
     google.maps.event.addListener(markerclusterer, 'clusterclick', function(cluster) {
       console.log(cluster);
     });

@@ -188,3 +188,9 @@ fieldset.hidden {
 #upload-img {
   width: 200px;
 }
+
+#selected-img {
+  border-color: green;
+  border-style: solid;
+  border-width: 3px;
+}

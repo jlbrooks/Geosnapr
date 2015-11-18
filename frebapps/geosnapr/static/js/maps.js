@@ -1,6 +1,8 @@
 var map;
 var markers;
 var imagecount=0;
+// For now, just do the get once
+var gotInsta = false;
 
 function imageChosen(input) {
   var reader = new FileReader();
@@ -305,7 +307,15 @@ function getInstaImages() {
       } else {
         for (i = 0; i < data.photos.length; i++) {
           var photo = data.photos[i];
-          parent.slick('slickAdd','<div><img src="' + photo.image + '"></div>');
+          var div = document.createElement('div');
+          var img = document.createElement('img');
+          img.src = photo.image;
+          img.setAttribute('data-lat', photo.lat);
+          img.setAttribute('data-lng', photo.lng);
+          img.setAttribute('data-caption', photo.caption);
+          img.onclick = toggleSelectedImage;
+          div.appendChild(img);
+          parent.slick('slickAdd',div);
         }
       }
     },
@@ -315,8 +325,12 @@ function getInstaImages() {
   });
 }
 
-// For now, just do the get once
-var gotInsta = false;
+function toggleSelectedImage() {
+  var current = $("#selected-img");
+
+  $(this).attr('id', "selected-img");
+  current.attr('id', "");
+}
 
 // Set up all bindings
 

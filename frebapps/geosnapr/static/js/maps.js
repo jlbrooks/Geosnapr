@@ -203,6 +203,7 @@ function getCookie(name) {
 function addMarkers(map, markers, json) {
 
     for (var i = 0; i < json.length; ++i) {
+      console.log(json[i])
       var image = json[i];
       var latitude = image['lat'];
       var longitude = image['lng'];
@@ -230,8 +231,10 @@ function addMarkers(map, markers, json) {
         return function() {
           console.log(markers[key2]);
           var src = markers[key2].image.image;
+          var caption = markers[key2].image.caption;
           console.log(src);
           $('#photo-modal-link').attr("src",src);
+          $('#photo-modal-comment').text(caption);
           $('#photo-modal').foundation('reveal','open');
         }
       }(key));

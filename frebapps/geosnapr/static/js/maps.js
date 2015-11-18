@@ -119,10 +119,14 @@ function upload_image(event) {
 // Maps functions
 
 function initialize() {
+
+
   var mapOptions = {
-    zoom: 8,
-    center: new google.maps.LatLng(40, -79),
     mapTypeId: google.maps.MapTypeId.ROADMAP,
+    zoom: 16,
+    minZoom: 3,
+    maxZoom: 20,
+    center: new google.maps.LatLng(40, -79),
     mapTypeControl: false,
     streetViewControl: false
   };
@@ -135,6 +139,16 @@ function initialize() {
   google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
     loadImages(map, markers);
   });
+
+  google.maps.event.addListener(map, 'zoom_changed', function() {
+    console.log(map.getZoom());
+  });
+
+  // google.maps.event.addListener(map, 'zoom_changed', function() {
+  //   if (map.getZoom() < 4) {
+  //     map.setZoom(4);
+  //   }
+  // });
 
   // creates objects for autcomplete search fields
   var input = (document.getElementById('locationsearch'));

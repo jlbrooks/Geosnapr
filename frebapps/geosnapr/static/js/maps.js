@@ -174,16 +174,64 @@ function initialize() {
 
   google.maps.event.addListener(markerclusterer, 'mouseover', function(cluster) {
     var markers = cluster.getMarkers();
-    var content = "";
+    var content = "<div class='infowindow-container'>";
+
     for (var i = 0; i < markers.length; ++i) {
-      content = content + '<div class="thumbnail-container"><img border="0" class="thumbnail" src="' + markers[i].image.image + '">' +"\n" + "<p>" + markers[i].image.caption + "</p></div>";
+      var marker = markers[i]
+      if (i % 3 == 0) {
+        var htmlcontent = `
+          <div class="row">
+          <div class="columns large-4 thumbnail-container">
+            <img border="0" class="thumbnail" src="` + marker.image.image + `">
+            <p>` + marker.image.caption + `</p>
+          </div>`;
+        content = content + htmlcontent;
+      }
+      else if (i % 3 == 1) {
+        var htmlcontent = `
+          <div class="columns large-4 thumbnail-container">
+            <img border="0" class="thumbnail" src="` + marker.image.image + `">
+            <p>` + marker.image.caption + `</p>
+          </div>`;
+        content = content + htmlcontent;
+      }
+      else if (i % 3 == 2) {
+        var htmlcontent = `
+          <div class="columns large-4 thumbnail-container">
+            <img border="0" class="thumbnail" src="` + marker.image.image + `">
+            <p>` + marker.image.caption + `</p>
+          </div>
+          </div>`;
+        content = content + htmlcontent;
+      }
     };
+
+    if (markers.length % 3 == 1) {
+      htmlcontent = `
+        <div class="columns large-4 thumbnail-container">
+          <p>EMPTY</p>
+        </div>
+        <div class="columns large-4 thumbnail-container">
+          <p>EMPTY</p>
+        </div>
+        </div></div>`;
+      content = content + htmlcontent;
+    }
+
+    if (markers.length % 3 == 2) {
+      htmlcontent = `<div class="columns large-4 thumbnail-container">
+                <p>EMPTY</p>
+              </div></div></div>`;
+      content = content + htmlcontent;
+    }
+
     var infowindow = new google.maps.InfoWindow({
       content: content,
       position: (cluster.getCenter())
     });
     infowindow.open(map);
     cluster.infoWindow = infowindow;
+    console.log(content);
   });
 
   google.maps.event.addListener(markerclusterer, 'mouseout', function(cluster) {
@@ -204,8 +252,17 @@ function hideImageInfoWindow(marker) {
 }
 
 function showImageInfoWindow(map, marker) {
+  var htmlcontent = `
+<div class="row">
+  <div class="columns-12 thumbnail-container">
+    <img border="0" class="thumbnail" src="` + marker.image.image + `">
+    <p>` + marker.image.caption + `</p>
+  </div>
+</div>`;
+
   var infowindow = new google.maps.InfoWindow({
-    content: '<div class="thumbnail-container"><img border="0" class="thumbnail" src="' + marker.image.image + '">' +"\n" + "<p>" + marker.image.caption + "</p></div>"
+    // will do server side after
+    content: htmlcontent
   });
   infowindow.open(map, marker);
   marker.infoWindow = infowindow;

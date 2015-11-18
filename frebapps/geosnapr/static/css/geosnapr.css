@@ -179,9 +179,16 @@ fieldset.hidden {
 
 /* Map Display CSS */
 
+.infowindow-container {
+  min-width: 30vw;
+}
+
 .thumbnail-container {
   max-height: 10vh;
   max-width: 10vw;
+  min-height: 10vh;
+  min-width: 10vw;
+
   overflow: hidden;
 }
 

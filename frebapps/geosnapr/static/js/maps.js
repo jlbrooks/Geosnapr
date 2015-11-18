@@ -2,7 +2,7 @@ var map;
 var markers;
 var imagecount=0;
 
-function imageChosen() {
+function imageChosen(input) {
   var reader = new FileReader();
 
   reader.onload = function (e) {
@@ -11,9 +11,9 @@ function imageChosen() {
   };
 
   // read the image file as a data URL.
-  reader.readAsDataURL(this.files[0]);
+  reader.readAsDataURL(input.files[0]);
 
-  $(this).fileExif(function (exifObject) {
+  $(input).fileExif(function (exifObject) {
     console.log(exifObject);
 
     if (exifObject.GPSLatitude && exifObject.GPSLongitude) {
@@ -98,6 +98,14 @@ function upload_image(event) {
     success: function (data) {
       // Add a new marker
       addMarkers(map, markers, [data.image]);
+      // Remove the form data
+      $("#autolat").val('');
+      $("#autolng").val('');
+      $("#imagelocation").val('');
+      $("#caption").val('');
+      //$("#upload-img").val(null);
+      $("#upload-img").attr('src', '');
+      $("#upload-file").replaceWith($("#upload-file").clone(true));
       // Close the modal
       $('#uploadModal').foundation('reveal', 'close');
     },
@@ -313,8 +321,12 @@ var gotInsta = false;
 // Set up all bindings
 
 $(document).ready(function () {
-    // Display the image when we choose a file
-    document.getElementById("upload-file").onchange = imageChosen;
+    //Display the image when we choose a file
+    $("#upload-file").on('change', function() {
+      if (this.value != null) {
+        imageChosen(this);
+      }
+    });
 
     loadScript();
 

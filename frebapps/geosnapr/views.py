@@ -4,13 +4,11 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
 from django.core.urlresolvers import reverse
-from django.core.files.base import ContentFile
 from django.core.files.temp import NamedTemporaryFile
 from django.core.files import File
 from django.conf import settings
 from geosnapr.models import Profile, Image
 from instagram import client
-from PIL import Image as pil_image
 from urllib.request import urlopen
 import requests
 import json
@@ -141,11 +139,6 @@ def upload(request):
     # Get either external or file pic
     if request.POST.get('external'):
         url = request.POST.get('url')
-        # image_request_result = requests.get(url)
-        # image = pil_image.open(BytesIO(image_request_result.content))
-        # image_io = BytesIO()
-        # image.save(image_io, format='JPEG')
-        # pic = File(image_io.getvalue())
         img_temp = NamedTemporaryFile()
         img_temp.write(urlopen(url).read())
         img_temp.flush()

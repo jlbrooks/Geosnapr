@@ -185,7 +185,7 @@ fieldset.hidden {
   font-size: 30px;
 }
 
-.slick-slide {
+#insta-images div div.slick-slide {
   margin-left: 5px;
   margin-right: 5px;
 }

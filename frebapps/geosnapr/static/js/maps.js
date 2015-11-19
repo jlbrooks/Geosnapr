@@ -328,7 +328,7 @@ function getInstaImages() {
           img.setAttribute('data-lat', photo.lat);
           img.setAttribute('data-lng', photo.lng);
           img.setAttribute('data-caption', photo.caption);
-          img.onclick = toggleSelectedImage;
+          //img.onclick = toggleSelectedImage;
           div.appendChild(img);
           parent.slick('slickAdd',div);
         }
@@ -343,18 +343,19 @@ function getInstaImages() {
 function toggleSelectedImage() {
   var current = $("#selected-img");
 
-  $(this).attr('id', "selected-img");
+  var img = $(this).children("img")
+  img.attr('id', "selected-img");
   current.attr('id', "");
 
-  if ($(this).attr('id') == 'selected-img') {
+  if (img.attr('id') == 'selected-img') {
     $("#img-loc-form").removeClass("hidden");
     clearImageForm();
-    var lat = parseFloat($(this).attr('data-lat'));
-    var lng = parseFloat($(this).attr('data-lng'));
+    var lat = parseFloat(img.attr('data-lat'));
+    var lng = parseFloat(img.attr('data-lng'));
     // Fill the form with data
     geocodeForm(lat,lng);
 
-    $("#caption").val($(this).attr('data-caption'));
+    $("#caption").val(img.attr('data-caption'));
   } else {
     $("#img-loc-form").addClass("hidden");
   }
@@ -394,4 +395,6 @@ $(document).ready(function () {
       slidesToShow: 3,
       slidesToScroll: 1,
     });
+
+    $('#insta-images').on('click', '.slick-slide', toggleSelectedImage);
 });

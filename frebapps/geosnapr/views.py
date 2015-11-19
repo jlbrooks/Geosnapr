@@ -4,9 +4,15 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
 from django.core.urlresolvers import reverse
+from django.core.files.base import ContentFile
+from django.core.files.temp import NamedTemporaryFile
+from django.core.files import File
 from django.conf import settings
 from geosnapr.models import Profile, Image
 from instagram import client
+from PIL import Image as pil_image
+from urllib.request import urlopen
+import requests
 import json
 
 
@@ -131,17 +137,29 @@ def upload(request):
     context = {}
     errs = []
     context['errors'] = errs
-    print(request.POST)
+
+    # Get either external or file pic
     if request.POST.get('external'):
-        print(request.POST.get('url'))
-        return render(request, 'json/upload_response.json', context, content_type="application/json")
+        url = request.POST.get('url')
+        # image_request_result = requests.get(url)
+        # image = pil_image.open(BytesIO(image_request_result.content))
+        # image_io = BytesIO()
+        # image.save(image_io, format='JPEG')
+        # pic = File(image_io.getvalue())
+        img_temp = NamedTemporaryFile()
+        img_temp.write(urlopen(url).read())
+        img_temp.flush()
+        pic = File(img_temp)
     else:
         pic = request.FILES.get('pic')
+
+    # Get lat/lng/caption data
     lat = request.POST.get('lat')
     lng = request.POST.get('lng')
     caption = request.POST.get('caption')
     user = request.user
 
+    # Try to create the image
     image,errors = Image.create(username=user.username, image=pic, lat=lat, lng=lng, caption=caption)
     context['image'] = image
 

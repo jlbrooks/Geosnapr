@@ -2,3 +2,4 @@ pillow
 django-storages
 boto
 python-instagram
+requests

@@ -102,6 +102,12 @@ class Profile(models.Model):
 
 
 def upload_to(instance, filename):
+    # Grab the last part of url filenames
+    if '\\' in filename:
+        filename = filename.split('\\')[-1]
+        # Add extension
+        if '.' not in filename:
+            filename += '.jpg'
     return 'images/%s/%s' % (instance.user.username, filename)
 
 class Image(models.Model):
@@ -148,8 +154,6 @@ class Image(models.Model):
         # Truncate lat and lng
         lat = '%.6f' % float(lat)
         lng = '%.6f' % float(lng)
-        print(lat)
-        print(lng)
 
         # Create the image object
         pic = cls.objects.create(image=image, lat=Decimal(lat), lng=Decimal(lng), caption=caption, user=user)

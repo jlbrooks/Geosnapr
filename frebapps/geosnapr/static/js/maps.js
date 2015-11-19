@@ -4,6 +4,29 @@ var imagecount=0;
 // For now, just do the get once
 var gotInsta = false;
 
+function geocodeForm(lat, lng) {
+  $("#autolat").val(lat);
+  $("#autolng").val(lng);
+
+  // Try to reverse geocode
+  var geocoder = new google.maps.Geocoder;
+  var loc = {
+    lat: lat,
+    lng: lng
+  };
+
+  geocoder.geocode({'location': loc}, function(results, status) {
+    if (status === google.maps.GeocoderStatus.OK) {
+      if (results[1]) {
+        var placeInput = $('#imagelocation');
+        placeInput.val(results[1].formatted_address);
+      }
+    } else {
+      console.log("Geocoder failed due to: " + status);
+    }
+  });
+}
+
 function imageChosen(input) {
   var reader = new FileReader();
 
@@ -35,25 +58,7 @@ function imageChosen(input) {
         lngDecimal = lngDecimal * -1;
       }
 
-      $("#autolat").val(latDecimal);
-      $("#autolng").val(lngDecimal);
-
-      // Try to reverse geocode
-      var geocoder = new google.maps.Geocoder;
-      var loc = {
-        lat: latDecimal,
-        lng: lngDecimal
-      };
-      geocoder.geocode({'location': loc}, function(results, status) {
-        if (status === google.maps.GeocoderStatus.OK) {
-          if (results[1]) {
-            var placeInput = $('#imagelocation');
-            placeInput.val(results[1].formatted_address);
-          }
-        } else {
-          console.log("Geocoder failed due to: " + status);
-        }
-      })
+      geocodeForm(latDecimal, lngDecimal);
     }
   });
 
@@ -344,6 +349,12 @@ function toggleSelectedImage() {
   if ($(this).attr('id') == 'selected-img') {
     $("#img-loc-form").removeClass("hidden");
     clearImageForm();
+    var lat = parseFloat($(this).attr('data-lat'));
+    var lng = parseFloat($(this).attr('data-lng'));
+    // Fill the form with data
+    geocodeForm(lat,lng);
+
+    $("#caption").val($(this).attr('data-caption'));
   } else {
     $("#img-loc-form").addClass("hidden");
   }

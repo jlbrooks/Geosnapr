@@ -105,9 +105,12 @@ def upload_to(instance, filename):
     # Grab the last part of url filenames
     if '\\' in filename:
         filename = filename.split('\\')[-1]
-        # Add extension
-        if '.' not in filename:
-            filename += '.jpg'
+    if '/' in filename:
+        filename = filename.split('/')[-1]
+    # Add extension
+    if '.' not in filename:
+        filename += '.jpg'
+
     return 'images/%s/%s' % (instance.user.username, filename)
 
 class Image(models.Model):

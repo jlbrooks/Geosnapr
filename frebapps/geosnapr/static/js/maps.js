@@ -348,6 +348,7 @@ function getInstaImages() {
           img.setAttribute('data-lat', photo.lat);
           img.setAttribute('data-lng', photo.lng);
           img.setAttribute('data-caption', photo.caption);
+          $(img).addClass('slick-img');
           //img.onclick = toggleSelectedImage;
           div.appendChild(img);
           parent.slick('slickAdd',div);

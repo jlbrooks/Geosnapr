@@ -68,7 +68,10 @@
               <input type="file" name="pic" class="file-input" id="upload-file">
               <img id="upload-img" />
             </div>
-            <div class="content active" id="panel2">
+            <div class="content" id="panel2">
+              {% if not user.profile.insta_access_key %}
+                <a href="{{insta_auth_url}}">Link your Instagram account now!</a>
+              {% endif %}
               <div id="insta-images">
               </div>
             </div>

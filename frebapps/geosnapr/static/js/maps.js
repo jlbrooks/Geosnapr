@@ -98,6 +98,25 @@ function clearImageForm() {
   $("#caption").val('');
 }
 
+function fadeAlert() {
+  var msg = $("#message");
+  msg.fadeOut(500, function () {
+    msg.removeClass();
+    msg.addClass("alert-box");
+    msg.html();
+  });
+}
+
+function alertSuccess(content) {
+  var msg = $("#message");
+  msg.addClass("success");
+  msg.html(content);
+  msg.fadeIn(500);
+
+  // Fade the alert
+  setTimeout(fadeAlert, 3000);
+}
+
 function upload_image(event) {
   event.preventDefault();
   var form = $("#upload-img-form");
@@ -125,6 +144,7 @@ function upload_image(event) {
       $("#upload-file").replaceWith($("#upload-file").clone(true));
       // Close the modal
       $('#uploadModal').foundation('reveal', 'close');
+      alertSuccess(data.message)
     },
     error: function (data) {
       console.log(data);

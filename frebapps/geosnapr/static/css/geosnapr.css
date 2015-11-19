@@ -202,3 +202,10 @@ fieldset.hidden {
 .tab-title.active a {
   background-color: #cccccc !important;
 }
+
+#message {
+  position: fixed;
+  top: 2%;
+  left: 40%;
+  font-size: 12pt;
+}

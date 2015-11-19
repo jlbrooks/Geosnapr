@@ -194,3 +194,11 @@ fieldset.hidden {
   border-style: solid;
   border-width: 3px;
 }
+
+.tab-title a {
+  background-color: #f2f2f2 !important;
+}
+
+.tab-title.active a {
+  background-color: #cccccc !important;
+}

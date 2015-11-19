@@ -5,6 +5,8 @@
 {% block title %}GeoSnapr{% endblock title %}
 
 {% block resources %}
+<link href="{% static "slick/slick.css" %}" rel="stylesheet" type='text/css'>
+<link href="{% static "slick/slick-theme.css" %}" rel="stylesheet" type='text/css'>
 <script src="{% static "js/maps.js" %}"></script>
 <script src="{% static "jQuery-fileExif/jquery.exif.js" %}"></script>
 {% endblock resources %}
@@ -19,7 +21,20 @@
   </div>
 </div>
 
+<div class="alert-box success" id="message" style="display: none;">
+  <a class="close" href="#">×</a>
+</div>
+
 <div class="upper-right">
+  {% if user.profile.insta_access_key %}
+  <a href="{{insta_account_url}}">
+    <img src="{% static "img/insta_glyph.png" %}" alt="Instagram" class="oauth-img" data-tooltip aria-haspopup="true" title="View your Instagram app permissions">
+  </a>
+  {% else %}
+  <a href="{{insta_auth_url}}">
+    <img src="{% static "img/insta_glyph.png" %}" alt="Instagram" class="oauth-img faded" data-tooltip aria-haspopup="true" title="Link your account to Instagram!">
+  </a>
+  {% endif %}
   <a href="#" data-reveal-id="editProfileModal" class="button small radius">Edit Profile</a>
   <a href="{%url 'logout' %}" class="button small radius">Logout</a>
 </div>
@@ -29,24 +44,56 @@
 <!-- Pop-up modals -->
 
 <div id="uploadModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-  <h2 id="modalTitle">Upload new image</h2>
-  <form id="upload-img-form" action="{% url 'upload' %}" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input type="file" name="pic" class="file-input" id="upload-file">
-    <img id="upload-img" />
+  <div class="container">
+    <div class="row">
+      <div class="columns large-12">
+        <h2 id="modalTitle">Upload new image</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="columns large-12">
+        <ul class="tabs" data-tab> 
+          <li class="tab-title active"><a href="#panel1">Local File</a></li>
+          <li class="tab-title"><a href="#panel2">Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+    <form id="upload-img-form" action="{% url 'upload' %}" method="POST" enctype="multipart/form-data">
+      <div class="row">
+        {% csrf_token %}
+        {# Tabs for the different image upload types #}
+        <div class="columns large-6">
+          <div class="tabs-content">
+            <div class="content active" id="panel1">
+              <input type="file" name="pic" class="file-input" id="upload-file">
+              <img id="upload-img" />
+            </div>
+            <div class="content" id="panel2">
+              {% if not user.profile.insta_access_key %}
+                <a href="{{insta_auth_url}}">Link your Instagram account now!</a>
+              {% endif %}
+              <div id="insta-images">
+              </div>
+            </div>
+          </div>
+        </div>
 
-    <fieldset class="hidden" id="img-loc-form">
-      <label for="location">Where was this photo taken?
-        <input type="text" id="imagelocation" name="location" placeholder="Location"/>
-      </label>
-      <input type="hidden" id="autolat" name="lat" placeholder="Latitude"/>
-      <input type="hidden" id="autolng" name="lng" placeholder="Longitude"/>
-      <label for="caption">Caption your new photo!
-        <input type="text" name="caption" placeholder="Caption"/>
-      </label>
-      <button type="submit" id="upload-img-btn">Add Image!</button>
-    </fieldset>
-  </form>
+        <div class="columns large-6">
+          <fieldset class="hidden" id="img-loc-form">
+            <label for="location">Where was this photo taken?
+              <input type="text" id="imagelocation" name="location" placeholder="Location"/>
+            </label>
+            <input type="hidden" id="autolat" name="lat" placeholder="Latitude"/>
+            <input type="hidden" id="autolng" name="lng" placeholder="Longitude"/>
+            <label for="caption">Caption your new photo!
+              <input type="text" name="caption" id="caption" placeholder="Caption"/>
+            </label>
+            <button type="submit" id="upload-img-btn">Add Image!</button>
+          </fieldset>
+        </div>
+      </div>
+    </form>
+  </div>
   <a class="close-reveal-modal" aria-label="Close">&#215;</a>
 </div>
 
@@ -85,4 +132,6 @@
   </form>
   <a class="close-reveal-modal" aria-label="Close">&#215;</a>
 </div>
+
+<script type="text/javascript" src="{% static "slick/slick.js" %}"></script>
 {% endblock content %}

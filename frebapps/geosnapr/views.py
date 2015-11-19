@@ -232,7 +232,7 @@ def get_insta_images(request):
         for media in recent_media:
             if (media.type != 'video'):
                 img = {}
-                img['image'] = media.get_thumbnail_url()
+                img['image'] = media.get_standard_resolution_url()
                 if hasattr(media, 'location'):
                     img['lat'] = media.location.point.latitude
                     img['lng'] = media.location.point.longitude

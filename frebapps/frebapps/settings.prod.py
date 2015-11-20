@@ -31,6 +31,8 @@ USE_X_FORWARDED_HOST = True
 
 SESSION_COOKIE_SECURE = True
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
+
 INSTAGRAM_APP_ID = '643e9ed337374c15b605d64d86b7acde'
 
 with open('/etc/instagram_secret.txt') as f:

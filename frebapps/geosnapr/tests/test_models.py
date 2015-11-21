@@ -1,5 +1,5 @@
 from django.test import TestCase
-from geosnapr.models import Profile, Image
+from geosnapr.models import Profile, Image, Album
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
 
@@ -204,3 +204,26 @@ class ImageCreateTestCase(TestCase):
     #     self.assertEqual(i.lat, 10.0)
     #     self.assertEqual(i.lng, 15.0)
     #     self.assertEqual(i.caption, '')
+
+class AlbumCreateTestCase(TestCase):
+
+    def setUp(self):
+        p,err = Profile.create(username='jlbrooks', email='test@example.com', password='test', 
+            first_name='jacob', last_name='brooks')
+
+    def test_create_no_name(self):
+        a,err = Album.create(username='jlbrooks', name='')
+
+        self.assertEqual(err,None)
+        self.assertEqual(a.name, 'Untitled Album')
+        self.assertEqual(a.user.username, 'jlbrooks')
+
+    def test_create_no_user(self):
+        a,err = Album.create(username='foobar', name='test')
+
+        self.assertEqual(a, None)
+
+    def test_create_with_name(self):
+        a,err = Album.create(username='jlbrooks', name='my album!')
+
+        self.assertEqual(a.name, 'my album!')

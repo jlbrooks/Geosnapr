@@ -165,3 +165,27 @@ class Album(models.Model):
     name = models.CharField(max_length=100)
 
     images = models.ManyToManyField(Image)
+
+    @classmethod
+    def create(cls, username, name):
+        err = []
+
+        # Set default name
+        if not name:
+            name = 'Untitled Album'
+
+        # Make sure the user exists
+        try:
+            user = User.objects.get(username=username)
+        except:
+            err.append('User does not exist.')
+
+        # Return if we have errors
+        if err:
+            return None,err
+
+        # Create the new album
+        album = cls.objects.create(user=user, name=name)
+        album.save()
+
+        return album,None

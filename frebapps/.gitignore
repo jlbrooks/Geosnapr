@@ -2,3 +2,4 @@ media/
 db.sqlite3
 *.pyc
 instagram_secret.txt
+settings.py

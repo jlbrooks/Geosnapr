@@ -121,6 +121,13 @@ def edit_profile(request):
     return JsonResponse(context)
 
 @login_required
+def delete_profile(request):
+    # Delete the current user
+    request.user.delete()
+    # Redirect to front page
+    return redirect(index)
+
+@login_required
 def upload(request):
     if request.method != 'POST':
         return redirect(main_map)

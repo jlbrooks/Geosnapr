@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^map$', views.main_map, name='map'),
     url(r'^upload$', views.upload, name='upload'),
     url(r'^edit_profile$', views.edit_profile, name='edit_profile'),
+    url(r'^delete_profile$', views.delete_profile, name='delete_profile'),
     url(r'^$', views.index, name='index'),
     url(r'^get_images$', views.get_images, name='get_images'),
     url(r'^instagram_callback', views.instagram_callback, name='instagram_callback'),

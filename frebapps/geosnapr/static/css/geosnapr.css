@@ -77,6 +77,15 @@ padding-left: 0;
   margin-top: 5%;
 }
 
+.oauth-img {
+  width: 42px;
+  height: 42px;
+}
+
+.faded {
+  opacity: .5;
+}
+
 #login-form {
   margin-top: 7%;
 }
@@ -173,10 +182,6 @@ fieldset.hidden {
   margin-top: 1em;
 }
 
-
-
-
-
 /* Map Display CSS */
 
 .infowindow-container {
@@ -194,4 +199,45 @@ fieldset.hidden {
 
 .thumbnail {
   width: 100%;
+}
+
+.slick-prev:after {
+  content: "<";
+  color: red;
+  font-size: 30px;
+}
+.slick-next:after {
+  content: ">";
+  color: red;
+  font-size: 30px;
+}
+
+#insta-images div div.slick-slide {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+#upload-img {
+  width: 200px;
+}
+
+#selected-img {
+  border-color: green;
+  border-style: solid;
+  border-width: 3px;
+}
+
+.tab-title a {
+  background-color: #f2f2f2 !important;
+}
+
+.tab-title.active a {
+  background-color: #cccccc !important;
+}
+
+#message {
+  position: fixed;
+  top: 2%;
+  left: 40%;
+  font-size: 12pt;
 }

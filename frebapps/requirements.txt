@@ -1,3 +1,10 @@
+django
+psycopg2
 pillow
-django-storages
+django-storages-redux
 boto
+python-instagram
+requests
+gunicorn
+greenlet
+eventlet

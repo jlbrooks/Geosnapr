@@ -1,8 +1,56 @@
 var map;
 var markerclusterer;
 var imagecount=0;
+// For now, just do the get once
+var gotInsta = false;
 
-function imageChosen() {
+///////////////////////////////
+// Alert functions
+///////////////////////////////
+
+function fadeAlert() {
+  var msg = $("#message");
+  msg.fadeOut(500, function () {
+    msg.removeClass();
+    msg.addClass("alert-box");
+    msg.html();
+  });
+}
+
+function alertSuccess(content) {
+  var msg = $("#message");
+  msg.addClass("success");
+  msg.html(content);
+  msg.fadeIn(500);
+
+  // Fade the alert
+  setTimeout(fadeAlert, 3000);
+}
+
+function geocodeForm(lat, lng) {
+  $("#autolat").val(lat);
+  $("#autolng").val(lng);
+
+  // Try to reverse geocode
+  var geocoder = new google.maps.Geocoder;
+  var loc = {
+    lat: lat,
+    lng: lng
+  };
+
+  geocoder.geocode({'location': loc}, function(results, status) {
+    if (status === google.maps.GeocoderStatus.OK) {
+      if (results[1]) {
+        var placeInput = $('#imagelocation');
+        placeInput.val(results[1].formatted_address);
+      }
+    } else {
+      console.log("Geocoder failed due to: " + status);
+    }
+  });
+}
+
+function imageChosen(input) {
   var reader = new FileReader();
 
   reader.onload = function (e) {
@@ -11,9 +59,9 @@ function imageChosen() {
   };
 
   // read the image file as a data URL.
-  reader.readAsDataURL(this.files[0]);
+  reader.readAsDataURL(input.files[0]);
 
-  $(this).fileExif(function (exifObject) {
+  $(input).fileExif(function (exifObject) {
     console.log(exifObject);
 
     if (exifObject.GPSLatitude && exifObject.GPSLongitude) {
@@ -33,25 +81,7 @@ function imageChosen() {
         lngDecimal = lngDecimal * -1;
       }
 
-      $("#autolat").val(latDecimal);
-      $("#autolng").val(lngDecimal);
-
-      // Try to reverse geocode
-      var geocoder = new google.maps.Geocoder;
-      var loc = {
-        lat: latDecimal,
-        lng: lngDecimal
-      };
-      geocoder.geocode({'location': loc}, function(results, status) {
-        if (status === google.maps.GeocoderStatus.OK) {
-          if (results[1]) {
-            var placeInput = $('#imagelocation');
-            placeInput.val(results[1].formatted_address);
-          }
-        } else {
-          console.log("Geocoder failed due to: " + status);
-        }
-      })
+      geocodeForm(latDecimal, lngDecimal);
     }
   });
 
@@ -73,8 +103,9 @@ function edit_profile(event) {
         msg.html(data.errors[0]);
         msg.addClass("error");
       } else {
-        msg.html(data.msg);
-        msg.addClass("success");
+        alertSuccess(data.msg);
+        // Close the modal
+        $('#editProfileModal').foundation('reveal', 'close');
       }
       msg.removeClass("hidden");
     },
@@ -84,10 +115,32 @@ function edit_profile(event) {
   });
 }
 
+function clearImageForm() {
+  $("#autolat").val('');
+  $("#autolng").val('');
+  $("#imagelocation").val('');
+  $("#caption").val('');
+}
+
 function upload_image(event) {
   event.preventDefault();
   var form = $("#upload-img-form");
   var formData = new FormData(document.getElementById("upload-img-form"));
+  // Are we in the instagram tab?
+  if ($("#panel2").attr('aria-hidden') == 'false') {
+    formData.append('external', true);
+    formData.append('url', $("#selected-img").attr('src'));
+  }
+  // Set up the loading spinner
+  var opts = {
+    scale: 2.5,
+    top: '50%',
+    left: '50%'
+  };
+  var spinner = new Spinner(opts).spin();
+
+  // Show the loading spinner
+  form.append(spinner.el);
 
  $.ajax({
     type: form.attr('method'),
@@ -98,8 +151,16 @@ function upload_image(event) {
     success: function (data) {
       // Add a new marker
       addMarkers(map, markers, [data.image]);
+      // Remove the form data
+      clearImageForm();
+      //$("#upload-img").val(null);
+      $("#upload-img").attr('src', '');
+      $("#upload-file").replaceWith($("#upload-file").clone(true));
       // Close the modal
       $('#uploadModal').foundation('reveal', 'close');
+      // Stop the spinner
+      spinner.stop();
+      alertSuccess(data.message);
     },
     error: function (data) {
       console.log(data);
@@ -391,17 +452,105 @@ function loadScript() {
   document.body.appendChild(script);
 }
 
+function getInstaImages() {
+  var url = "/get_insta_images";
+  var parent = $('#insta-images');
+  // Set up the spinner
+  var opts = {
+    top: '40px',
+    left: '25%'
+  }
+  var spinner = new Spinner(opts).spin();
+
+  // Show the loading spinner
+  parent.append(spinner.el);
+  $.ajax({
+    type: "GET",
+    url: url,
+
+    success: function(data) {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        for (i = 0; i < data.photos.length; i++) {
+          var photo = data.photos[i];
+          var div = document.createElement('div');
+          var img = document.createElement('img');
+          img.src = photo.image;
+          img.setAttribute('data-lat', photo.lat);
+          img.setAttribute('data-lng', photo.lng);
+          img.setAttribute('data-caption', photo.caption);
+          $(img).addClass('slick-img');
+          //img.onclick = toggleSelectedImage;
+          div.appendChild(img);
+          parent.slick('slickAdd',div);
+        }
+        // Stop the spinner
+        spinner.stop();
+      }
+    },
+    error: function(data) {
+      spinner.stop();
+      console.log(data);
+    }
+  });
+}
+
+function toggleSelectedImage() {
+  var current = $("#selected-img");
+
+  var img = $(this).children("img")
+  img.attr('id', "selected-img");
+  current.attr('id', "");
+
+  if (img.attr('id') == 'selected-img') {
+    $("#img-loc-form").removeClass("hidden");
+    clearImageForm();
+    var lat = parseFloat(img.attr('data-lat'));
+    var lng = parseFloat(img.attr('data-lng'));
+    // Fill the form with data
+    geocodeForm(lat,lng);
+
+    $("#caption").val(img.attr('data-caption'));
+  } else {
+    $("#img-loc-form").addClass("hidden");
+  }
+}
+
 // Set up all bindings
 
 $(document).ready(function () {
-    // Display the image when we choose a file
-    document.getElementById("upload-file").onchange = imageChosen;
+    //Display the image when we choose a file
+    $("#upload-file").on('change', function() {
+      if (this.value != null) {
+        imageChosen(this);
+      }
+    });
 
     loadScript();
 
     $(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
       $(document).foundation('abide', 'reflow');
+      $(document).foundation('tab', 'reflow');
       $("#edit-profile-form").on('valid.fndtn.abide', edit_profile);
       $("#upload-img-btn").on('click', upload_image);
     });
+
+    // Load insta images on toggled tab
+    $("#panel2").on('toggled', function(e, tab) {
+      $("#insta-images").slick('setPosition');
+      if (!gotInsta) {
+        getInstaImages();
+        gotInsta = true;
+      }
+    });
+
+    // Set up slick for instagram
+    $("#insta-images").slick({
+      infinite: true,
+      slidesToShow: 3,
+      slidesToScroll: 1,
+    });
+
+    $('#insta-images').on('click', '.slick-slide', toggleSelectedImage);
 });

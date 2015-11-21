@@ -71,6 +71,7 @@ class ProfileUpdateTestCase(TestCase):
         user = User.objects.create(username='foobar', first_name='foo', last_name='bar', 
             email='foo@bar.com', password='password')
         Profile.objects.create(user=user)
+        self.old_pass_hash = user.password
 
         other_user = User.objects.create(username='test', first_name='test', last_name='testy', 
             email='test@test.com', password='password')
@@ -94,25 +95,25 @@ class ProfileUpdateTestCase(TestCase):
         p,err = Profile.update(username='foobar', first_name='', last_name='bar', 
             email='foo@bar.com', password='password')
 
-        self.assertEqual(p, None)
+        self.assertEqual(p.user.first_name, 'foo')
 
     def test_update_no_last_name(self):
         p,err = Profile.update(username='foobar', first_name='foo', last_name='', 
             email='foo@bar.com', password='password')
 
-        self.assertEqual(p, None)
+        self.assertEqual(p.user.last_name, 'bar')
 
     def test_update_no_password(self):
         p,err = Profile.update(username='foobar', first_name='foo', last_name='bar', 
             email='foo@bar.com', password='')
 
-        self.assertEqual(p, None)
+        self.assertEqual(p.user.password, self.old_pass_hash)
 
     def test_update_no_email(self):
         p,err = Profile.update(username='foobar', first_name='foo', last_name='bar', 
             email='', password='password')
 
-        self.assertEqual(p, None)
+        self.assertEqual(p.user.email, 'foo@bar.com')
 
     def test_update_email_exists(self):
         p,err = Profile.update(username='foobar', first_name='foo', last_name='bar', 
@@ -134,13 +135,14 @@ class ProfileUpdateTestCase(TestCase):
 
     def test_update_change(self):
         p,err = Profile.update(username='foobar', first_name='jacob', last_name='brooks', 
-            email='jacobbro@andrew.cmu.edu', password='password')
+            email='jacobbro@andrew.cmu.edu', password='other')
 
         self.assertEqual(err, None)
         self.assertEqual(p.user.username, 'foobar')
         self.assertEqual(p.user.first_name, 'jacob')
         self.assertEqual(p.user.last_name, 'brooks')
         self.assertEqual(p.user.email, 'jacobbro@andrew.cmu.edu')
+        self.assertNotEqual(p.user.password, self.old_pass_hash)
 
 
 class ImageCreateTestCase(TestCase):

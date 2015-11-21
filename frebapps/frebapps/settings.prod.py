@@ -31,6 +31,13 @@ USE_X_FORWARDED_HOST = True
 
 SESSION_COOKIE_SECURE = True
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
+
+INSTAGRAM_APP_ID = '643e9ed337374c15b605d64d86b7acde'
+
+with open('/etc/instagram_secret.txt') as f:
+    INSTAGRAM_APP_SECRET = f.read().strip()
+
 # Application definition
 
 INSTALLED_APPS = (
@@ -117,7 +124,7 @@ USE_TZ = True
 
 #MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
-LOGIN_URL = '/login/'
+LOGIN_URL = ''
 
 LOGIN_REDIRECT_URL = ''
 

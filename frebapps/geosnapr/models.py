@@ -5,6 +5,8 @@ from decimal import Decimal
 class Profile(models.Model):
     user = models.OneToOneField(User)
 
+    insta_access_key = models.CharField(max_length=100, default='')
+
     @classmethod
     def create(cls, username, email, password, first_name, last_name):
         err = []
@@ -65,41 +67,45 @@ class Profile(models.Model):
             return None, err
 
         # First name must exist
-        if not first_name:
-            err.append('First name must not be blank')
+        if first_name:
+            u.first_name = first_name
 
         # Last name must exist
-        if not last_name:
-            err.append('Last name must not be blank')
+        if last_name:
+            u.last_name = last_name
 
         # Password must exist
-        if not password:
-            err.append('Password must not be blank')
+        if password:
+            u.set_password(password)
 
         # Email must exist
-        if not email:
-            err.append('Email must not be blank')
-        else:
+        if email:
             try:
                 other_u = User.objects.get(email=email)
                 if u != other_u:
                     err.append('User with that email already exists')
             except:
-                pass
+                u.email = email
 
+        # Return if we have any errors
         if err:
             return None,err
-
-        u.first_name = first_name
-        u.last_name = last_name
-        u.set_password(password)
-        u.email = email
+        
         u.save()
 
         return u.profile,None
 
 
 def upload_to(instance, filename):
+    # Grab the last part of url filenames
+    if '\\' in filename:
+        filename = filename.split('\\')[-1]
+    if '/' in filename:
+        filename = filename.split('/')[-1]
+    # Add extension
+    if '.' not in filename:
+        filename += '.jpg'
+
     return 'images/%s/%s' % (instance.user.username, filename)
 
 class Image(models.Model):
@@ -146,8 +152,6 @@ class Image(models.Model):
         # Truncate lat and lng
         lat = '%.6f' % float(lat)
         lng = '%.6f' % float(lng)
-        print(lat)
-        print(lng)
 
         # Create the image object
         pic = cls.objects.create(image=image, lat=Decimal(lat), lng=Decimal(lng), caption=caption, user=user)

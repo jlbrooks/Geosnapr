@@ -110,12 +110,12 @@ def edit_profile(request):
     profile,errors = Profile.update(username=username, email=email,
         password=password, first_name=first_name, last_name=last_name)
 
-    update_session_auth_hash(request, profile.user)
-
     if errors:
         errs.extend(errors)
         print(errors)
         return JsonResponse(context)
+    else:
+        update_session_auth_hash(request, profile.user)
 
     context['msg'] = 'Profile successfully updated'
     return JsonResponse(context)

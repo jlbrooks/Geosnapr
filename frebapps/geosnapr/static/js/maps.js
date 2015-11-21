@@ -127,11 +127,20 @@ function upload_image(event) {
   var form = $("#upload-img-form");
   var formData = new FormData(document.getElementById("upload-img-form"));
   // Are we in the instagram tab?
-  console.log($("#panel2").attr('aria-hidden'));
   if ($("#panel2").attr('aria-hidden') == 'false') {
     formData.append('external', true);
     formData.append('url', $("#selected-img").attr('src'));
   }
+  // Set up the loading spinner
+  var opts = {
+    scale: 2.5,
+    top: '50%',
+    left: '50%'
+  };
+  var spinner = new Spinner(opts).spin();
+
+  // Show the loading spinner
+  form.append(spinner.el);
 
  $.ajax({
     type: form.attr('method'),
@@ -149,7 +158,9 @@ function upload_image(event) {
       $("#upload-file").replaceWith($("#upload-file").clone(true));
       // Close the modal
       $('#uploadModal').foundation('reveal', 'close');
-      alertSuccess(data.message)
+      // Stop the spinner
+      spinner.stop();
+      alertSuccess(data.message);
     },
     error: function (data) {
       console.log(data);

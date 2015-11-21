@@ -4,6 +4,29 @@ var imagecount=0;
 // For now, just do the get once
 var gotInsta = false;
 
+///////////////////////////////
+// Alert functions
+///////////////////////////////
+
+function fadeAlert() {
+  var msg = $("#message");
+  msg.fadeOut(500, function () {
+    msg.removeClass();
+    msg.addClass("alert-box");
+    msg.html();
+  });
+}
+
+function alertSuccess(content) {
+  var msg = $("#message");
+  msg.addClass("success");
+  msg.html(content);
+  msg.fadeIn(500);
+
+  // Fade the alert
+  setTimeout(fadeAlert, 3000);
+}
+
 function geocodeForm(lat, lng) {
   $("#autolat").val(lat);
   $("#autolng").val(lng);
@@ -80,8 +103,9 @@ function edit_profile(event) {
         msg.html(data.errors[0]);
         msg.addClass("error");
       } else {
-        msg.html(data.msg);
-        msg.addClass("success");
+        alertSuccess(data.msg);
+        // Close the modal
+        $('#editProfileModal').foundation('reveal', 'close');
       }
       msg.removeClass("hidden");
     },
@@ -96,25 +120,6 @@ function clearImageForm() {
   $("#autolng").val('');
   $("#imagelocation").val('');
   $("#caption").val('');
-}
-
-function fadeAlert() {
-  var msg = $("#message");
-  msg.fadeOut(500, function () {
-    msg.removeClass();
-    msg.addClass("alert-box");
-    msg.html();
-  });
-}
-
-function alertSuccess(content) {
-  var msg = $("#message");
-  msg.addClass("success");
-  msg.html(content);
-  msg.fadeIn(500);
-
-  // Fade the alert
-  setTimeout(fadeAlert, 3000);
 }
 
 function upload_image(event) {

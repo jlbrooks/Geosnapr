@@ -335,13 +335,21 @@ function loadScript() {
 
 function getInstaImages() {
   var url = "/get_insta_images";
+  var parent = $('#insta-images');
+  // Set up the spinner
+  var opts = {
+    top: '40px',
+    left: '25%'
+  }
+  var spinner = new Spinner(opts).spin();
 
+  // Show the loading spinner
+  parent.append(spinner.el);
   $.ajax({
     type: "GET",
     url: url,
 
     success: function(data) {
-      var parent = $('#insta-images');
       if (data.error) {
         console.log(data.error);
       } else {
@@ -358,9 +366,12 @@ function getInstaImages() {
           div.appendChild(img);
           parent.slick('slickAdd',div);
         }
+        // Stop the spinner
+        spinner.stop();
       }
     },
     error: function(data) {
+      spinner.stop();
       console.log(data);
     }
   });

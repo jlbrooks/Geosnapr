@@ -8,7 +8,7 @@ from django.core.files.temp import NamedTemporaryFile
 from django.core.files import File
 from django.conf import settings
 from geosnapr.models import Profile, Image
-from instagram import client
+from instagram import client, InstagramClientError, InstagramAPIError
 from urllib.request import urlopen
 import json
 
@@ -208,8 +208,10 @@ def instagram_callback(request):
             # Return the user information to assist with account creation
             print(user_info)
             return redirect(index)
-    except Exception as e:
-        print(e)
+    except InstagramClientError as e:
+        data['error'] = e.error_message
+    except InstagramAPIError as e:
+        data['error'] = e.error_message
 
     return redirect(index)
 
@@ -238,7 +240,11 @@ def get_insta_images(request):
                 if hasattr(media, 'caption'):
                     img['caption'] = media.caption.text
                 photos.append(img)
-    except Exception as e:
-        print(e)
+    except InstagramClientError as e:
+        data['error'] = e.error_message
+    except InstagramAPIError as e:
+        data['error'] = e.error_message
+        request.user.profile.insta_access_key = ''
+        request.user.profile.save()
 
     return JsonResponse(data)

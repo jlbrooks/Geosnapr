@@ -158,3 +158,10 @@ class Image(models.Model):
         pic.save()
 
         return pic,None
+
+class Album(models.Model):
+    user = models.ForeignKey(User)
+
+    name = models.CharField(max_length=100)
+
+    images = models.ManyToManyField(Image)

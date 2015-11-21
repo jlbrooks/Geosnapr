@@ -10,7 +10,6 @@ from django.conf import settings
 from geosnapr.models import Profile, Image
 from instagram import client
 from urllib.request import urlopen
-import requests
 import json
 
 

@@ -124,7 +124,7 @@ USE_TZ = True
 
 #MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
-LOGIN_URL = '/login/'
+LOGIN_URL = ''
 
 LOGIN_REDIRECT_URL = ''
 

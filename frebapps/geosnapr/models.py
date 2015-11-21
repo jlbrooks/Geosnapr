@@ -67,35 +67,30 @@ class Profile(models.Model):
             return None, err
 
         # First name must exist
-        if not first_name:
-            err.append('First name must not be blank')
+        if first_name:
+            u.first_name = first_name
 
         # Last name must exist
-        if not last_name:
-            err.append('Last name must not be blank')
+        if last_name:
+            u.last_name = last_name
 
         # Password must exist
-        if not password:
-            err.append('Password must not be blank')
+        if password:
+            u.set_password(password)
 
         # Email must exist
-        if not email:
-            err.append('Email must not be blank')
-        else:
+        if email:
             try:
                 other_u = User.objects.get(email=email)
                 if u != other_u:
                     err.append('User with that email already exists')
             except:
-                pass
+                u.email = email
 
+        # Return if we have any errors
         if err:
             return None,err
-
-        u.first_name = first_name
-        u.last_name = last_name
-        u.set_password(password)
-        u.email = email
+        
         u.save()
 
         return u.profile,None

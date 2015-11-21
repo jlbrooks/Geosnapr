@@ -110,7 +110,7 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = 'media/'
 
-LOGIN_URL = '/login/'
+LOGIN_URL = ''
 
 LOGIN_REDIRECT_URL = ''
 

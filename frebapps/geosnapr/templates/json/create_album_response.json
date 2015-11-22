@@ -1,0 +1,5 @@
+{
+    "album": {% if album %}{% include 'json/album.json' %}{% else %}null{%endif%},
+    "message": "{{message}}",
+    "errors": {% include 'json/errors.json' %}
+}

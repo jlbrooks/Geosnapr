@@ -170,6 +170,41 @@ function upload_image(event) {
 
 }
 
+function create_album() {
+  event.preventDefault();
+  var form = $("#create-album-form");
+  var formData = new FormData(document.getElementById("create-album-form"));
+
+  // Set up the loading spinner
+  var opts = {
+    scale: 2.5,
+    top: '50%',
+    left: '50%'
+  };
+  var spinner = new Spinner(opts).spin();
+
+  // Show the loading spinner
+  form.append(spinner.el);
+
+  $.ajax({
+    type: form.attr('method'),
+    url: form.attr('action'),
+    data: formData,
+    processData: false,
+    contentType: false,
+    success: function(data) {
+      // Append the new album to the dropdown
+
+      // Stop the spinner
+      spinner.stop();
+      alertSuccess(data.message);
+    },
+    error: function(data) {
+
+    }
+  });
+}
+
 // Maps functions
 
 function initialize() {

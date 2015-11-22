@@ -171,7 +171,20 @@ def create_album(request):
     errs = []
     context['errors'] = errs
 
-    return JsonResponse(context)
+    # Get new album name
+    name = request.POST.get('album_name')
+
+    # Try to create the album
+    album, errors = Album.create(request.user.username, name)
+    context['album'] = album
+
+    if errors:
+        print(errors)
+        errs.extend(errors)
+    else:
+        context['message'] = "Album successfully created!"
+
+    return render(request, 'json/create_album_response.json', context, content_type="application/json")
 
 def get_images(request):
     if request.method == "POST":

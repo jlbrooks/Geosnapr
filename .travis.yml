@@ -1,0 +1,9 @@
+language: python
+python:
+  - "3.4"
+env:
+  - DJANGO=1.8
+install:
+  - pip install -r frebapps/requirements.txt
+script:
+  - cd frebapps && python manage.py test

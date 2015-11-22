@@ -39,7 +39,11 @@
   <a href="{%url 'logout' %}" class="button small radius">Logout</a>
 </div>
 
-<a href="#" data-reveal-id="uploadModal" class="button large round bottom-left">Upload New Image</a>
+<div class="bottom">
+  <a href="#" data-reveal-id="uploadModal" class="button large round bottom-left">Upload New Image</a>
+  <a href="#" data-reveal-id="createAlbumModal" class="button round bottom-left">Create New Album</a>
+</div>
+
 
 <!-- Pop-up modals -->
 
@@ -95,6 +99,31 @@
     </form>
   </div>
   <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+</div>
+
+<div id="createAlbumModal" class="reveal-modal" data-reveal aria-labelledby="createAlbumTitle" aria-hidden="true" role="dialog">
+  <div class="container">
+    <div class="row">
+      <div class="columns large-12">
+        <h2 id="createAlbumTitle">Create New Album</h2>
+      </div>
+    </div>
+    <form id="create-album-form" data-abide="ajax" action="{% url 'create_album' %}" method="POST">
+      {% csrf_token %}
+      <div class="row">
+        <div class="colums large-12">
+          <label for="album_name">Album Name:
+            <input type="text" name="album_name" value="Untitled Album" required>
+          </label>
+        </div>
+        <div class="row">
+          <div class="columns large-12">
+            <button type="submit" class="button" id="create-album-btn">Create Album</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
 
 <div id="editProfileModal" class="reveal-modal" data-reveal aria-labelledby="editModalTitle" aria-hidden="true" role="dialog">

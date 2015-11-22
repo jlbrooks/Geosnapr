@@ -163,6 +163,16 @@ def upload(request):
 
     return render(request, 'json/upload_response.json', context, content_type="application/json")
 
+@login_required
+def create_album(request):
+    if request.method != 'POST':
+        return redirect(main_map)
+    context = {}
+    errs = []
+    context['errors'] = errs
+
+    return JsonResponse(context)
+
 def get_images(request):
     if request.method == "POST":
         user = request.user

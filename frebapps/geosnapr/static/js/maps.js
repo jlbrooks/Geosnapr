@@ -275,10 +275,8 @@ function initialize() {
     if (markers.length % 3 == 1) {
       htmlcontent = `
         <div class="columns large-4 thumbnail-container">
-          <p>EMPTY</p>
         </div>
         <div class="columns large-4 thumbnail-container">
-          <p>EMPTY</p>
         </div>
         </div></div>`;
       content = content + htmlcontent;
@@ -286,7 +284,6 @@ function initialize() {
 
     if (markers.length % 3 == 2) {
       htmlcontent = `<div class="columns large-4 thumbnail-container">
-                <p>EMPTY</p>
               </div></div></div>`;
       content = content + htmlcontent;
     }

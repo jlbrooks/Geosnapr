@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from django.core.files.temp import NamedTemporaryFile
 from django.core.files import File
 from django.conf import settings
-from geosnapr.models import Profile, Image
+from geosnapr.models import Profile, Image, Album
 from instagram import client, InstagramClientError, InstagramAPIError
 from urllib.request import urlopen
 import json
@@ -82,7 +82,8 @@ def main_map(request):
     context = {
         'user': request.user,
         'insta_auth_url': insta_auth_url,
-        'insta_account_url': 'https://instagram.com/accounts/manage_access/'
+        'insta_account_url': 'https://instagram.com/accounts/manage_access/',
+        'albums': Album.objects.filter(user=request.user)
     }
 
     return render(request, 'map.html', context)

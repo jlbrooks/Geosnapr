@@ -194,7 +194,14 @@ function create_album() {
     contentType: false,
     success: function(data) {
       // Append the new album to the dropdown
-
+      var option = document.createElement('option');
+      option.value = data.album.id;
+      option.innerHTML = data.album.name;
+      $("#albums").append(option)
+      // Clear the form data
+      $("album-name").val('')
+      // Close the modal
+      $('#uploadModal').foundation('reveal', 'close');
       // Stop the spinner
       spinner.stop();
       alertSuccess(data.message);
@@ -461,6 +468,7 @@ $(document).ready(function () {
       $(document).foundation('tab', 'reflow');
       $("#edit-profile-form").on('valid.fndtn.abide', edit_profile);
       $("#upload-img-btn").on('click', upload_image);
+      $("#create-album-form").on('valid.fndtn.abide', create_album);
     });
 
     // Load insta images on toggled tab

@@ -168,6 +168,46 @@ class Image(models.Model):
 
         return pic,None
 
+    @classmethod
+    def update(cls, im_id, username, lat, lng, caption):
+        err = []
+
+        # Image must exist
+        try:
+            image = Images.objects.get(id=im_id)
+        except:
+            err.append('Image does not exist')
+            return None,err
+
+        # User must exist
+        try:
+            user = User.objects.get(username=username)
+        except:
+            err.append('User does not exist')
+            return None,err
+
+        # User must own this image
+        if image.user != user:
+            err.append('User does not own this image')
+
+        # Update lat
+        if lat:
+            image.lat = Decimal('%.6f' % float(lat))
+
+        # Update lng
+        if lng:
+            image.lng = Decimal('%.6f' % float(lng))
+
+        # Update caption
+        image.caption = caption
+
+        # Save the image
+        image.save()
+
+        # Return the new image
+        return image,None
+
+
 class Album(models.Model):
     user = models.ForeignKey(User)
 

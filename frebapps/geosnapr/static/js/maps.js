@@ -1,5 +1,5 @@
 var map;
-var markers;
+var markerclusterer;
 var imagecount=0;
 // For now, just do the get once
 var gotInsta = false;
@@ -150,7 +150,7 @@ function upload_image(event) {
     contentType: false,
     success: function (data) {
       // Add a new marker
-      addMarkers(map, markers, [data.image]);
+      addMarkers([data.image]);
       // Remove the form data
       clearImageForm();
       //$("#upload-img").val(null);
@@ -216,23 +216,36 @@ function create_album() {
 
 function initialize() {
   var mapOptions = {
-    zoom: 8,
-    center: new google.maps.LatLng(40, -79),
     mapTypeId: google.maps.MapTypeId.ROADMAP,
+    zoom: 16,
+    minZoom: 3, // most the map can zoom out
+    maxZoom: 20, // most the map can zoom in
+    center: new google.maps.LatLng(40, -79),
     mapTypeControl: false,
-    streetViewControl: false
+    streetViewControl: false,
+    zoomControl: false
   };
 
   map = new google.maps.Map(document.getElementById('map-canvas'),
     mapOptions);
 
-  markers = [];
-
   google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
-    loadImages(map, markers);
+    loadImages(map);
   });
 
-  // creates objects for autcomplete search fields
+
+  // changes icon for the cluster icon
+  var markerstyles = [{url: '/static/img/marker_album_small.png',
+                        height: 64,
+                        width: 64}]
+  var clustererOptions = {
+    styles: markerstyles,
+    zoomOnClick: false
+  }
+
+  markerclusterer = new MarkerClusterer(map, [], clustererOptions);
+
+  // creates objects for map location search
   var input = (document.getElementById('locationsearch'));
   var autocomplete = new google.maps.places.Autocomplete(input);
   autocomplete.bindTo('bounds', map);
@@ -245,6 +258,7 @@ function initialize() {
     }
   });
 
+  // creates objects for image location search
   var imageinput = (document.getElementById('imagelocation'));
   var imageautocomplete = new google.maps.places.Autocomplete(imageinput);
 
@@ -257,19 +271,128 @@ function initialize() {
         lngform.value = place.geometry.location.lng();
       }
   });
+
+
+  google.maps.event.addListener(markerclusterer, 'mouseover', function(cluster) {
+    var markers = cluster.getMarkers();
+    var content = "<div class='infowindow-container'>";
+
+    for (var i = 0; i < markers.length; ++i) {
+      var marker = markers[i]
+      if (i % 3 == 0) {
+        var htmlcontent = `
+          <div class="row">
+          <div class="columns large-4 thumbnail-container">
+            <img border="0" class="thumbnail" src="` + marker.image.image + `">
+            <p>` + marker.image.caption + `</p>
+          </div>`;
+        content = content + htmlcontent;
+      }
+      else if (i % 3 == 1) {
+        var htmlcontent = `
+          <div class="columns large-4 thumbnail-container">
+            <img border="0" class="thumbnail" src="` + marker.image.image + `">
+            <p>` + marker.image.caption + `</p>
+          </div>`;
+        content = content + htmlcontent;
+      }
+      else if (i % 3 == 2) {
+        var htmlcontent = `
+          <div class="columns large-4 thumbnail-container">
+            <img border="0" class="thumbnail" src="` + marker.image.image + `">
+            <p>` + marker.image.caption + `</p>
+          </div>
+          </div>`;
+        content = content + htmlcontent;
+      }
+    };
+
+    if (markers.length % 3 == 1) {
+      htmlcontent = `
+        <div class="columns large-4 thumbnail-container">
+        </div>
+        <div class="columns large-4 thumbnail-container">
+        </div>
+        </div></div>`;
+      content = content + htmlcontent;
+    }
+
+    if (markers.length % 3 == 2) {
+      htmlcontent = `<div class="columns large-4 thumbnail-container">
+              </div></div></div>`;
+      content = content + htmlcontent;
+    }
+
+    var infowindow = new google.maps.InfoWindow({
+      content: content,
+      position: (cluster.getCenter())
+    });
+    infowindow.open(map);
+    cluster.infoWindow = infowindow;
+  });
+
+  google.maps.event.addListener(markerclusterer, 'mouseout', function(cluster) {
+    if (cluster.infoWindow != undefined) {
+      cluster.infoWindow.close();
+    }
+  });
+
+  google.maps.event.addListener(map, 'zoom_changed', function() {
+    var clusters = markerclusterer.getClusters();
+    for (var i = 0; i < clusters.length; ++i) {
+      var cluster = clusters[i];
+      if (cluster.infoWindow != null) {
+        cluster.infoWindow.close();
+      }
+    }
+  })
+
+  $(document).on('opened.fndtn.reveal', '[data-reveal]', function() {
+    $('.album-carousel').slick({
+      autoplay:true,
+      autoplaySpeed: 3000
+    });
+  });
+
+  $(document).on('closed.fndtn.reveal', '[data-reveal]', function() {
+    $('.album-carousel').slick("unslick");
+  })
+
+
+  google.maps.event.addListener(markerclusterer, 'clusterclick', function(cluster) {
+    var markers = cluster.getMarkers();
+    var htmlcontent = "";
+
+    for (var i = 0; i < markers.length; ++i) {
+      var marker = markers[i];
+      var content = '<div><img src=' + marker.image.image + '/></div>\n';
+      htmlcontent = htmlcontent + content;
+    }
+    $('#albumcarousel').empty();
+    $('#albumcarousel').append(htmlcontent);
+    $('#album-modal').foundation('reveal','open');
+  });
 }
 
-function hideImage(map, marker, markers) {
-  for (var i = 0; i < markers.length; ++i) {
-    if (markers[i].infoWindow != undefined) {
-      markers[i].infoWindow.close();
-    }
+
+function hideImageInfoWindow(marker) {
+  if (marker.infoWindow != undefined) {
+    marker.infoWindow.close();
   }
 }
 
-function showImage(map, marker, markers) {
+function showImageInfoWindow(map, marker) {
+  var htmlcontent = `
+<div class="row">
+  <div class="columns-12 thumbnail-container">
+    <img border="0" class="thumbnail" src="` + marker.image.image + `">
+    <p>` + marker.image.caption + `</p>
+  </div>
+</div>`;
+
   var infowindow = new google.maps.InfoWindow({
-    content: '<img border="0" height="42" class="thumbnail" src="' + marker.image.image + '">' +"\n" + "<p>" + marker.image.caption + "</p>"
+    // will do server side after
+    content: htmlcontent
   });
   infowindow.open(map, marker);
   marker.infoWindow = infowindow;
@@ -296,8 +419,10 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function addMarkers(map, markers, json) {
-
+function addMarkers(json) {
+    console.log("addMarkers");
+    console.log(json);
+    console.log(json.length);
     for (var i = 0; i < json.length; ++i) {
       var image = json[i];
       var latitude = image['lat'];
@@ -305,24 +430,44 @@ function addMarkers(map, markers, json) {
       var latlng = new google.maps.LatLng({lat:latitude, lng:longitude});
       var marker = new google.maps.Marker({
         position:latlng,
-        map:map
+        map:map,
+        icon: 'static/img/marker_picture_small.png'
       });
+      console.log(marker);
       marker.image=image;
-      markers.push(marker);
+      markerclusterer.addMarker(marker);
+      var markers = markerclusterer.getMarkers();
+      console.log(markerclusterer);
       var key = imagecount;
 
       google.maps.event.addListener(markers[key],'mouseover', function(key2) {
         return function() {
-          showImage(map, markers[key2], markers);
+          showImageInfoWindow(map, markers[key2]);
         }
       }(key));
+
       google.maps.event.addListener(markers[key],'mouseout', function(key2) {
         return function() {
-          hideImage(map, markers[key2], markers);
+          hideImageInfoWindow(markers[key2]);
         }
       }(key));
-      imagecount = imagecount+1;
+
+      google.maps.event.addListener(markers[key],'click', function(key2) {
+        return function() {
+          var src = markers[key2].image.image;
+          var caption = markers[key2].image.caption;
+          $('#photo-modal-link').attr("src",src);
+          $('#photo-modal-comment').text(caption);
+          $('#photo-modal').foundation('reveal','open');
+        }
+      }(key));
+
+      imagecount++;
     }
+
+    var markers = markerclusterer.getMarkers();
+
+    // rezooms based on what was added
     if (markers.length > 0) {
       var bounds = new google.maps.LatLngBounds();
       for (var i = 0; i < markers.length; ++i) {
@@ -338,13 +483,11 @@ function addMarkers(map, markers, json) {
       map.setCenter(new google.maps.LatLng(40, -79));
       map.setZoom(8);
     }
-
-
-
 }
 
-function loadImages(map, markers) {
+function loadImages(map) {
   var bounds = map.getBounds();
+
   var latlngNE = map.getBounds().getNorthEast();
   var latlngSW = map.getBounds().getSouthWest();
   var latN = latlngNE.lat();
@@ -368,14 +511,14 @@ function loadImages(map, markers) {
       data: {"latN":latN,"latS":latS,"lngE":lngE,"lngW":lngW},
 
       success: function(json) {
-          addMarkers(map, markers, json);
+          addMarkers(json);
       },
-      error: function(json) {
+      error: function(json, error) {
+          console.log("failure parsere?");
           console.log(json);
+          console.log(error);
       }
   });
-  // get images as JSON object
-  // show images on the map
 }
 
 function loadScript() {

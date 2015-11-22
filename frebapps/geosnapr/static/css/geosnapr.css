@@ -8,14 +8,14 @@
   overflow: hidden;
 }
 
-.carousel-back {
+.carousel-back { /* sends the carousel to the background */
   position: absolute;
   top: 0;
   left: 0;
   z-index: -1;
 }
 
-.overlay {
+.overlay { /* overlays the forms onto the carousel */
   position: relative;
   top: 0;
   left: 0;
@@ -25,9 +25,11 @@
 .relative-position {
   position: relative;
 }
+
 .no-pad-right {
 padding-right: 0;
 }
+
 .no-pad-left{
 padding-left: 0;
 }
@@ -43,6 +45,12 @@ padding-left: 0;
   max-width: initial;
 }
 
+/* Map Page CSS Styling */
+
+.image-fit {
+  max-height: 75vh;
+  width: auto;
+}
 
 .login-bar {
     margin-top: 25px;
@@ -176,6 +184,25 @@ fieldset.hidden {
 
 .top-margin-small {
   margin-top: 1em;
+}
+
+/* Map Display CSS */
+
+.infowindow-container {
+  min-width: 30vw;
+}
+
+.thumbnail-container {
+  max-height: 10vh;
+  max-width: 10vw;
+  min-height: 10vh;
+  min-width: 10vw;
+
+  overflow: hidden;
+}
+
+.thumbnail {
+  width: 100%;
 }
 
 .slick-prev:after {

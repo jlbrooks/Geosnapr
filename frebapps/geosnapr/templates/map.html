@@ -9,6 +9,10 @@
 <link href="{% static "slick/slick-theme.css" %}" rel="stylesheet" type='text/css'>
 <script src="{% static "js/maps.js" %}"></script>
 <script src="{% static "jQuery-fileExif/jquery.exif.js" %}"></script>
+<script src="{% static "react/react.js" %}"></script>
+<script src="{% static "react/react-with-addons.js" %}"></script>
+<script src="{% static "react/react-dom.js" %}"></script>
+<script src="{% static "markerclusterer/markerclusterer.js" %}"></script>
 {% endblock resources %}
 
 {% block content %}
@@ -50,6 +54,28 @@
 
 <!-- Pop-up modals -->
 
+<div id="photo-modal" class="reveal-modal tiny" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+  <div class="row">
+    <div class="columns large-9">
+      <img id="photo-modal-link" src="" class="image-fit">
+    </div>
+    <div class="columns large-3">
+      <p id="photo-modal-comment"></p>
+      <input type="text">
+    </div>
+  </div>
+</div>
+
+<div id="album-modal" class="reveal-modal tiny" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+  <div class="row">
+    <div class="columns large-9">
+      <div class="album-carousel" id="albumcarousel">
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <div id="uploadModal" class="reveal-modal" data-reveal aria-labelledby="uploadModalTitle" aria-hidden="true" role="dialog">
   <div class="container">
     <div class="row">
@@ -59,7 +85,7 @@
     </div>
     <div class="row">
       <div class="columns large-12">
-        <ul class="tabs" data-tab> 
+        <ul class="tabs" data-tab>
           <li class="tab-title active"><a href="#panel1">Local File</a></li>
           <li class="tab-title"><a href="#panel2">Instagram</a></li>
         </ul>
@@ -186,7 +212,7 @@
         <div class="columns large-2">
           <a href="#" data-reveal-id="confirmDeleteModal" class="button alert small">Delete Profile</a>
         </div>
-      </div>   
+      </div>
     </form>
   </div>
   <a class="close-reveal-modal" aria-label="Close">&#215;</a>

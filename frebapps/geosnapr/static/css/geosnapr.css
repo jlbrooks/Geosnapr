@@ -218,3 +218,7 @@ fieldset.hidden {
   left: 40%;
   font-size: 12pt;
 }
+
+select {
+  font-size: 0.875rem;
+}

@@ -162,7 +162,7 @@ class Image(models.Model):
         pic.save()
 
         # Add the new image to the users 'all images' album
-        album = Album.get_default_for_user(user.username)
+        album = Album.get_or_create_default_for_user(user.username)
         album.images.add(pic)
         album.save()
 

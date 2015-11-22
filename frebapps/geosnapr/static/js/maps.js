@@ -197,7 +197,7 @@ function create_album() {
       var option = document.createElement('option');
       option.value = data.album.id;
       option.innerHTML = data.album.name;
-      $("#albums").append(option)
+      $("#map-albums").append(option)
       // Clear the form data
       $("album-name").val('')
       // Close the modal

@@ -1,0 +1,5 @@
+<select id="{{id}}" name="{{ id }}">
+    {% for album in albums %}
+      <option value="{{ album.id }}">{{ album.name }}</option>
+    {% endfor %}
+</select>

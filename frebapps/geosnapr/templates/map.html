@@ -20,11 +20,7 @@
       <input type="text" id="locationsearch" placeholder="Search..."/>
   </div>
   <div class="columns large-2 large-offset-2 top-margin-small end">
-      <select id="albums">
-        {% for album in albums %}
-          <option value="{{ album.id }}">{{ album.name }}</option>
-        {% endfor %}
-      </select>
+    {% include "__album_select.html" with id="map-albums" %}
   </div>
 </div>
 
@@ -96,6 +92,9 @@
             </label>
             <input type="hidden" id="autolat" name="lat" placeholder="Latitude"/>
             <input type="hidden" id="autolng" name="lng" placeholder="Longitude"/>
+            <label for="upload-album">Choose an album for your photo:
+              {% include "__album_select.html" with id="upload-album" %}
+            </label>
             <label for="caption">Caption your new photo!
               <input type="text" name="caption" id="caption" placeholder="Caption"/>
             </label>

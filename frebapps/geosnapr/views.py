@@ -151,6 +151,7 @@ def upload(request):
     lng = request.POST.get('lng')
     caption = request.POST.get('caption')
     user = request.user
+    album_id = request.POST.get('upload-album')
 
     # Try to create the image
     image,errors = Image.create(username=user.username, image=pic, lat=lat, lng=lng, caption=caption)
@@ -161,6 +162,18 @@ def upload(request):
         errs.extend(errors)
     else:
         context['message'] = "Image successfully uploaded!"
+        # Add the image to the default album
+        default_album = Album.get_or_create_default_for_user(username=user.username)
+        default_album.images.add(image)
+        default_album.save()
+        # Add the image to the selected album if it's not default
+        try:
+            if album_id != default_album.id:
+                album = Album.objects.get(id=album_id)
+                album.images.add(image)
+                album.save()
+        except:
+            pass
 
     return render(request, 'json/upload_response.json', context, content_type="application/json")
 

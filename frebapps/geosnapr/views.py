@@ -163,6 +163,7 @@ def upload(request):
 
     return render(request, 'json/upload_response.json', context, content_type="application/json")
 
+
 def get_images(request):
     if request.method == "POST":
         user = request.user

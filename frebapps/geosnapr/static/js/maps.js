@@ -150,7 +150,7 @@ function upload_image(event) {
     contentType: false,
     success: function (data) {
       // Add a new marker
-      addMarkers(map, markers, [data.image]);
+      addMarkers([data.image]);
       // Remove the form data
       clearImageForm();
       //$("#upload-img").val(null);
@@ -173,6 +173,10 @@ function upload_image(event) {
 
 
 
+
+
+
+
 // Maps functions
 
 function initialize() {
@@ -190,11 +194,21 @@ function initialize() {
   map = new google.maps.Map(document.getElementById('map-canvas'),
     mapOptions);
 
-  markers = [];
-
   google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
-    loadImages(map, markers);
+    loadImages(map);
   });
+
+
+  // changes icon for the cluster icon
+  var markerstyles = [{url: '/static/img/marker_album_small.png',
+                        height: 64,
+                        width: 64}]
+  var clustererOptions = {
+    styles: markerstyles,
+    zoomOnClick: false
+  }
+
+  markerclusterer = new MarkerClusterer(map, [], clustererOptions);
 
   // creates objects for map location search
   var input = (document.getElementById('locationsearch'));
@@ -223,15 +237,6 @@ function initialize() {
       }
   });
 
-  // changes icon for the cluster icon
-  var markerstyles = [{url: '/static/img/marker_album_small.png',
-                        height: 64,
-                        width: 64}]
-  var clustererOptions = {
-    styles: markerstyles
-  }
-
-  markerclusterer = new MarkerClusterer(map, [], clustererOptions);
 
   google.maps.event.addListener(markerclusterer, 'mouseover', function(cluster) {
     var markers = cluster.getMarkers();
@@ -292,7 +297,6 @@ function initialize() {
     });
     infowindow.open(map);
     cluster.infoWindow = infowindow;
-    console.log(content);
   });
 
   google.maps.event.addListener(markerclusterer, 'mouseout', function(cluster) {
@@ -301,10 +305,43 @@ function initialize() {
     }
   });
 
+  google.maps.event.addListener(map, 'zoom_changed', function() {
+    var clusters = markerclusterer.getClusters();
+    for (var i = 0; i < clusters.length; ++i) {
+      var cluster = clusters[i];
+      if (cluster.infoWindow != null) {
+        cluster.infoWindow.close();
+      }
+    }
+  })
+
+  $(document).on('opened.fndtn.reveal', '[data-reveal]', function() {
+    $('.album-carousel').slick({
+      autoplay:true,
+      autoplaySpeed: 3000
+    });
+  });
+
+  $(document).on('closed.fndtn.reveal', '[data-reveal]', function() {
+    $('.album-carousel').slick("unslick");
+  })
+
+
   google.maps.event.addListener(markerclusterer, 'clusterclick', function(cluster) {
-    console.log(cluster);
+    var markers = cluster.getMarkers();
+    var htmlcontent = "";
+
+    for (var i = 0; i < markers.length; ++i) {
+      var marker = markers[i];
+      var content = '<div><img src=' + marker.image.image + '/></div>\n';
+      htmlcontent = htmlcontent + content;
+    }
+    $('#albumcarousel').empty();
+    $('#albumcarousel').append(htmlcontent);
+    $('#album-modal').foundation('reveal','open');
   });
 }
+
 
 function hideImageInfoWindow(marker) {
   if (marker.infoWindow != undefined) {
@@ -351,6 +388,9 @@ function getCookie(name) {
 }
 
 function addMarkers(json) {
+    console.log("addMarkers");
+    console.log(json);
+    console.log(json.length);
     for (var i = 0; i < json.length; ++i) {
       var image = json[i];
       var latitude = image['lat'];
@@ -361,6 +401,7 @@ function addMarkers(json) {
         map:map,
         icon: 'static/img/marker_picture_small.png'
       });
+      console.log(marker);
       marker.image=image;
       markerclusterer.addMarker(marker);
       var markers = markerclusterer.getMarkers();
@@ -392,6 +433,8 @@ function addMarkers(json) {
       imagecount++;
     }
 
+    var markers = markerclusterer.getMarkers();
+
     // rezooms based on what was added
     if (markers.length > 0) {
       var bounds = new google.maps.LatLngBounds();
@@ -410,7 +453,7 @@ function addMarkers(json) {
     }
 }
 
-function loadImages(map, markers) {
+function loadImages(map) {
   var bounds = map.getBounds();
 
   var latlngNE = map.getBounds().getNorthEast();
@@ -438,8 +481,10 @@ function loadImages(map, markers) {
       success: function(json) {
           addMarkers(json);
       },
-      error: function(json) {
+      error: function(json, error) {
+          console.log("failure parsere?");
           console.log(json);
+          console.log(error);
       }
   });
 }

@@ -617,7 +617,8 @@ $(document).ready(function () {
     // Load insta images on toggled tab
     $("#panel2").on('toggled', function(e, tab) {
       $("#insta-images").slick('setPosition');
-      if (!gotInsta) {
+
+      if (!gotInsta && !($("#insta-link").length)) {
         getInstaImages();
         gotInsta = true;
       }

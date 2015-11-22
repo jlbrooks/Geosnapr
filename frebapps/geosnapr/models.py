@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import User
 from decimal import Decimal
 
@@ -52,6 +53,9 @@ class Profile(models.Model):
         # Create profile object
         profile = cls.objects.create(user=user)
         profile.save()
+
+        # Create the default album
+        Album.get_or_create_default_for_user(username=user.username)
 
         # Return the created profile
         return profile,None
@@ -157,6 +161,11 @@ class Image(models.Model):
         pic = cls.objects.create(image=image, lat=Decimal(lat), lng=Decimal(lng), caption=caption, user=user)
         pic.save()
 
+        # Add the new image to the users 'all images' album
+        album = Album.get_default_for_user(user.username)
+        album.images.add(pic)
+        album.save()
+
         return pic,None
 
 class Album(models.Model):
@@ -189,3 +198,17 @@ class Album(models.Model):
         album.save()
 
         return album,None
+
+    @classmethod
+    def get_or_create_default_for_user(cls, username):
+        try:
+            user = User.objects.get(username=username)
+        except:
+            return None
+
+        try:
+            return cls.objects.get(user=user, name=settings.DEFAULT_ALBUM_NAME)
+        except:
+            album,errs = cls.create(user.username, settings.DEFAULT_ALBUM_NAME)
+            return album
+            

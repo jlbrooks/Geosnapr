@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.conf import settings
 from geosnapr.models import Profile, Image, Album
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -64,6 +65,10 @@ class ProfileCreateTestCase(TestCase):
         self.assertEqual(p.user.first_name, 'jacob')
         self.assertEqual(p.user.last_name, 'brooks')
         self.assertEqual(p.user.email, 'test@example.com')
+        # See if we created an album
+        a = Album.objects.filter(user=p.user)
+        self.assertNotEqual(a, None)
+        self.assertEqual(a[0].name, "All Images")
 
 class ProfileUpdateTestCase(TestCase):
 
@@ -227,3 +232,33 @@ class AlbumCreateTestCase(TestCase):
         a,err = Album.create(username='jlbrooks', name='my album!')
 
         self.assertEqual(a.name, 'my album!')
+
+class AlbumDefaultTestCase(TestCase):
+
+    def setUp(self):
+        # Create a user without a default album
+        self.user = User.objects.create(username='foobar', first_name='foo', last_name='bar', 
+            email='foo@bar.com', password='password')
+        self.user.save()
+
+    def test_get_bad_user(self):
+        a = Album.get_or_create_default_for_user(username='jlbrooks')
+
+        self.assertEqual(a, None)
+
+    def test_get_no_album(self):
+        a = Album.get_or_create_default_for_user(username='foobar')
+
+        self.assertEqual(a.name, settings.DEFAULT_ALBUM_NAME)
+        self.assertEqual(a.user, self.user)
+
+    def test_get_album_exists(self):
+        a = Album.get_or_create_default_for_user(username='foobar')
+
+        self.assertEqual(a.name, settings.DEFAULT_ALBUM_NAME)
+        self.assertEqual(a.user, self.user)
+
+        # Try to create again
+        other_a = Album.get_or_create_default_for_user(username='foobar')
+
+        self.assertEqual(other_a, a)

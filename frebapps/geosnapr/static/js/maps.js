@@ -468,7 +468,6 @@ function showImageInfoWindow(map, marker) {
   var htmlcontent = `
   <div class="thumbnail-container">
     <img border="0" class="thumbnail" src="` + marker.image.image + `">
-    <p>` + marker.image.caption + `</p>
   </div>`;
 
   var infobubble = new InfoBubble({
@@ -482,7 +481,6 @@ function showImageInfoWindow(map, marker) {
   })
 
   infobubble.open(map, marker);
-
   marker.infoWindow = infobubble;
 }
 
@@ -493,7 +491,6 @@ function addMarkers(json) {
     var latitude = image['lat'];
     var longitude = image['lng'];
     var id = image['id'];
-    console.log(image['id']);
     var latlng = new google.maps.LatLng({lat:latitude, lng:longitude});
     // creates new marker
     var marker = new google.maps.Marker({

@@ -27,9 +27,9 @@ function alertSuccess(content) {
   setTimeout(fadeAlert, 3000);
 }
 
-function geocodeForm(lat, lng) {
-  $("#autolat").val(lat);
-  $("#autolng").val(lng);
+function geocodeForm(lat, lng, latElem, lngElem, resultElem) {
+  latElem.val(lat);
+  lngElem.val(lng);
 
   // Try to reverse geocode
   var geocoder = new google.maps.Geocoder;
@@ -41,8 +41,7 @@ function geocodeForm(lat, lng) {
   geocoder.geocode({'location': loc}, function(results, status) {
     if (status === google.maps.GeocoderStatus.OK) {
       if (results[1]) {
-        var placeInput = $('#imagelocation');
-        placeInput.val(results[1].formatted_address);
+        resultElem.val(results[1].formatted_address);
       }
     } else {
       console.log("Geocoder failed due to: " + status);
@@ -81,7 +80,7 @@ function imageChosen(input) {
         lngDecimal = lngDecimal * -1;
       }
 
-      geocodeForm(latDecimal, lngDecimal);
+      geocodeForm(latDecimal, lngDecimal, $("#autolat"), $("#autolng"), $('#imagelocation'));
     }
   });
 
@@ -276,7 +275,7 @@ function initialize() {
   var imageeditinput = (document.getElementById('imageeditlocation'));
   var imageeditautocomplete = new google.maps.places.Autocomplete(imageeditinput);
 
-  imageautocomplete.addListener('place_changed', function() {
+  imageeditautocomplete.addListener('place_changed', function() {
     var place = imageeditautocomplete.getPlace();
     if (place.geometry) {
       var latform = document.getElementById("autoeditlat");
@@ -473,10 +472,11 @@ function addMarkers(json) {
 
       google.maps.event.addListener(markers[key],'click', function(key2) {
         return function() {
-          var src = markers[key2].image.image;
-          var caption = markers[key2].image.caption;
-          $('#photo-modal-link').attr("src",src);
-          $('#photo-modal-comment').text(caption);
+          var image = markers[key2].image;
+          $('#photo-modal-link').attr("src",image.image);
+          $('#photo-modal-comment').text(image.caption);
+          $("#editcaption").val(image.caption);
+          geocodeForm(image.lat, image.lng, $("#autoeditlat"), $("#autoeditlng"), $('#imageeditlocation'));
           $('#photo-modal').foundation('reveal','open');
         }
       }(key));

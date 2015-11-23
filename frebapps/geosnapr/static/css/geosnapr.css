@@ -194,6 +194,7 @@ fieldset.hidden {
 }
 
 .thumbnail-container {
+  min-width: 300px;
   max-width: 300px;
   overflow: hidden;
 }

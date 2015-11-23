@@ -251,4 +251,3 @@ class Album(models.Model):
         except:
             album,errs = cls.create(user.username, settings.DEFAULT_ALBUM_NAME)
             return album
-            

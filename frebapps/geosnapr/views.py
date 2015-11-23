@@ -239,16 +239,18 @@ def get_images(request):
     return JsonResponse({})
 
 @login_required
-def get_album(request, a_id):
+def get_album(request):
+    print("hello")
     try:
-        album = Album.objects.get(id=a_id)
+        print("hello2")
+        if request.POST['a_id']:
+            a_id = request.POST['a_id']
+            album = Album.objects.get(id=a_id)
     except:
         raise Http404()
-
     context = {
         'album': album
     }
-
     return render(request, 'json/album.json', context, content_type="application/json")
 
 

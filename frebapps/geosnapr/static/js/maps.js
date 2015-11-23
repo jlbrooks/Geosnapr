@@ -28,8 +28,8 @@ function alertSuccess(content) {
 }
 
 function geocodeForm(lat, lng, latElem, lngElem, resultElem) {
-  latElem.val(lat);
-  lngElem.val(lng);
+  $(latElem).val(lat);
+  $(lngElem).val(lng);
 
   // Try to reverse geocode
   var geocoder = new google.maps.Geocoder;
@@ -41,7 +41,7 @@ function geocodeForm(lat, lng, latElem, lngElem, resultElem) {
   geocoder.geocode({'location': loc}, function(results, status) {
     if (status === google.maps.GeocoderStatus.OK) {
       if (results[1]) {
-        resultElem.val(results[1].formatted_address);
+        $(resultElem).val(results[1].formatted_address);
       }
     } else {
       console.log("Geocoder failed due to: " + status);
@@ -605,7 +605,7 @@ function toggleSelectedImage() {
     var lat = parseFloat(img.attr('data-lat'));
     var lng = parseFloat(img.attr('data-lng'));
     // Fill the form with data
-    geocodeForm(lat,lng);
+    geocodeForm(lat,lng,$("#autolat"), $("#autolng"), $('#imagelocation'));
 
     $("#caption").val(img.attr('data-caption'));
   } else {

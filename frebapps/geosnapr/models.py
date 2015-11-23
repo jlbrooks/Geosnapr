@@ -174,7 +174,7 @@ class Image(models.Model):
 
         # Image must exist
         try:
-            image = Images.objects.get(id=im_id)
+            image = Image.objects.get(id=im_id)
         except:
             err.append('Image does not exist')
             return None,err
@@ -223,6 +223,9 @@ class Album(models.Model):
         if not name:
             name = 'Untitled Album'
 
+        if name == 'All Images':
+            name = 'All Images2'
+
         # Make sure the user exists
         try:
             user = User.objects.get(username=username)
@@ -251,4 +254,3 @@ class Album(models.Model):
         except:
             album,errs = cls.create(user.username, settings.DEFAULT_ALBUM_NAME)
             return album
-            

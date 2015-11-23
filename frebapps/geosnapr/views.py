@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, Http404
 from django.core.urlresolvers import reverse
 from django.core.files.temp import NamedTemporaryFile
 from django.core.files import File
@@ -179,6 +179,7 @@ def upload(request):
 
 @login_required
 def edit_image(request):
+    print("edit_image")
     if request.method != 'POST':
         return redirect(main_map)
     context = {}
@@ -189,8 +190,26 @@ def edit_image(request):
     lat = request.POST.get('lat')
     lng = request.POST.get('lng')
     caption = request.POST.get('caption')
-    im_id = request.POST.get('img-id')
-    user = request.user
+    im_id = request.POST.get('img_id')
+    album_id = request.POST.get('edit-album')
+    username = request.user.username
+
+    albums = Album.objects.filter(user=request.user)
+    print("HERE")
+    print(album_id)
+    for a in albums:
+        print(a.name)
+        if (a.name != "All Images"):
+            if (a.images.filter(pk=im_id).exists()):
+                print('tried to delete')
+                delete = a.images.get(pk=im_id)
+                print('got the picture')
+                a.images.remove(delete)
+                print('it worked')
+
+    targetalbum = albums.get(id=album_id)
+    i = Image.objects.get(id=im_id)
+    targetalbum.images.add(i)
 
     image,errors = Image.update(im_id=im_id, username=username, lat=lat, lng=lng, caption=caption)
     context['image'] = image
@@ -226,6 +245,7 @@ def create_album(request):
 
     return render(request, 'json/create_album_response.json', context, content_type="application/json")
 
+@login_required
 def get_images(request):
     if request.method == "POST":
         user = request.user
@@ -236,6 +256,20 @@ def get_images(request):
         }
         return render(request, 'json/images.json', context, content_type="application/json")
     return JsonResponse({})
+
+@login_required
+def get_album(request):
+    try:
+        if request.POST['a_id']:
+            a_id = request.POST['a_id']
+            album = Album.objects.get(id=a_id)
+    except:
+        raise Http404()
+    context = {
+        'album': album
+    }
+    return render(request, 'json/album.json', context, content_type="application/json")
+
 
 # Instagram oauth views
 

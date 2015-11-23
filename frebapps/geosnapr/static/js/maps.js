@@ -171,12 +171,8 @@ function upload_image(event) {
 
 function edit_image() {
   event.preventDefault();
-  var e = new Error('dummy');
-  console.log(e.stack);
-  console.log("run edit_image");
   var form = $("#img-edit-form");
   var formData = new FormData(document.getElementById("img-edit-form"));
-  console.log(formData);
 
   // Set up the loading spinner
   var opts = {
@@ -196,7 +192,27 @@ function edit_image() {
     processData: false,
     contentType: false,
     success: function(data) {
-      show_album($('#map-albums').val());
+      for (var i = 0; i < allmarkers.length; i++) {
+        var marker = allmarkers[i];
+        if (marker.image.id == data.image.id) {
+
+          marker.image.caption = data.image.caption;
+          marker.image.lat = data.image.lat;
+          marker.image.lng = data.image.lng;
+          var latlng = new google.maps.LatLng({lat:data.image.lat, lng:data.image.lng});
+          marker.setPosition(latlng);
+        }
+      }
+      //addMarkers([data]);
+
+      if ($('#map-albums').val() == 1) {
+        markerclusterer.clearMarkers();
+        markerclusterer.addMarkers(allmarkers);
+      }
+      else {
+        show_album($('#map-albums').val());
+      }
+      markerclusterer.repaint();
       // Close the modal
       $('#uploadModal').foundation('reveal', 'close');
       // Stop the spinner
@@ -204,6 +220,7 @@ function edit_image() {
       alertSuccess(data.message);
     },
     error: function(data) {
+      console.log('error');
       spinner.stop();
       console.log(data);
     }
@@ -254,7 +271,6 @@ function create_album() {
 }
 
 function openImageEditForm(image) {
-  console.log(image);
   $("#img-edit-form-hidden").hide();
   $("#img-edit-form-show").show();
   $("#img-edit-form-show").on("click", function() {
@@ -267,6 +283,7 @@ function openImageEditForm(image) {
   $("#img-id").val(image.id);
   $("#edit-album").val($('#map-albums').val());
   geocodeForm(image.lat, image.lng, $("#autoeditlat"), $("#autoeditlng"), $('#imageeditlocation'));
+
   $('#photo-modal').foundation('reveal','open');
   $("#edit-img-btn").unbind('click');
   $("#edit-img-btn").on('click', edit_image);
@@ -435,7 +452,6 @@ function initialize() {
 
   google.maps.event.addListener(markerclusterer, 'mouseout', function(cluster) {
     if (cluster.infoWindow != undefined) {
-
       cluster.infoWindow.close();
     }
   });
@@ -550,7 +566,7 @@ function showImageInfoWindow(map, marker) {
 
 function addMarkers(json) {
   // adds each image object in the json object to the markerclusterer
-  for (var i = 0; i < json.length; ++i) {
+  for (var i = 0; i < json.length; i++) {
     var image = json[i];
     var latitude = image['lat'];
     var longitude = image['lng'];
@@ -654,7 +670,6 @@ function loadImages(map) {
           addMarkers(json);
       },
       error: function(json, error) {
-          console.log("failure parsere?");
           console.log(json);
           console.log(error);
       }

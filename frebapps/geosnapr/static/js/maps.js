@@ -508,6 +508,9 @@ function initialize() {
   google.maps.event.addListener(markerclusterer, 'clusterclick', function(cluster) {
     var markers = cluster.getMarkers();
     var htmlcontent = "";
+    if (cluster.infoWindow != null) {
+        cluster.infoWindow.close();
+    }
 
     for (var i = 0; i < markers.length; ++i) {
       var marker = markers[i];

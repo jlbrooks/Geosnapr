@@ -169,6 +169,37 @@ function upload_image(event) {
 
 }
 
+function edit_image() {
+  event.preventDefault();
+  var form = $("#img-edit-form");
+  var formData = new FormData(document.getElementById("img-edit-form"));
+
+  // Set up the loading spinner
+  var opts = {
+    scale: 2.5,
+    top: '50%',
+    left: '50%'
+  };
+  var spinner = new Spinner(opts).spin();
+
+  // Show the loading spinner
+  form.append(spinner.el);
+
+  $.ajax({
+    type: form.attr('method'),
+    url: form.attr('action'),
+    data: formData,
+    processData: false,
+    contentType: false,
+    success: function(data) {
+      addMarkers([data.image]);
+    },
+    error: function(data) {
+      console.log(data);
+    }
+  })
+}
+
 function create_album() {
   event.preventDefault();
   var form = $("#create-album-form");
@@ -628,10 +659,16 @@ $(document).ready(function () {
     $(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
       $(document).foundation('abide', 'reflow');
       $(document).foundation('tab', 'reflow');
-      $("#edit-profile-form").on('valid.fndtn.abide', edit_profile);
-      $("#upload-img-btn").on('click', upload_image);
+
+      // Create album form submit
       $("#create-album-form").on('valid.fndtn.abide', create_album);
+
+      // Edit profile submit
+      $("#edit-profile-form").on('valid.fndtn.abide', edit_profile);
     });
+
+    // Submit image form
+    $("#upload-img-btn").on('click', upload_image);
 
     // Load insta images on toggled tab
     $("#panel2").on('toggled', function(e, tab) {

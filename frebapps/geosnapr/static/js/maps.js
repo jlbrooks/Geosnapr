@@ -269,7 +269,7 @@ function openImageEditForm(image) {
     $("#img-edit-form-hidden").show();
     $("#img-edit-form-show").hide();
   });
-  $('#photo-modal-link').attr("src",image.image);
+  $('#photo-modal-link').attr("src",image.image.replace(/&amp;/g, '&'));
   $('#photo-modal-comment').text(image.caption);
   $("#editcaption").val(image.caption);
   $("#img-id").val(image.id);

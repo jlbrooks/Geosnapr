@@ -7,16 +7,12 @@
 {% block resources %}
 <link href="{% static "slick/slick.css" %}" rel="stylesheet" type='text/css'>
 <link href="{% static "slick/slick-theme.css" %}" rel="stylesheet" type='text/css'>
-<link href="{% static "menu/component.css" %}" rel="stylesheet" type='text/css'>
-<link href="{% static "menu/default.css" %}" rel="stylesheet" type='text/css'>
 <script src="{% static "js/maps.js" %}"></script>
 <script src="{% static "jQuery-fileExif/jquery.exif.js" %}"></script>
 <script src="{% static "react/react.js" %}"></script>
 <script src="{% static "react/react-with-addons.js" %}"></script>
 <script src="{% static "react/react-dom.js" %}"></script>
 <script src="{% static "markerclusterer/markerclusterer.js" %}"></script>
-<script src="{% static "menu/jquery.dlmenu.js" %}"></script>
-<script src="{% static "menu/modernizr.custom.js" %}"></script>
 {% endblock resources %}
 
 {% block content %}
@@ -56,50 +52,21 @@
 </div>
 
 
-
-<div class="uploadmenu" id="uploadmenu">
-  <div id="uploadmenuhide">
-    <div class="uploadmenuentry">Upload Images
-    </div>
-    <div class="uploadmenuentry">Create Album
-    </div>
-    <div class="uploadmenuentry">Link your Instagram
-    </div>
-  </div>
-<h1>Hello</h1>
-</div>
-
 <!-- Pop-up modals -->
 
-<div id="photo-modal" class="reveal-modal large" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+<div id="photo-modal" class="reveal-modal tiny" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
   <div class="row">
-    <div class="columns large-8">
-      <img id="photo-modal-link" src="" class="">
+    <div class="columns large-9">
+      <img id="photo-modal-link" src="" class="image-fit">
     </div>
-    <div class="columns large-4">
+    <div class="columns large-3">
       <p id="photo-modal-comment"></p>
-
-      <fieldset class="hidden" id="img-edit-form">
-        <label for="location">Where was this photo taken?
-          <input type="text" id="imageeditlocation" name="location" placeholder="Location"/>
-        </label>
-        <input type="hidden" id="autoeditlat" name="lat" placeholder="Latitude"/>
-        <input type="hidden" id="autoeditlng" name="lng" placeholder="Longitude"/>
-        <label for="upload-album">Choose an album for your photo:
-          {% include "__album_select.html" with id="upload-album" %}
-        </label>
-        <label for="caption">Change the caption:
-          <input type="text" name="caption" id="editcaption" placeholder="Caption"/>
-        </label>
-        <button type="submit" class="button" id="edit-img-btn">Edit Image!</button>
-      </fieldset>
-
-      <a href="#" id="img-edit-form-show">Edit Photo Information</a>
+      <input type="text">
     </div>
   </div>
 </div>
 
-<div id="album-modal" class="reveal-modal small" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+<div id="album-modal" class="reveal-modal tiny" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
   <div class="row">
     <div class="columns large-9">
       <div class="album-carousel" id="albumcarousel">

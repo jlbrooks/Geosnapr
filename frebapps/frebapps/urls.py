@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^register$', views.register, name='register'),
     url(r'^map$', views.main_map, name='map'),
     url(r'^upload$', views.upload, name='upload'),
+    url(r'^edit_image$', views.edit_image, name='edit_image'),
     url(r'^create_album$', views.create_album, name='create_album'),
     url(r'^edit_profile$', views.edit_profile, name='edit_profile'),
     url(r'^delete_profile$', views.delete_profile, name='delete_profile'),

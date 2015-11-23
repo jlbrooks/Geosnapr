@@ -178,6 +178,32 @@ def upload(request):
     return render(request, 'json/upload_response.json', context, content_type="application/json")
 
 @login_required
+def edit_image(request):
+    if request.method != 'POST':
+        return redirect(main_map)
+    context = {}
+    errs = []
+    context['errors'] = errs
+
+    # Get lat/lng/caption data
+    lat = request.POST.get('lat')
+    lng = request.POST.get('lng')
+    caption = request.POST.get('caption')
+    im_id = request.POST.get('img-id')
+    user = request.user
+
+    image,errors = Image.update(im_id=im_id, username=username, lat=lat, lng=lng, caption=caption)
+    context['image'] = image
+
+    if errors:
+        print(errors)
+        errs.extend(errors)
+    else:
+        context['message'] = "Image successfully updated!"
+
+    return render(request, 'json/upload_response.json', context, content_type="application/json")
+
+@login_required
 def create_album(request):
     if request.method != 'POST':
         return redirect(main_map)

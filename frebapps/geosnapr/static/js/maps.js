@@ -247,6 +247,22 @@ function create_album() {
   });
 }
 
+function openImageEditForm(image) {
+  $("#img-edit-form-hidden").hide();
+  $("#img-edit-form-show").show();
+  $("#img-edit-form-show").on("click", function() {
+    $("#img-edit-form-hidden").show();
+    $("#img-edit-form-show").hide();
+  });
+  $('#photo-modal-link').attr("src",image.image);
+  $('#photo-modal-comment').text(image.caption);
+  $("#editcaption").val(image.caption);
+  $("#img-id").val(image.id);
+  geocodeForm(image.lat, image.lng, $("#autoeditlat"), $("#autoeditlng"), $('#imageeditlocation'));
+  $('#photo-modal').foundation('reveal','open');
+  $("#edit-img-btn").on('click', edit_image);
+}
+
 // Maps functions
 
 function initialize() {
@@ -432,6 +448,7 @@ function initialize() {
     }
     $('#albumcarousel').empty();
     $('#albumcarousel').append(htmlcontent);
+    $('#albumcarousel').on('click', '.slick-slide', function (){openImageEditForm(marker.image);});
     $('#album-modal').foundation('reveal','open');
   });
 }
@@ -533,17 +550,7 @@ function addMarkers(json) {
     google.maps.event.addListener(markers[key],'click', function(key2) {
       return function() {
         var image = markers[key2].image;
-        $("#img-edit-form-hidden").hide();
-        $("#img-edit-form-show").show();
-        $("#img-edit-form-show").on("click", function() {
-          $("#img-edit-form-hidden").show();
-          $("#img-edit-form-show").hide();
-        });
-        $('#photo-modal-link').attr("src",image.image);
-        $("#editcaption").val(image.caption);
-        geocodeForm(image.lat, image.lng, $("#autoeditlat"), $("#autoeditlng"), $('#imageeditlocation'));
-        $("img-id").val(markers[key2].id);
-        $('#photo-modal').foundation('reveal','open');
+        openImageEditForm(image);
       }
     }(key));
     imagecount++;

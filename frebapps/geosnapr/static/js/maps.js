@@ -229,12 +229,13 @@ function create_album() {
     contentType: false,
     success: function(data) {
       // Append the new album to the dropdown
-      var option = document.createElement('option');
-      option.value = data.album.id;
-      option.innerHTML = data.album.name;
-      $("#map-albums").append(option)
+      var option = new Option(data.album.name, data.album.id);
+      $(option).html(data.album.name);
+      $("#map-albums").append(option);
+      $("#upload-album").append($(option).clone());
+      $("#edit-album").append($(option).clone());
       // Clear the form data
-      $("album-name").val('')
+      $("#album-name").val('Untitled Album')
       // Close the modal
       $('#uploadModal').foundation('reveal', 'close');
       // Stop the spinner

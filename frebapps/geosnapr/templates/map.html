@@ -7,6 +7,8 @@
 {% block resources %}
 <link href="{% static "slick/slick.css" %}" rel="stylesheet" type='text/css'>
 <link href="{% static "slick/slick-theme.css" %}" rel="stylesheet" type='text/css'>
+<script src="{% static "infobubble/infobubble.js" %}"></script>
+<script src="{% static "js/image.js" %}"></script>
 <script src="{% static "js/maps.js" %}"></script>
 <script src="{% static "jQuery-fileExif/jquery.exif.js" %}"></script>
 <script src="{% static "react/react.js" %}"></script>
@@ -86,7 +88,7 @@
   <a class="close-reveal-modal" aria-label="Close">&#215;</a>
 </div>
 
-<div id="album-modal" class="reveal-modal tiny" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+<div id="album-modal" class="reveal-modal xlarge" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
   <div class="row">
     <div class="columns large-9">
       <div class="album-carousel" id="albumcarousel">
@@ -95,7 +97,6 @@
   </div>
   <a class="close-reveal-modal" aria-label="Close">&#215;</a>
 </div>
-
 
 <div id="uploadModal" class="reveal-modal" data-reveal aria-labelledby="uploadModalTitle" aria-hidden="true" role="dialog">
   <div class="container">

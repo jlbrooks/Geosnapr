@@ -413,43 +413,27 @@ function initialize() {
 
     for (var i = 0; i < markers.length; ++i) {
       var marker = markers[i];
-      var content = '<div><img src=' + marker.image.image + '/></div>\n';
+      var id = "albumphotoid" + i.toString();
+      console.log(id);
+      var content = `<div id="albumphotoid` + id + `"><div class="row">
+<div class="columns large-8">
+<img src="`+ marker.image.image + `"/></div>
+<div class="columns large-4">
+<p>` + marker.image.caption + `</p>
+</div>
+</div></div>`;
       htmlcontent = htmlcontent + content;
+
+    var match = '#' + id;
+    $(match).on('click', function() {
+      console.log("hello");
+    })
+
     }
     $('#albumcarousel').empty();
     $('#albumcarousel').append(htmlcontent);
     $('#album-modal').foundation('reveal','open');
   });
-}
-
-
-function hideImageInfoWindow(marker) {
-  if (marker.infoWindow != undefined) {
-    marker.infoWindow.close();
-  }
-}
-
-function showImageInfoWindow(map, marker) {
-  var htmlcontent = `
-<div class="row">
-  <div class="columns-12 thumbnail-container">
-    <img border="0" class="thumbnail" src="` + marker.image.image + `">
-    <p>` + marker.image.caption + `</p>
-  </div>
-</div>`;
-
-  var infowindow = new google.maps.InfoWindow({
-    // will do server side after
-    content: htmlcontent
-  });
-
-  $("#img-edit-form-show").on("click", function() {
-  $("#img-edit-form-hidden").show();
-  $("#img-edit-form-show").hide();
-  });
-
-  infowindow.open(map, marker);
-  marker.infoWindow = infowindow;
 }
 
 function csrfSafeMethod(method) {
@@ -473,73 +457,115 @@ function getCookie(name) {
     return cookieValue;
 }
 
+function hideImageInfoWindow(marker) {
+  // should always be defined if function is called
+  if (marker.infoWindow != undefined) {
+    marker.infoWindow.close();
+  }
+}
+
+function showImageInfoWindow(map, marker) {
+  var htmlcontent = `
+  <div class="thumbnail-container">
+    <img border="0" class="thumbnail" src="` + marker.image.image + `">
+    <p>` + marker.image.caption + `</p>
+  </div>`;
+  var infowindow = new google.maps.InfoWindow({
+    // will do server side after
+    content: htmlcontent
+  });
+
+  var infobubble = new InfoBubble({
+    maxWidth: 300,
+    minWidth: 300,
+    content: htmlcontent,
+    disableAutoPan: true,
+    hideCloseButton: true,
+    borderWidth: 0
+  })
+
+  // adjusts the css for the infowindows
+  google.maps.event.addListener(infowindow, 'domready', function() {
+    var iwOuter = $('.gm-style-iw');
+    var iwCloseBtn = iwOuter.next();
+    iwCloseBtn.css({'display':'none'});
+  })
+
+  infobubble.open(map, marker);
+  marker.infoWindow = infobubble;
+}
+
 function addMarkers(json) {
-    console.log("addMarkers");
-    console.log(json);
-    console.log(json.length);
-    for (var i = 0; i < json.length; ++i) {
-      var image = json[i];
-      var latitude = image['lat'];
-      var longitude = image['lng'];
-      var latlng = new google.maps.LatLng({lat:latitude, lng:longitude});
-      var marker = new google.maps.Marker({
-        position:latlng,
-        map:map,
-        icon: 'static/img/marker_picture_small.png'
-      });
-      console.log(marker);
-      marker.image=image;
-      markerclusterer.addMarker(marker);
-      var markers = markerclusterer.getMarkers();
-      console.log(markerclusterer);
-      var key = imagecount;
+  // adds each image object in the json object to the markerclusterer
+  for (var i = 0; i < json.length; ++i) {
+    var image = json[i];
+    var latitude = image['lat'];
+    var longitude = image['lng'];
+    var latlng = new google.maps.LatLng({lat:latitude, lng:longitude});
+    // creates new marker
+    var marker = new google.maps.Marker({
+      position:latlng,
+      map:map,
+      icon: 'static/img/marker_picture_small.png'
+    });
 
-      google.maps.event.addListener(markers[key],'mouseover', function(key2) {
-        return function() {
-          showImageInfoWindow(map, markers[key2]);
-        }
-      }(key));
-
-      google.maps.event.addListener(markers[key],'mouseout', function(key2) {
-        return function() {
-          hideImageInfoWindow(markers[key2]);
-        }
-      }(key));
-
-      google.maps.event.addListener(markers[key],'click', function(key2) {
-        return function() {
-          var image = markers[key2].image;
-          $('#photo-modal-link').attr("src",image.image);
-          $('#photo-modal-comment').text(image.caption);
-          $("#editcaption").val(image.caption);
-          $("#img-id").val(image.id);
-          geocodeForm(image.lat, image.lng, $("#autoeditlat"), $("#autoeditlng"), $('#imageeditlocation'));
-          $('#photo-modal').foundation('reveal','open');
-          $("#edit-img-btn").on('click', edit_image);
-        }
-      }(key));
-
-      imagecount++;
-    }
-
+    marker.image = image;
+    marker.photoid = 0;
+    markerclusterer.addMarker(marker);
     var markers = markerclusterer.getMarkers();
 
-    // rezooms based on what was added
-    if (markers.length > 0) {
-      var bounds = new google.maps.LatLngBounds();
-      for (var i = 0; i < markers.length; ++i) {
-        var marker = markers[i];
-        bounds.extend(marker.position);
+    var key = imagecount;
+
+    google.maps.event.addListener(markers[key],'mouseover', function(key2) {
+      return function() {
+        showImageInfoWindow(map, markers[key2]);
       }
-      map.fitBounds(bounds);
-      var listener = google.maps.event.addListenerOnce(map, "idle", function() {
-          if (map.getZoom() > 8) map.setZoom(8);
-      });
+    }(key));
+
+    google.maps.event.addListener(markers[key],'mouseout', function(key2) {
+      return function() {
+        hideImageInfoWindow(markers[key2]);
+      }
+    }(key));
+
+    google.maps.event.addListener(markers[key],'click', function(key2) {
+      return function() {
+        var image = markers[key2].image;
+        $("#img-edit-form").hide();
+        $("#img-edit-form-show").show();
+        $("#img-edit-form-show").on("click", function() {
+          $("#img-edit-form").show();
+          $("#img-edit-form-show").hide();
+        });
+        $('#photo-modal-link').attr("src",image.image);
+        $('#photo-modal-comment').text(image.caption);
+        $("#editcaption").val(image.caption);
+        geocodeForm(image.lat, image.lng, $("#autoeditlat"), $("#autoeditlng"), $('#imageeditlocation'));
+        $('#photo-modal').foundation('reveal','open');
+      }
+    }(key));
+
+    imagecount++;
+  }
+
+  var markers = markerclusterer.getMarkers();
+
+  // rezooms based on what was added
+  if (markers.length > 0) {
+    var bounds = new google.maps.LatLngBounds();
+    for (var i = 0; i < markers.length; ++i) {
+      var marker = markers[i];
+      bounds.extend(marker.position);
     }
-    else {
-      map.setCenter(new google.maps.LatLng(40, -79));
-      map.setZoom(8);
-    }
+    map.fitBounds(bounds);
+    var listener = google.maps.event.addListenerOnce(map, "idle", function() {
+        if (map.getZoom() > 8) map.setZoom(8);
+    });
+  }
+  else {
+    map.setCenter(new google.maps.LatLng(40, -79));
+    map.setZoom(8);
+  }
 }
 
 function loadImages(map) {

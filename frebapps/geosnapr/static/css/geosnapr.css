@@ -174,8 +174,10 @@ fieldset.hidden {
 }
 
 .thumbnail {
-  width: 20em;
+  position: relative;
+  width: 30em;
   height: auto;
+  z-index: 1000000;
 }
 
 .top-margin {
@@ -193,16 +195,16 @@ fieldset.hidden {
 }
 
 .thumbnail-container {
-  max-height: 10vh;
-  max-width: 10vw;
-  min-height: 10vh;
-  min-width: 10vw;
-
+  max-height: 20em;
+  max-width: 20em;
+  min-height: 20em;
+  min-width: 20em;
   overflow: hidden;
 }
 
 .thumbnail {
-  width: 100%;
+  min-width: 20em;
+  max-width: 20em;
 }
 
 .slick-prev:after {
@@ -248,4 +250,13 @@ fieldset.hidden {
 
 select {
   font-size: 0.875rem;
+}
+
+
+
+
+/* Google Maps InfoWindow CSS */
+.gm-style-iw {
+   top: 0 !important;
+   left: 0 !important;
 }

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, Http404
 from django.core.urlresolvers import reverse
 from django.core.files.temp import NamedTemporaryFile
 from django.core.files import File
@@ -226,6 +226,7 @@ def create_album(request):
 
     return render(request, 'json/create_album_response.json', context, content_type="application/json")
 
+@login_required
 def get_images(request):
     if request.method == "POST":
         user = request.user
@@ -236,6 +237,20 @@ def get_images(request):
         }
         return render(request, 'json/images.json', context, content_type="application/json")
     return JsonResponse({})
+
+@login_required
+def get_album(request, a_id):
+    try:
+        album = Album.objects.get(id=a_id)
+    except:
+        raise Http404()
+
+    context = {
+        'album': album
+    }
+
+    return render(request, 'json/album.json', context, content_type="application/json")
+
 
 # Instagram oauth views
 

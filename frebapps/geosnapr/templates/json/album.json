@@ -1,1 +1,5 @@
-{"name": "{{album.name}}", "id": "{{album.id}}"}
+{
+    "name": "{{album.name}}",
+    "id": "{{album.id}}",
+    "images": [{% for image in album.images.all %}{{image.id}}{% if not forloop.last %}, {% endif %}{%endfor %}]
+}

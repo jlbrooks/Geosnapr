@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^upload$', views.upload, name='upload'),
     url(r'^edit_image$', views.edit_image, name='edit_image'),
     url(r'^create_album$', views.create_album, name='create_album'),
+    url(r'^album/(?P<a_id>[0-9]+)$', views.get_album, name='get_album'),
     url(r'^edit_profile$', views.edit_profile, name='edit_profile'),
     url(r'^delete_profile$', views.delete_profile, name='delete_profile'),
     url(r'^$', views.index, name='index'),

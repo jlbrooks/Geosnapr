@@ -448,7 +448,7 @@ function initialize() {
     }
     $('#albumcarousel').empty();
     $('#albumcarousel').append(htmlcontent);
-    $('#albumcarousel').on('click', '.slick-slide', function (){openImageEditForm(marker.image);});
+    //$('#albumcarousel').on('click', '.slick-slide', function (){openImageEditForm(marker.image);});
     $('#album-modal').foundation('reveal','open');
   });
 }

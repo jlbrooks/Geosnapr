@@ -189,8 +189,8 @@ def edit_image(request):
     lat = request.POST.get('lat')
     lng = request.POST.get('lng')
     caption = request.POST.get('caption')
-    im_id = request.POST.get('img-id')
-    user = request.user
+    im_id = request.POST.get('img_id')
+    username = request.user.username
 
     image,errors = Image.update(im_id=im_id, username=username, lat=lat, lng=lng, caption=caption)
     context['image'] = image

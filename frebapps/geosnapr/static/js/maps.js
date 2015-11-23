@@ -193,6 +193,11 @@ function edit_image() {
     contentType: false,
     success: function(data) {
       addMarkers([data.image]);
+      // Close the modal
+      $('#uploadModal').foundation('reveal', 'close');
+      // Stop the spinner
+      spinner.stop();
+      alertSuccess(data.message);
     },
     error: function(data) {
       console.log(data);
@@ -439,7 +444,7 @@ function showImageInfoWindow(map, marker) {
   });
 
   $("#img-edit-form-show").on("click", function() {
-  $("#img-edit-form").show();
+  $("#img-edit-form-hidden").show();
   $("#img-edit-form-show").hide();
   });
 
@@ -507,8 +512,10 @@ function addMarkers(json) {
           $('#photo-modal-link').attr("src",image.image);
           $('#photo-modal-comment').text(image.caption);
           $("#editcaption").val(image.caption);
+          $("#img-id").val(image.id);
           geocodeForm(image.lat, image.lng, $("#autoeditlat"), $("#autoeditlng"), $('#imageeditlocation'));
           $('#photo-modal').foundation('reveal','open');
+          $("#edit-img-btn").on('click', edit_image);
         }
       }(key));
 

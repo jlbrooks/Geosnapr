@@ -174,7 +174,7 @@ class Image(models.Model):
 
         # Image must exist
         try:
-            image = Images.objects.get(id=im_id)
+            image = Image.objects.get(id=im_id)
         except:
             err.append('Image does not exist')
             return None,err

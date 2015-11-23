@@ -151,7 +151,7 @@ function upload_image(event) {
     success: function (data) {
       // Add a new marker
       addMarkers([data.image]);
-      // Remove the form data
+      // Remove the form dataå
       clearImageForm();
       //$("#upload-img").val(null);
       $("#upload-img").attr('src', '');
@@ -203,16 +203,8 @@ function edit_image() {
           marker.setPosition(latlng);
         }
       }
-      //addMarkers([data]);
 
-      if ($('#map-albums').val() == 1) {
-        markerclusterer.clearMarkers();
-        markerclusterer.addMarkers(allmarkers);
-      }
-      else {
-        show_album($('#map-albums').val());
-      }
-      markerclusterer.repaint();
+      show_album();
       // Close the modal
       $('#uploadModal').foundation('reveal', 'close');
       // Stop the spinner
@@ -289,26 +281,61 @@ function openImageEditForm(image) {
   $("#edit-img-btn").on('click', edit_image);
 }
 
-function show_album(id) {
+function show_album() {
+  var id = $('#map-albums').val();
+  console.log('album value');
+  console.log(id);
   markerclusterer.clearMarkers();
-  $.ajax({
-    type: "POST",
-    url: "get_album",
-    data: {'a_id':id},
-    success: function(data) {
-      var images = data.images;
-      for (var i = 0; i < allmarkers.length; i++) {
-        var marker = allmarkers[i];
-        var check = parseInt(marker.photoid);
-        if (images.indexOf(check) > -1) {
-          markerclusterer.addMarker(marker);
+
+  if (id == 1) {
+    markerclusterer.addMarkers(allmarkers);
+    markerclusterer.repaint();
+  }
+  else {
+    console.log('not all images');
+    $.ajax({
+      type: "POST",
+      url: "get_album",
+      data: {'a_id':id},
+      success: function(data) {
+        var images = data.images;
+        for (var i = 0; i < allmarkers.length; i++) {
+          var marker = allmarkers[i];
+          var check = parseInt(marker.photoid);
+          if (images.indexOf(check) > -1) {
+            console.log(marker);
+            markerclusterer.addMarker(marker);
+            console.log(markerclusterer.getMarkers().length)
+          }
         }
+        console.log('done adding correct ones');
+        console.log(markerclusterer);
+        markerclusterer.repaint();
+        var markers = markerclusterer.getMarkers();
+
+        if (markers.length > 0) {
+          console.log('resizing');
+          var bounds = new google.maps.LatLngBounds();
+          for (var i = 0; i < markers.length; ++i) {
+            var marker = markers[i];
+            bounds.extend(marker.position);
+          }
+          map.fitBounds(bounds);
+          var listener = google.maps.event.addListenerOnce(map, "idle", function() {
+              if (map.getZoom() > 8) map.setZoom(8);
+          });
+        }
+        else {
+          map.setCenter(new google.maps.LatLng(40, -79));
+          map.setZoom(8);
+        }
+      },
+      error: function(data) {
+        console.log(data);
       }
-    },
-    error: function(data) {
-      console.log(data);
-    }
-  });
+    });
+  }
+
 }
 
 // Maps functions
@@ -504,14 +531,7 @@ function initialize() {
   });
 
   $("#map-albums").change(function() {
-    var id = $("#map-albums").val();
-    if (id == 1) {
-      markerclusterer.clearMarkers();
-      markerclusterer.addMarkers(allmarkers);
-    }
-    else {
-      show_album(id);
-    }
+    show_album();
   });
 }
 
@@ -565,8 +585,10 @@ function showImageInfoWindow(map, marker) {
 }
 
 function addMarkers(json) {
+  console.log(json);
   // adds each image object in the json object to the markerclusterer
   for (var i = 0; i < json.length; i++) {
+    console.log('adding single new photo');
     var image = json[i];
     var latitude = image['lat'];
     var longitude = image['lng'];
@@ -576,7 +598,6 @@ function addMarkers(json) {
     // creates new marker
     var marker = new google.maps.Marker({
       position:latlng,
-      map:map,
       icon: 'static/img/marker_picture_small.png'
     });
 
@@ -587,6 +608,7 @@ function addMarkers(json) {
   }
 
   for (var i = 0; i < json.length; ++i) {
+    console.log('adding bindings');
     var markers = allmarkers;
     var key = imagecount;
 
@@ -610,24 +632,18 @@ function addMarkers(json) {
     }(key));
     imagecount++;
   }
-
-  var album = $('#map-albums').val();
-
-  if (album == 1) {
-    markerclusterer.clearMarkers();
-    markerclusterer.addMarkers(allmarkers);
-  }
-  else {
-    show_album(album);
-  }
-
-  var markers = markerclusterer.getMarkers();
+  console.log('show album');
+  show_album();
+  console.log('get markers');
+  var markers2 = markerclusterer.getMarkers();
+  console.log(markers2.length);
 
   // rezooms based on what was added
-  if (markers.length > 0) {
+  if (markers2.length > 0) {
+    console.log('resizing');
     var bounds = new google.maps.LatLngBounds();
     for (var i = 0; i < markers.length; ++i) {
-      var marker = markers[i];
+      var marker = markers2[i];
       bounds.extend(marker.position);
     }
     map.fitBounds(bounds);

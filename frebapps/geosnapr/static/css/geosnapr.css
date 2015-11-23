@@ -193,15 +193,23 @@ fieldset.hidden {
   min-width: 30vw;
 }
 
+.gm-style-iw {
+   overflow: hidden !important;
+   line-height: 1.35;
+   white-space: nowrap;
+}
+
 .thumbnail-container {
   min-width: 300px;
   max-width: 300px;
-  overflow: hidden;
+  white-space: nowrap;
+  overflow: hidden !important;;
 }
 
 .thumbnail {
   min-width: 300px;
   max-width: 300px;
+  overflow: hidden !important;
 }
 
 .slick-prev:after {

@@ -238,8 +238,8 @@ InfoBubble.prototype.buildDom_ = function() {
 
   // Content area
   var contentContainer = this.contentContainer_ = document.createElement('DIV');
-  contentContainer.style['overflowX'] = 'auto';
-  contentContainer.style['overflowY'] = 'auto';
+  contentContainer.style['overflowX'] = 'hidden';
+  contentContainer.style['overflowY'] = 'hidden';
   contentContainer.style['cursor'] = 'default';
   contentContainer.style['clear'] = 'both';
   contentContainer.style['position'] = 'relative';
@@ -906,7 +906,7 @@ InfoBubble.prototype.draw = function() {
   }
 
   var left = pos.x - (width * arrowPosition);
-  
+
   top -= this.get('pixelOffset')[1];  // Add offset Y.
   left -= this.get('pixelOffset')[0]; // Add offset X.
   this.bubble_.style['top'] = this.px(top);

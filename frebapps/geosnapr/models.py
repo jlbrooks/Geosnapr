@@ -223,9 +223,6 @@ class Album(models.Model):
         if not name:
             name = 'Untitled Album'
 
-        if name == 'All Images':
-            name = 'All Images2'
-
         # Make sure the user exists
         try:
             user = User.objects.get(username=username)

@@ -272,6 +272,19 @@ function initialize() {
       }
   });
 
+  // creates objects for image edit location search
+  var imageeditinput = (document.getElementById('imageeditlocation'));
+  var imageeditautocomplete = new google.maps.places.Autocomplete(imageeditinput);
+
+  imageautocomplete.addListener('place_changed', function() {
+    var place = imageeditautocomplete.getPlace();
+    if (place.geometry) {
+      var latform = document.getElementById("autoeditlat");
+      var lngform = document.getElementById("autoeditlng");
+      latform.value = place.geometry.location.lat();
+      lngform.value = place.geometry.location.lng();
+    };
+  });
 
   google.maps.event.addListener(markerclusterer, 'mouseover', function(cluster) {
     var markers = cluster.getMarkers();
@@ -394,6 +407,12 @@ function showImageInfoWindow(map, marker) {
     // will do server side after
     content: htmlcontent
   });
+
+  $("#img-edit-form-show").on("click", function() {
+  $("#img-edit-form").show();
+  $("#img-edit-form-show").hide();
+  });
+
   infowindow.open(map, marker);
   marker.infoWindow = infowindow;
 }

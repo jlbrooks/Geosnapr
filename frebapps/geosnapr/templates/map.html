@@ -54,14 +54,30 @@
 
 <!-- Pop-up modals -->
 
-<div id="photo-modal" class="reveal-modal tiny" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+<div id="photo-modal" class="reveal-modal xlarge" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
   <div class="row">
     <div class="columns large-9">
       <img id="photo-modal-link" src="" class="image-fit">
     </div>
     <div class="columns large-3">
       <p id="photo-modal-comment"></p>
-      <input type="text">
+
+      <fieldset class="hidden" id="img-edit-form">
+        <label for="location">Where was this photo taken?
+          <input type="text" id="imageeditlocation" name="location" placeholder="Location"/>
+        </label>
+        <input type="hidden" id="autoeditlat" name="lat" placeholder="Latitude"/>
+        <input type="hidden" id="autoeditlng" name="lng" placeholder="Longitude"/>
+        <label for="upload-album">Choose an album for your photo:
+          {% include "__album_select.html" with id="upload-album" %}
+        </label>
+        <label for="caption">Change the caption:
+          <input type="text" name="caption" id="editcaption" placeholder="Caption"/>
+        </label>
+        <button type="submit" class="button" id="edit-img-btn">Edit Image!</button>
+      </fieldset>
+
+      <a href="#" id="img-edit-form-show">Edit Photo Information</a>
     </div>
   </div>
 </div>

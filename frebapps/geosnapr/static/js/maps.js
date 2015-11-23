@@ -470,10 +470,6 @@ function showImageInfoWindow(map, marker) {
     <img border="0" class="thumbnail" src="` + marker.image.image + `">
     <p>` + marker.image.caption + `</p>
   </div>`;
-  var infowindow = new google.maps.InfoWindow({
-    // will do server side after
-    content: htmlcontent
-  });
 
   var infobubble = new InfoBubble({
     maxWidth: 300,
@@ -481,17 +477,12 @@ function showImageInfoWindow(map, marker) {
     content: htmlcontent,
     disableAutoPan: true,
     hideCloseButton: true,
-    borderWidth: 0
-  })
-
-  // adjusts the css for the infowindows
-  google.maps.event.addListener(infowindow, 'domready', function() {
-    var iwOuter = $('.gm-style-iw');
-    var iwCloseBtn = iwOuter.next();
-    iwCloseBtn.css({'display':'none'});
+    borderWidth: 0,
+    padding: 0
   })
 
   infobubble.open(map, marker);
+
   marker.infoWindow = infobubble;
 }
 

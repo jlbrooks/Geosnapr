@@ -175,9 +175,8 @@ fieldset.hidden {
 
 .thumbnail {
   position: relative;
-  width: 30em;
+  width: 300px;
   height: auto;
-  z-index: 1000000;
 }
 
 .top-margin {
@@ -195,10 +194,8 @@ fieldset.hidden {
 }
 
 .thumbnail-container {
-  max-height: 20em;
-  max-width: 20em;
-  min-height: 20em;
-  min-width: 20em;
+  max-height: 300px;
+  max-width: 300px;
   overflow: hidden;
 }
 

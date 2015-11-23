@@ -171,8 +171,12 @@ function upload_image(event) {
 
 function edit_image() {
   event.preventDefault();
+  var e = new Error('dummy');
+  console.log(e.stack);
+  console.log("run edit_image");
   var form = $("#img-edit-form");
   var formData = new FormData(document.getElementById("img-edit-form"));
+  console.log(formData);
 
   // Set up the loading spinner
   var opts = {
@@ -192,7 +196,7 @@ function edit_image() {
     processData: false,
     contentType: false,
     success: function(data) {
-      addMarkers([data.image]);
+      show_album($('#map-albums').val());
       // Close the modal
       $('#uploadModal').foundation('reveal', 'close');
       // Stop the spinner
@@ -200,6 +204,7 @@ function edit_image() {
       alertSuccess(data.message);
     },
     error: function(data) {
+      spinner.stop();
       console.log(data);
     }
   })
@@ -249,6 +254,7 @@ function create_album() {
 }
 
 function openImageEditForm(image) {
+  console.log(image);
   $("#img-edit-form-hidden").hide();
   $("#img-edit-form-show").show();
   $("#img-edit-form-show").on("click", function() {
@@ -259,8 +265,10 @@ function openImageEditForm(image) {
   $('#photo-modal-comment').text(image.caption);
   $("#editcaption").val(image.caption);
   $("#img-id").val(image.id);
+  $("#edit-album").val($('#map-albums').val());
   geocodeForm(image.lat, image.lng, $("#autoeditlat"), $("#autoeditlng"), $('#imageeditlocation'));
   $('#photo-modal').foundation('reveal','open');
+  $("#edit-img-btn").unbind('click');
   $("#edit-img-btn").on('click', edit_image);
 }
 
@@ -271,7 +279,14 @@ function show_album(id) {
     url: "get_album",
     data: {'a_id':id},
     success: function(data) {
-      console.log(data);
+      var images = data.images;
+      for (var i = 0; i < allmarkers.length; i++) {
+        var marker = allmarkers[i];
+        var check = parseInt(marker.photoid);
+        if (images.indexOf(check) > -1) {
+          markerclusterer.addMarker(marker);
+        }
+      }
     },
     error: function(data) {
       console.log(data);
@@ -540,6 +555,7 @@ function addMarkers(json) {
     var latitude = image['lat'];
     var longitude = image['lng'];
     var id = image['id'];
+
     var latlng = new google.maps.LatLng({lat:latitude, lng:longitude});
     // creates new marker
     var marker = new google.maps.Marker({
@@ -550,6 +566,7 @@ function addMarkers(json) {
 
     marker.image = image;
     marker.photoid = id;
+
     allmarkers.push(marker);
   }
 

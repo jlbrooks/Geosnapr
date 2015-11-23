@@ -58,28 +58,28 @@
 
 <div id="photo-modal" class="reveal-modal xlarge" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
   <div class="row">
-    <div class="columns large-9">
+    <div class="columns large-8">
       <img id="photo-modal-link" src="" class="image-fit">
     </div>
-    <div class="columns large-3">
+    <div class="columns large-4">
       <p id="photo-modal-comment"></p>
 
       <form id="img-edit-form" action="{% url 'edit_image' %}"method="POST">
-      <fieldset class="hidden" id="img-edit-form-hidden">
-        <label for="location">Where was this photo taken?
-          <input type="text" id="imageeditlocation" name="location" placeholder="Location"/>
-        </label>
-        <input type="hidden" id="autoeditlat" name="lat"/>
-        <input type="hidden" id="autoeditlng" name="lng"/>
-        <input type="hidden" id="img-id" name="img_id"/>
-        <label for="upload-album">Choose an album for your photo:
-          {% include "__album_select.html" with id="upload-album" %}
-        </label>
-        <label for="caption">Change the caption:
-          <input type="text" name="caption" id="editcaption" placeholder="Caption"/>
-        </label>
-        <button type="submit" class="button" id="edit-img-btn">Edit Image!</button>
-      </fieldset>
+        <fieldset class="hidden" id="img-edit-form-hidden">
+          <label for="location">Where was this photo taken?
+            <input type="text" id="imageeditlocation" name="location" placeholder="Location"/>
+          </label>
+          <input type="hidden" id="autoeditlat" name="lat"/>
+          <input type="hidden" id="autoeditlng" name="lng"/>
+          <input type="hidden" id="img-id" name="img_id"/>
+          <label for="upload-album">Choose an album for your photo:
+            {% include "__album_select.html" with id="upload-album" %}
+          </label>
+          <label for="caption">Change the caption:
+            <input type="text" name="caption" id="editcaption" placeholder="Caption"/>
+          </label>
+          <button type="submit" class="button" id="edit-img-btn">Edit Image!</button>
+        </fieldset>
       </form>
 
       <a href="#" id="img-edit-form-show">Edit Photo Information</a>

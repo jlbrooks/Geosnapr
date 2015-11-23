@@ -501,6 +501,8 @@ function addMarkers(json) {
     var image = json[i];
     var latitude = image['lat'];
     var longitude = image['lng'];
+    var id = image['id'];
+    console.log(image['id']);
     var latlng = new google.maps.LatLng({lat:latitude, lng:longitude});
     // creates new marker
     var marker = new google.maps.Marker({
@@ -510,7 +512,7 @@ function addMarkers(json) {
     });
 
     marker.image = image;
-    marker.photoid = 0;
+    marker.photoid = id;
     markerclusterer.addMarker(marker);
     var markers = markerclusterer.getMarkers();
 
@@ -531,20 +533,19 @@ function addMarkers(json) {
     google.maps.event.addListener(markers[key],'click', function(key2) {
       return function() {
         var image = markers[key2].image;
-        $("#img-edit-form").hide();
+        $("#img-edit-form-hidden").hide();
         $("#img-edit-form-show").show();
         $("#img-edit-form-show").on("click", function() {
-          $("#img-edit-form").show();
+          $("#img-edit-form-hidden").show();
           $("#img-edit-form-show").hide();
         });
         $('#photo-modal-link').attr("src",image.image);
-        $('#photo-modal-comment').text(image.caption);
         $("#editcaption").val(image.caption);
         geocodeForm(image.lat, image.lng, $("#autoeditlat"), $("#autoeditlng"), $('#imageeditlocation'));
+        $("img-id").val(markers[key2].id);
         $('#photo-modal').foundation('reveal','open');
       }
     }(key));
-
     imagecount++;
   }
 

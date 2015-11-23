@@ -429,9 +429,7 @@ function initialize() {
 
     for (var i = 0; i < markers.length; ++i) {
       var marker = markers[i];
-      var id = "albumphotoid" + i.toString();
-      console.log(id);
-      var content = `<div id="albumphotoid` + id + `"><div class="row">
+      var content = `<div data-id="` + i + `"><div class="row">
 <div class="columns large-8">
 <img src="`+ marker.image.image + `"/></div>
 <div class="columns large-4">
@@ -440,15 +438,13 @@ function initialize() {
 </div></div>`;
       htmlcontent = htmlcontent + content;
 
-    var match = '#' + id;
-    $(match).on('click', function() {
-      console.log("hello");
-    })
-
     }
     $('#albumcarousel').empty();
+    $('#albumcarousel').on('click', '.slick-slide', function () {
+      var id = $(this).attr('data-id');
+      openImageEditForm(markers[id].image);
+    });
     $('#albumcarousel').append(htmlcontent);
-    //$('#albumcarousel').on('click', '.slick-slide', function (){openImageEditForm(marker.image);});
     $('#album-modal').foundation('reveal','open');
   });
 }

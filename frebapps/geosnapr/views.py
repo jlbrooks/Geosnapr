@@ -156,7 +156,7 @@ def upload(request):
     try:
         albums = [int(s) for s in albums_str.split(',')]
     except:
-        albums = None
+        albums = []
 
     # Try to create the image
     image,errors = Image.create(username=user.username, 
@@ -189,7 +189,7 @@ def edit_image(request):
     try:
         albums = [int(s) for s in albums_str.split(',')]
     except:
-        albums = None
+        albums = []
     username = request.user.username
 
     image,errors = Image.update(im_id=im_id,

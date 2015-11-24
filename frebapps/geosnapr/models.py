@@ -127,7 +127,7 @@ class Image(models.Model):
         return [album.id for album in self.album_set.all()]
 
     @classmethod
-    def create(cls, username, image, lat, lng, caption, albums=None):
+    def create(cls, username, image, lat, lng, caption, albums=[]):
         err = []
 
         # Image must exist
@@ -186,7 +186,7 @@ class Image(models.Model):
         return pic,None
 
     @classmethod
-    def update(cls, im_id, username, lat, lng, caption, albums=None):
+    def update(cls, im_id, username, lat, lng, caption, albums=[]):
         err = []
 
         # Image must exist

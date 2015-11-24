@@ -200,6 +200,7 @@ function edit_image() {
           marker.image.caption = data.image.caption;
           marker.image.lat = data.image.lat;
           marker.image.lng = data.image.lng;
+          marker.image.albums = data.image.albums;
           var latlng = new google.maps.LatLng({lat:data.image.lat, lng:data.image.lng});
           marker.setPosition(latlng);
         }

@@ -274,7 +274,7 @@ function openImageEditForm(image) {
   $('#photo-modal-comment').text(image.caption);
   $("#editcaption").val(image.caption);
   $("#img-id").val(image.id);
-  $("#edit-album").val($('#map-albums').val());
+  $("#edit-album").val(image.albums);
   geocodeForm(image.lat, image.lng, $("#autoeditlat"), $("#autoeditlng"), $('#imageeditlocation'));
 
   $('#photo-modal').foundation('reveal','open');
@@ -597,6 +597,7 @@ function addMarkers(json) {
     var latitude = image['lat'];
     var longitude = image['lng'];
     var id = image['id'];
+    var albums = image['albums'];
 
     var latlng = new google.maps.LatLng({lat:latitude, lng:longitude});
     // creates new marker

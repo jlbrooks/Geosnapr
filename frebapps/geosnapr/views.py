@@ -151,10 +151,16 @@ def upload(request):
     lng = request.POST.get('lng')
     caption = request.POST.get('caption')
     user = request.user
-    album_id = request.POST.get('upload-album')
+    albums_str = request.POST.get('upload-album')
+    # Parse albums string into array of ints
+    try:
+        albums = [int(s) for s in albums_str.split(',')]
+    except:
+        albums = None
 
     # Try to create the image
-    image,errors = Image.create(username=user.username, image=pic, lat=lat, lng=lng, caption=caption)
+    image,errors = Image.create(username=user.username, 
+        image=pic, lat=lat, lng=lng, caption=caption, albums=albums)
     context['image'] = image
 
     if errors:
@@ -162,18 +168,6 @@ def upload(request):
         errs.extend(errors)
     else:
         context['message'] = "Image successfully uploaded!"
-        # Add the image to the default album
-        default_album = Album.get_or_create_default_for_user(username=user.username)
-        default_album.images.add(image)
-        default_album.save()
-        # Add the image to the selected album if it's not default
-        try:
-            if album_id != default_album.id:
-                album = Album.objects.get(id=album_id)
-                album.images.add(image)
-                album.save()
-        except:
-            pass
 
     return render(request, 'json/upload_response.json', context, content_type="application/json")
 
@@ -190,21 +184,16 @@ def edit_image(request):
     lng = request.POST.get('lng')
     caption = request.POST.get('caption')
     im_id = request.POST.get('img_id')
-    album_id = request.POST.get('edit-album')
+    albums_str = request.POST.get('edit-album')
+    # Parse albums string into array of ints
+    try:
+        albums = [int(s) for s in albums_str.split(',')]
+    except:
+        albums = None
     username = request.user.username
 
-    albums = Album.objects.filter(user=request.user)
-    for a in albums:
-        if (a.name != "All Images"):
-            if (a.images.filter(pk=im_id).exists()):
-                delete = a.images.get(pk=im_id)
-                a.images.remove(delete)
-
-    targetalbum = albums.get(id=album_id)
-    i = Image.objects.get(id=im_id)
-    targetalbum.images.add(i)
-
-    image,errors = Image.update(im_id=im_id, username=username, lat=lat, lng=lng, caption=caption)
+    image,errors = Image.update(im_id=im_id,
+        username=username, lat=lat, lng=lng, caption=caption, albums=albums)
     context['image'] = image
 
     if errors:

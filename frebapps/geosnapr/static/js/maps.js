@@ -126,6 +126,7 @@ function upload_image(event) {
   event.preventDefault();
   var form = $("#upload-img-form");
   var formData = new FormData(document.getElementById("upload-img-form"));
+  formData.append("upload-album", $("#upload-album").val());
   // Are we in the instagram tab?
   if ($("#panel2").attr('aria-hidden') == 'false') {
     formData.append('external', true);
@@ -789,6 +790,16 @@ $(document).ready(function () {
 
       // Edit profile submit
       $("#edit-profile-form").on('valid.fndtn.abide', edit_profile);
+
+      // Multiple select
+      $("#upload-album").select2({
+        width: "100%"
+      });
+
+      // Multiple select
+      $("#edit-album").select2({
+        width: "100%"
+      });
     });
 
     // Submit image form
@@ -812,4 +823,7 @@ $(document).ready(function () {
     });
 
     $('#insta-images').on('click', '.slick-slide', toggleSelectedImage);
+
+    $("#map-albums").select2();
+
 });

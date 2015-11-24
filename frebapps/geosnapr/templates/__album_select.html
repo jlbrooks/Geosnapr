@@ -1,5 +1,7 @@
-<select id="{{id}}" name="{{ id }}">
-    {% for album in albums %}
+<select id="{{id}}" name="{{ id }}" {% if multiple %}multiple{% endif %}>
+  {% for album in albums %}
+    {% if all_images or album.name != "All Images" %}
       <option value="{{ album.id }}">{{ album.name }}</option>
-    {% endfor %}
+    {% endif %}
+  {% endfor %}
 </select>

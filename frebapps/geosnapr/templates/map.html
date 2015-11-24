@@ -7,6 +7,7 @@
 {% block resources %}
 <link href="{% static "slick/slick.css" %}" rel="stylesheet" type='text/css'>
 <link href="{% static "slick/slick-theme.css" %}" rel="stylesheet" type='text/css'>
+<link href="{% static "select2/css/select2.min.css" %}" rel="stylesheet" type='text/css'>
 <script src="{% static "infobubble/infobubble.js" %}"></script>
 <script src="{% static "js/image.js" %}"></script>
 <script src="{% static "js/maps.js" %}"></script>
@@ -26,7 +27,7 @@
       <input type="text" id="locationsearch" placeholder="Search..."/>
   </div>
   <div class="columns large-2 large-offset-2 top-margin-small end">
-    {% include "__album_select.html" with id="map-albums" %}
+    {% include "__album_select.html" with id="map-albums" all_images=True %}
   </div>
 </div>
 
@@ -72,8 +73,8 @@
           <input type="hidden" id="autoeditlat" name="lat"/>
           <input type="hidden" id="autoeditlng" name="lng"/>
           <input type="hidden" id="img-id" name="img_id"/>
-          <label for="upload-album">Choose an album for your photo:
-            {% include "__album_select.html" with id="edit-album" %}
+          <label for="upload-album">Choose albums for your photo:
+            {% include "__album_select.html" with id="edit-album" multiple=True %}
           </label>
           <label for="caption">Change the caption:
             <input type="text" name="caption" id="editcaption" placeholder="Caption"/>
@@ -135,17 +136,28 @@
 
         <div class="columns large-6">
           <fieldset class="hidden" id="img-loc-form">
-            <label for="location">Where was this photo taken?
-              <input type="text" id="imagelocation" name="location" placeholder="Location"/>
-            </label>
+            <div class="row">
+              <div class="columns large-12">
+                <label for="location">Where was this photo taken?
+                  <input type="text" id="imagelocation" name="location" placeholder="Location"/>
+                </label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="columns large-12">
+                <label for="upload-album">Choose albums for your photo:</label>
+                {% include "__album_select.html" with id="upload-album" multiple=True %}
+              </div>
+            </div>
+            <div class="row">
+              <div class="columns large-12">
+                <label for="caption">Caption your new photo!
+                  <input type="text" name="caption" id="caption" placeholder="Caption"/>
+                </label>
+              </div>
+            </div>
             <input type="hidden" id="autolat" name="lat" placeholder="Latitude"/>
             <input type="hidden" id="autolng" name="lng" placeholder="Longitude"/>
-            <label for="upload-album">Choose an album for your photo:
-              {% include "__album_select.html" with id="upload-album" %}
-            </label>
-            <label for="caption">Caption your new photo!
-              <input type="text" name="caption" id="caption" placeholder="Caption"/>
-            </label>
             <button type="submit" id="upload-img-btn">Add Image!</button>
           </fieldset>
         </div>
@@ -249,4 +261,5 @@
 
 <script type="text/javascript" src="{% static "slick/slick.js" %}"></script>
 <script type="text/javascript" src="{% static "spin/spin.min.js" %}"></script>
+<script type="text/javascript" src="{% static "select2/js/select2.min.js" %}"></script>
 {% endblock content %}

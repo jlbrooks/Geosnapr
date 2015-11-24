@@ -61,7 +61,7 @@ class Profile(models.Model):
         return profile,None
 
     @classmethod
-    def update(cls, username, email, password, first_name, last_name):
+    def update(cls, username, email, password, first_name, last_name, albums=None):
         err = []
 
         try:
@@ -123,8 +123,11 @@ class Image(models.Model):
 
     caption = models.CharField(max_length=100)
 
+    def album_ids(self):
+        return [album.id for album in self.album_set.all()]
+
     @classmethod
-    def create(cls, username, image, lat, lng, caption):
+    def create(cls, username, image, lat, lng, caption, albums=None):
         err = []
 
         # Image must exist
@@ -166,10 +169,24 @@ class Image(models.Model):
         album.images.add(pic)
         album.save()
 
+        # Add any other albums requested:
+        print(type(albums))
+        for album_id in albums:
+            try:
+                album = Album.objects.get(id=album_id)
+                print(album)
+                if pic not in album.images.all():
+                    print("adding")
+                    album.images.add(pic)
+                    album.save()
+            except:
+                print("Failed get")
+                pass
+
         return pic,None
 
     @classmethod
-    def update(cls, im_id, username, lat, lng, caption):
+    def update(cls, im_id, username, lat, lng, caption, albums=None):
         err = []
 
         # Image must exist
@@ -200,6 +217,29 @@ class Image(models.Model):
 
         # Update caption
         image.caption = caption
+
+        # Find all albums that this image is currently in
+        for album in image.album_set.all():
+            # Don't remove if we would add back
+            if album.id not in albums:
+                print(type(album.id))
+                # Don't remove from the default album
+                if album.name != settings.DEFAULT_ALBUM_NAME:
+                    album.images.remove(image)
+                    album.save()
+            else:
+                # Remove this from the list of albums to add
+                albums.remove(album.id)
+
+        # Add any new albums
+        for album_id in albums:
+            try:
+                album = Album.objects.get(id=album_id)
+                album.images.add(image)
+                album.save()
+            except:
+                # Just ignore bad album ids
+                pass
 
         # Save the image
         image.save()

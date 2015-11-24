@@ -328,7 +328,8 @@ def get_insta_images(request):
                     img['lat'] = media.location.point.latitude
                     img['lng'] = media.location.point.longitude
                 if hasattr(media, 'caption'):
-                    img['caption'] = media.caption.text
+                    if hasattr(media.caption, 'text'):
+                        img['caption'] = media.caption.text
                 photos.append(img)
     except InstagramClientError as e:
         data['error'] = e.error_message

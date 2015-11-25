@@ -1658,10 +1658,6 @@ span.error, small.error {
   background: #f04124;
   color: #FFFFFF; }
 
-.error input,
-.error textarea,
-.error select {
-  margin-bottom: 0; }
 .error input[type="checkbox"],
 .error input[type="radio"] {
   margin-bottom: 1rem; }

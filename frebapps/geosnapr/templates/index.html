@@ -35,23 +35,25 @@
   </div>
 
   <div class="overlay" id="overlay">
-    <div class="row full-width no-pad-left no-pad-right">
-      <div class="columns large-2 large-offset-10 medium-2 medium-offset-10 small-2 small-offset-10 no-pad-left no-pad-right sign-up-top-margin">
+    <div class="row">
+      <div class="columns large-2 large-offset-10 medium-2 medium-offset-10 small-4 small-offset-8 sign-up-top-margin">
         <a href="#" data-reveal-id="registerModal" class="button radius">Sign Up</a>
       </div>
     </div>
 
     <div class="row">
-      <div class="columns large-6 large-offset-4 medium-8 medium-offset-2 small-12">
-        <h4 class="josefin font-large">GeoSnapr</h1>
-        <h6 class="josefin font-small">Your photos. Your world.</h6>
-      </div>
-    </div>
+      <div class="columns large-6 large-offset-3 medium-8 medium-offset-2 small-12 panel">
+        <h4 class="josefin-black font-large">GeoSnapr</h1>
+        <h6 class="josefin-black font-small">Your photos. Your world.</h6>
 
-    <div class="row">
-      <div class="columns large-4 large-offset-4 medium-8 medium-offset-2 small-12" id="login-form">
         <form action="{% url 'login' %}" method="POST">
           {% csrf_token %}
+          {% if error %}
+          <div data-alert class="alert-box alert radius">
+            Incorrect login credentials.
+            <a href="#" class="close">&times;</a>
+          </div>
+          {% endif %}
           <input type="text" name="username" placeholder="Username" required/>
           <input type="password" name="password" placeholder="Password" required/>
           <button type="submit" class="button radius">Log In</button>
@@ -122,16 +124,16 @@
 
   <div id="registerModal" class="reveal-modal xlarge" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
     <h3 id="modalTitle">Register for an account:</h3>
-    <form data-abide action="{% url 'register' %}" method="POST">
-      {% csrf_token %}
-      <input type="text" class="registerInput" name="first_name" placeholder="First Name" required/>
-      <input type="text" class="registerInput" name="last_name" placeholder="Last Name" required/>
-      <input type="text" class="registerInput" name="username" placeholder="Username" required/>
-      <input type="email" class="registerInput" name="email" placeholder="Email" required/>
-      <input type="password" class="registerInput" name="password" placeholder="Password" required/>
-      <input type="password" class="registerInput" name="confirm_password" placeholder="Confirm Password" required/>
-      <button type="submit" class="button">Register</button>
-    </form>
+      <form data-abide action="{% url 'register' %}" method="POST">
+        {% csrf_token %}
+        <input type="text" name="first_name" placeholder="First Name" required/>
+        <input type="text" name="last_name" placeholder="Last Name" required/>
+        <input type="text" name="username" placeholder="Username" required/>
+        <input type="email" name="email" placeholder="Email" required/>
+        <input type="password" name="password" placeholder="Password" required/>
+        <input type="password" name="confirm_password" placeholder="Confirm Password" required/>
+        <button type="submit" class="button">Register</button>
+      </form>
     <a class="close-reveal-modal" aria-label="Close">&#215;</a>
   </div>
 

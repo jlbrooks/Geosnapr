@@ -35,7 +35,7 @@ def login_view(request):
     if user is not None:
         login(request,user)
     else:
-        return redirect(index)
+        return render(request, 'index.html', {'error':'error'})
 
     return redirect(index)
 
@@ -159,7 +159,7 @@ def upload(request):
         albums = []
 
     # Try to create the image
-    image,errors = Image.create(username=user.username, 
+    image,errors = Image.create(username=user.username,
         image=pic, lat=lat, lng=lng, caption=caption, albums=albums)
     context['image'] = image
 

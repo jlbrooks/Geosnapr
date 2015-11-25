@@ -1,5 +1,14 @@
 /* Login Page CSS Styling */
 
+.josefin {
+  font-family: 'Josefin Sans', sans-serif;
+  color: white;
+}
+
+.josefin-black {
+  font-family: 'Josefin Sans', sans-serif;
+}
+
 .viewport { /* fills viewport of the page */
   min-height: 100vh;
   max-height: 100vh;
@@ -8,43 +17,29 @@
   overflow: hidden;
 }
 
-.category {
-  height: 5em;
+.carousel-back { /* sends the carousel to the background */
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
 }
 
-.categorycontainer {
-  height: 75vh;
+.overlay { /* overlays the forms onto the carousel */
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 1;
 }
 
 .accordion {
   position: absolute;
-  padding: 0;
-  margin: 0;
   bottom: 0;
   z-index: 2;
-}
-.accheader {
-  padding: 0;
-}
-
-p {
-  font-family: 'Josefin Sans', sans-serif;
-  color: white;
-}
-
-h3 {
-  border: 0;
-  padding: 0;
-  margin: 0;
-}
-
-.acccontent {
-  padding: 0;
-  margin: 0;
 }
 
 .accheadertitle {
   text-align:center;
+  margin: 0;
 }
 
 .acc1 {
@@ -66,35 +61,21 @@ h3 {
   background-color: #ffab00;
 }
 
-#category1 {
-  width: 100vw;
-  background-color: #2962FF;
-  color: ##2962FF;
+.registerInput {
+  color: #FFFF00;
+  background-color: #FFFF00;
+  width: 1000000px;
+  margin: 100px;
+  padding: 100px;
+  border: 100px;
 }
 
 
-#categorycontainer1 {
-  width: 100vw;
-  min-height: 50vh;
-}
-.bottomfooter {
-  position: absolute;
-  bottom: 0;
-}
 
-.carousel-back { /* sends the carousel to the background */
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: -1;
-}
 
-.overlay { /* overlays the forms onto the carousel */
-  position: relative;
-  top: 0;
-  left: 0;
-  z-index: 1;
-}
+
+
+
 
 .relative-position {
   position: relative;
@@ -173,11 +154,7 @@ padding-left: 0;
     font-size: 0.8125rem;
 }
 
-.josefin {
-  font-family: 'Josefin Sans', sans-serif;
-  color: white;
-  /*text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;*/
-}
+
 
 .back {
   position: relative;

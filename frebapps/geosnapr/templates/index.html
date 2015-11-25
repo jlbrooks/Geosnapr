@@ -10,8 +10,10 @@
 <link href='https://fonts.googleapis.com/css?family=Josefin+Sans:700,400' rel='stylesheet' type='text/css'>
 <link href="{% static "slick/slick.css" %}" rel="stylesheet" type='text/css'>
 <link href="{% static "slick/slick-theme.css" %}" rel="stylesheet" type='text/css'>
-<script src="{% static "js/index.js" %}"></script>
+
+<script type="text/javascript" src="{% static "slick/slick.js" %}"></script>
 <script src="{% static "jqueryui/jquery-ui.js" %}"></script>
+<script src="{% static "js/index.js" %}"></script>
 {% endblock resources %}
 
 {% block content %}
@@ -58,36 +60,6 @@
     </div>
   </div>
 
-  <div id="registerModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-    <h3 id="modalTitle">Register for an account:</h3>
-    <form data-abide action="{% url 'register' %}" method="POST">
-      {% csrf_token %}
-      <input type="text" name="first_name" placeholder="First Name" required/>
-      <input type="text" name="last_name" placeholder="Last Name" required/>
-      <input type="text" name="username" placeholder="Username" required/>
-      <input type="email" name="email" placeholder="Email" required/>
-      <input type="password" name="password" placeholder="Password" required/>
-      <input type="password" name="confirm_password" placeholder="Confirm Password" required/>
-      <button type="submit" class="button">Register</button>
-    </form>
-    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-  </div>
-
-  <div id="teamModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-    <h3 id="teamModal">The Team:</h3>
-    <form data-abide action="{% url 'register' %}" method="POST">
-      {% csrf_token %}
-      <input type="text" name="first_name" placeholder="First Name" required/>
-      <input type="text" name="last_name" placeholder="Last Name" required/>
-      <input type="text" name="username" placeholder="Username" required/>
-      <input type="email" name="email" placeholder="Email" required/>
-      <input type="password" name="password" placeholder="Password" required/>
-      <input type="password" name="confirm_password" placeholder="Confirm Password" required/>
-      <button type="submit" class="button">Register</button>
-    </form>
-    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-  </div>
-
   <div id="accordion" class="accordion full-width">
 
     <div class="accheader acc1">
@@ -100,15 +72,15 @@
           <img src="{% static "img/map-icon.png" %}">
         </div>
         <div class="columns large-4">
-          <p>This is GeoSnapr.</p>
-          <p>It's a web based application where you can upload your photos.</p>
-          <p>Choose locations for your photos and browse them on a map.</p>
+          <p class="josefin">This is GeoSnapr.</p>
+          <p class="josefin">It's a web based application where you can upload your photos.</p>
+          <p class="josefin">Choose locations for your photos and browse them on a map.</p>
         </div>
         <div class="columns large-2">
           <img src="{% static "img/camera-icon.png" %}">
         </div>
         <div class="columns large-4">
-          <p>Share photos with your friends and family.</p>
+          <p class="josefin">Share photos with your friends and family.</p>
         </div>
       </div>
     </div>
@@ -120,10 +92,10 @@
     <div class="acccontent acc2-content">
       <div class="row">
         <div class="columns large-6">
-          <p>Something</p>
+          <p class="josefin">Something</p>
         </div>
         <div class="columns large-6">
-          <p>Something else.</p>
+          <p class="josefin">Something else.</p>
         </div>
       </div>
     </div>
@@ -136,19 +108,57 @@
     <div class="acccontent acc3-content">
       <div class="row">
         <div class="columns large-6">
-          <p>Meet the team behind GeoSnapr</p>
-          <p>Contact Us</p>
+          <p class="josefin" data-reveal-id="teamModal">Meet the team behind GeoSnapr</p>
+          <p class="josefin" data-reveal-id="contactModal">Contact Us</p>
         </div>
         <div class="columns large-6">
-          <p>Some other fine print stuff<p>
+          <p class="josefin">Some other fine print stuff<p class="josefin">
         </div>
       </div>
     </div>
-
   </div>
 
+<!-- reveal modals -->
+
+  <div id="registerModal" class="reveal-modal xlarge" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+    <h3 id="modalTitle">Register for an account:</h3>
+    <form data-abide action="{% url 'register' %}" method="POST">
+      {% csrf_token %}
+      <input type="text" class="registerInput" name="first_name" placeholder="First Name" required/>
+      <input type="text" class="registerInput" name="last_name" placeholder="Last Name" required/>
+      <input type="text" class="registerInput" name="username" placeholder="Username" required/>
+      <input type="email" class="registerInput" name="email" placeholder="Email" required/>
+      <input type="password" class="registerInput" name="password" placeholder="Password" required/>
+      <input type="password" class="registerInput" name="confirm_password" placeholder="Confirm Password" required/>
+      <button type="submit" class="button">Register</button>
+    </form>
+    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+  </div>
+
+  <div id="teamModal" class="reveal-modal xlarge" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+    <h3 id="modalTitle" class="josefin-black">The Team:</h3>
+      <div class="row">
+        <div class="columns large-6">
+          <h1 class="josefin-black">Jacob Brooks</h1>
+        </div>
+
+        <div class="columns large-6">
+          <h1 class="josefin-black">Guochen Shen</h2>
+        </div>
+      </div>
+    </form>
+    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+  </div>
+
+  <div id="contactModal" class="reveal-modal xlarge" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+    <h3 id="modalTitle" class="josefin-black">How to Contact Us:</h3>
+      <div class="row">
+        <p class="josefin-black">This is how you contact us.</p>
+      </div>
+    </form>
+    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+  </div>
 
 </div>
 
-<script type="text/javascript" src="{% static "slick/slick.js" %}"></script>
 {% endblock content %}

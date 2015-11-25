@@ -1,13 +1,9 @@
-function initialize() {
-}
-
 $(document).ready(function(){
   // Start the carousel
   $('.background-carousel').slick({
     autoplay: true,
     autoplaySpeed: 3000
   });
-
 
   $.event.special.hoverintent = {
     setup: function() {
@@ -80,9 +76,7 @@ $(document).ready(function(){
 
   $("#accordion").mouseleave(function() {
     $(this).accordion({
-      active: true,
+      active: false,
     });
   });
-
-  initialize();
 });

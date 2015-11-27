@@ -205,6 +205,26 @@ def edit_image(request):
     return render(request, 'json/upload_response.json', context, content_type="application/json")
 
 @login_required
+def delete_image(request):
+    if request.method != "POST":
+        return redirect(index)
+    im_id = request.POST.get('img_id')
+    try:
+        image = Image.objects.get(id=im_id)
+    except:
+        raise Http404("Image not found for deletion")
+
+    # Is this image associated with the current user?
+    if image.user != request.user:
+        # Consider changing to 403...
+        raise Http404()
+
+    # Delete the image
+    image.delete()
+
+    return redirect(index)
+
+@login_required
 def create_album(request):
     if request.method != 'POST':
         return redirect(main_map)

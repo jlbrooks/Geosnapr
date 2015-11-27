@@ -253,6 +253,13 @@ fieldset.hidden {
   margin-top: 1em;
 }
 
+.bottom-right-modal {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-right: 2%;
+}
+
 /* Map Display CSS */
 
 .infowindow-container {

@@ -170,6 +170,27 @@ function upload_image(event) {
   });
 }
 
+function delete_image() {
+  event.preventDefault();
+  var id = $("#img-id").val();
+  var data = {
+    "img_id": id
+  }
+
+  $.ajax({
+    type: "POST",
+    url: $(this).attr('href'),
+    data: data,
+    success: function (data) {
+      // For now, redirect to this page
+      location.reload();
+    },
+    error: function (data) {
+      console.log(data);
+    }
+  })
+}
+
 function edit_image() {
   event.preventDefault();
   var form = $("#img-edit-form");
@@ -582,7 +603,7 @@ function showImageInfoWindow(map, marker) {
     hideCloseButton: true,
     borderWidth: 0,
     padding: 0,
-    pixelOffset: [0,0]
+    pixelOffset: [0,0],
   })
 
   infobubble.open(map, marker);
@@ -828,4 +849,5 @@ $(document).ready(function () {
 
     $("#map-albums").select2();
 
+    $("#delete-image").on('click', delete_image);
 });

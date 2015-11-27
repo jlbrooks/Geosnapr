@@ -70,10 +70,22 @@
   border: 100px;
 }
 
+/* Map Page Styling */
 
+.create {
+  background-color: #00c853;
+}
+.create-content {
+  background-color: #00c853;
+}
 
+.overflow-hidden {
+  overflow: hidden
+}
 
-
+.create-margin {
+  margin-bottom: 1em;
+}
 
 
 

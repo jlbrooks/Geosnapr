@@ -87,6 +87,13 @@
   margin-bottom: 1em;
 }
 
+.user-margin {
+  margin-top: 1em;
+}
+
+#sidr {
+  display: none;
+}
 
 
 .relative-position {

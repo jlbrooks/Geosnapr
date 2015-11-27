@@ -74,4 +74,13 @@ $(document).ready(function(){
       active: false,
     });
   });
+
+  $('#sidrtoggle').sidr({
+    side: 'right'
+  });
+
+  $("#edit-profile").on("click", function() {
+    console.log('logged edit profile click');
+        $.sidr('close','sidr');
+    });
 });

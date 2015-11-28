@@ -180,13 +180,10 @@ class Image(models.Model):
         album.save()
 
         # Add any other albums requested:
-        print(type(albums))
         for album_id in albums:
             try:
                 album = Album.objects.get(id=album_id)
-                print(album)
                 if pic not in album.images.all():
-                    print("adding")
                     album.images.add(pic)
                     album.save()
             except:

@@ -2,11 +2,14 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
 from decimal import Decimal
+import uuid
 
 class Profile(models.Model):
     user = models.OneToOneField(User)
 
     insta_access_key = models.CharField(max_length=100, default='')
+
+    api_key = models.CharField(max_length=100, default='')
 
     @classmethod
     def create(cls, username, email, password, first_name, last_name):
@@ -99,6 +102,13 @@ class Profile(models.Model):
 
         return u.profile,None
 
+    def get_or_create_api_key(self):
+        if self.api_key:
+            return self.api_key
+        else:
+            self.api_key = uuid.uuid4()
+            self.save()
+            return self.api_key
 
 def upload_to(instance, filename):
     # Grab the last part of url filenames

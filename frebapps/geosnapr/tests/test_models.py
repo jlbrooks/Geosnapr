@@ -149,6 +149,24 @@ class ProfileUpdateTestCase(TestCase):
         self.assertEqual(p.user.email, 'jacobbro@andrew.cmu.edu')
         self.assertNotEqual(p.user.password, self.old_pass_hash)
 
+class ProfileAPITestCase(TestCase):
+
+    def setUp(self):
+        p,err = Profile.create(username='jlbrooks', email='test@example.com', password='test', 
+            first_name='jacob', last_name='brooks')
+        self.p = p
+
+    def test_create_new_key(self):
+        uuid = self.p.get_or_create_api_key()
+
+        self.assertNotEqual(uuid, '')
+
+    def test_get_key_same(self):
+        uuid = self.p.get_or_create_api_key()
+        uuid_2 = self.p.get_or_create_api_key()
+
+        self.assertEqual(uuid, uuid_2)
+
 
 class ImageCreateTestCase(TestCase):
 

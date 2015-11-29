@@ -33,39 +33,6 @@ def bad_format_errors(errs):
 
     return context
 
-# Refactor into image model
-def image_data(image):
-    album_ids = image.album_ids()
-    albums = []
-    for album_id in album_ids:
-        a_data = {
-            'type': 'album',
-            'id': album_id
-        }
-        albums.append(a_data)
-
-    data = {
-        'type': 'image',
-        'id': image.id,
-        'attributes': {
-            'src': image.image,
-            'lat': image.lat,
-            'lng': image.lng,
-            'caption': image.caption
-        },
-        'relationships': {
-            'user': {
-                'data': {
-                    'type': 'user',
-                    'id': image.user.id
-                }
-            },
-            'albums': albums
-        }
-    }
-
-    return data
-
 
 def api_upload(request):
     if request.method != "POST":
@@ -105,4 +72,31 @@ def api_upload(request):
     if errs:
         return JsonResponse(bad_format_errors(errs))
     else:
-        return JsonResponse(image_data(image), status=201)
+        # Create response object
+        context = {
+            'data': image.as_dict()
+        }
+        return JsonResponse(context, status=201)
+
+def get_albums(request):
+    # Retrieve API key from the GET URL
+    api_key = request.GET.get('api_key')
+
+    # Do we have a user with this api key?
+    try:
+        profile = Profile.objects.get(api_key=api_key)
+    except:
+        return JsonResponse(bad_api_key_error)
+
+    # Retrieve all albums for this user
+    albums = Album.objects.filter(user=profile.user)
+
+    # Create the response object
+
+    album_dicts = [album.as_dict() for album in albums]
+
+    data = {
+        'data': album_dicts
+    }
+
+    return JsonResponse(data)

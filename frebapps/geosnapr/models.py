@@ -136,6 +136,31 @@ class Image(models.Model):
     def album_ids(self):
         return [album.id for album in self.album_set.all()]
 
+    def as_dict(self, with_attributes, with_relationships):
+        data = {
+            'type': 'images',
+            'id': self.id,
+        }
+
+        if with_attributes:
+            data['attributes'] = {
+                'src': self.image,
+                'lat': self.lat,
+                'lng': self.lng,
+            }
+
+        if with_relationships:
+            data['relationships'] = {
+                'user': {
+                    'data': self.user.as_dict(False,False)
+                },
+                'albums': {
+                    'data': [a.as_dict(False,False) for a in self.album_set]
+                }
+            }
+
+        return data
+
     @classmethod
     def create(cls, username, image, lat, lng, caption, albums=[]):
         err = []
@@ -261,6 +286,32 @@ class Album(models.Model):
     name = models.CharField(max_length=100)
 
     images = models.ManyToManyField(Image)
+
+    def as_dict(self, with_attributes, with_relationships):
+        data = {
+            'type': 'albums',
+            'id': self.id,
+            'attributes': {
+                'name': self.name
+            }
+        }
+
+        if with_attributes:
+            data['attributes'] = {
+                'name': self.name
+            }
+
+        if with_relationships:
+            data['relationships'] = {
+                'user': {
+                    'data': self.user.as_dict(False, False)
+                },
+                'images': {
+                    'data': [image.as_dict(False,False) for image in self.images]
+                }
+            }
+
+        return data
 
     @classmethod
     def create(cls, username, name):

@@ -1,5 +1,6 @@
 from geosnapr.models import Image
 from django.http import JsonResponse
+from django.shortcuts import render
 from django.core.files.temp import NamedTemporaryFile
 from django.core.files import File
 from urllib.request import urlopen
@@ -33,6 +34,10 @@ def bad_format_errors(errs):
 
     return context
 
+# View functions
+
+def swagger(request):
+    return render(request, 'swagger.html')
 
 def api_upload(request):
     if request.method != "POST":
@@ -59,7 +64,7 @@ def api_upload(request):
     except:
         return JsonResponse(bad_api_key_error)
 
-    if src_type = 'url':
+    if src_type == 'url':
         img_temp = NamedTemporaryFile()
         img_temp.write(urlopen(src).read())
         img_temp.flush()
@@ -74,7 +79,7 @@ def api_upload(request):
     else:
         # Create response object
         context = {
-            'data': image.as_dict()
+            'data': image.as_dict(True,True)
         }
         return JsonResponse(context, status=201)
 

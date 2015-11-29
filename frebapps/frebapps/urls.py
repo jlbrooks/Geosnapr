@@ -17,7 +17,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
-from geosnapr.views import main, instagram_views, images
+from geosnapr.views import main, instagram_views, images, apis
 
 urlpatterns = [
     url(r'^login$', main.login_view, name='login'),
@@ -35,5 +35,7 @@ urlpatterns = [
     url(r'^get_images$', images.get_images, name='get_images'),
     url(r'^instagram_callback', instagram_views.instagram_callback, name='instagram_callback'),
     url(r'^get_insta_images$', instagram_views.get_insta_images, name='get_insta_images'),
-    url(r'^get_album$', images.get_album, name='get_album')
+    url(r'^get_album$', images.get_album, name='get_album'),
+    # API urls
+    url(r'^v1/doc$', apis.swagger, name='swagger'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

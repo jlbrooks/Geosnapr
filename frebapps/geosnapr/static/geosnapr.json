@@ -1,0 +1,242 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "These are the API docs for the Geosnapr application",
+    "version": "1.0.0",
+    "title": "Geosnapr",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "url": "geosnapr.com",
+      "name": "Geosnapr",
+      "email": "jacobbro@andrew.cmu.edu"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "localhost:8000",
+  "basePath": "/v1",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "tags": [
+    {
+      "name": "image",
+      "description": "Access to Geosnapr images"
+    }
+  ],
+  "paths": {
+    "/image": {
+      "post": {
+        "tags": [
+          "image"
+        ],
+        "summary": "Add a new image to the map",
+        "description": "",
+        "operationId": "addImage",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "image",
+            "description": "Image object to be created",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ImagePost"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Client error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Bad API key",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "200": {
+            "descipton": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/ImageGet"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ImagePost": {
+      "required": [
+        "data"
+      ],
+      "properties": {
+        "data": {
+          "$ref": "ImagePostData"
+        }
+      }
+    },
+    "ImageGet": {
+      "required": [
+        "data"
+      ],
+      "properties": {
+        "data": {
+          "$ref": "ImageGetData"
+        }
+      }
+    },
+    "ImagePostData": {
+      "required": [
+        "type",
+        "src_type",
+        "attributes"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "images"
+        },
+        "src_type": {
+          "type": "string",
+        },
+        "attributes": {
+          "$ref": "ImageAttributes"
+        }
+      }
+    },
+    "ImageGetData": {
+      "required": [
+        "type",
+        "id",
+        "attributes"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "images"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "example": 52
+        },
+        "attributes": {
+          "$ref": "ImageAttributes"
+        },
+        "relationships": {
+          "$ref": "ImageRelationships"
+        }
+      }
+    },
+    "ImageAttributes": {
+      "required": [
+        "src",
+        "lat",
+        "lng",
+      ],
+      "properties": {
+        "src": {
+          "type": "string",
+          "example": "http://example.com/foo.jpg"
+        },
+        "lat": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "lng": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "caption": {
+          "type": "string"
+        }
+      }
+    },
+    "ImageRelationships": {
+      "properties": {
+        "user": {
+          "$ref": "SimpleUser"
+        },
+        "albums": {
+          "type": "array",
+          "items": {
+            "$ref": "SimpleAlbum"
+          }
+        }
+      }
+    },
+    "SimpleUser": {
+      "required": [
+        "type",
+        "id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "users"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "SimpleAlbum": {
+      "required": [
+        "type",
+        "id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "albums"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "ErrorResponse": {
+      "required": [
+        "errors"
+      ],
+      "properties": {
+        "errors": {
+          "type": "array",
+          "items": {
+            "$ref": "Error"
+          }
+        }
+      }
+    },
+    "Error": {
+      "required": [
+        "status",
+        "detail"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "400"
+        },
+        "detail": {
+          "type": "string",
+          "example": "Detail concerning specific error"
+        }
+      }
+    }
+  }
+}

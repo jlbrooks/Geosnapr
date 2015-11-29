@@ -11,6 +11,25 @@ class Profile(models.Model):
 
     api_key = models.CharField(max_length=100, default='')
 
+    def as_dict(self, with_attributes, with_relationships):
+        data = {
+            'type': 'users',
+            'id': self.user.id
+        }
+
+        if with_attributes:
+            data['attributes'] = {
+                'first_name': self.user.first_name,
+                'last_name': self.user.last_name,
+                'username': self.user.username,
+                'email': self.user.email,
+            }
+
+        if with_relationships:
+            data['relationships'] = {
+                ''
+            }
+
     @classmethod
     def create(cls, username, email, password, first_name, last_name):
         err = []
@@ -147,15 +166,16 @@ class Image(models.Model):
                 'src': self.image,
                 'lat': self.lat,
                 'lng': self.lng,
+                'caption': self.caption
             }
 
         if with_relationships:
             data['relationships'] = {
                 'user': {
-                    'data': self.user.as_dict(False,False)
+                    'data': self.user.profile.as_dict(False,False)
                 },
                 'albums': {
-                    'data': [a.as_dict(False,False) for a in self.album_set]
+                    'data': [a.as_dict(False,False) for a in self.album_set.all()]
                 }
             }
 
@@ -291,9 +311,6 @@ class Album(models.Model):
         data = {
             'type': 'albums',
             'id': self.id,
-            'attributes': {
-                'name': self.name
-            }
         }
 
         if with_attributes:
@@ -304,7 +321,7 @@ class Album(models.Model):
         if with_relationships:
             data['relationships'] = {
                 'user': {
-                    'data': self.user.as_dict(False, False)
+                    'data': self.user.profile.as_dict(False, False)
                 },
                 'images': {
                     'data': [image.as_dict(False,False) for image in self.images]

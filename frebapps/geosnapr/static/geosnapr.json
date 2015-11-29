@@ -74,6 +74,46 @@
           }
         }
       }
+    },
+    "/image/{imageId}": {
+      "get": {
+        "tags": [
+          "image"
+        ],
+        "summary": "Find image by id",
+        "description": "",
+        "operationId": "getImageById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "imageId",
+            "description": "ID of the image to be retrieved",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Image not found"
+          },
+          "403": {
+            "description": "Bad API key",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "200": {
+            "descipton": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/ImageGet"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {

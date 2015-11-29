@@ -38,4 +38,7 @@ urlpatterns = [
     url(r'^get_album$', images.get_album, name='get_album'),
     # API urls
     url(r'^v1/doc$', apis.swagger, name='swagger'),
+    url(r'^v1/image$', apis.api_upload, name='api_upload'),
+    url(r'^v1/image/(?P<image_id>[0-9]+)$', apis.get_image, name='api_get_image'),
+    url(r'^v1/album$', apis.get_albums, name='api_get_albums'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

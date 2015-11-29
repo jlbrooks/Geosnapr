@@ -34,6 +34,16 @@ def bad_format_errors(errs):
 
     return context
 
+def not_found_error(msg):
+    context = {
+        'errors': [{
+            'status': '404',
+            'detail': msg
+        }]
+    }
+
+    return context
+
 # View functions
 
 def swagger(request):
@@ -48,7 +58,7 @@ def api_upload(request):
     if not data:
         return JsonResponse(bad_format_errors(["Missing 'data' component of request"]))
 
-    api_key = data.get('api_key')
+    api_key = request.GET.get('api_key')
 
     lat = data.get('lat')
     lng = data.get('lng')
@@ -82,6 +92,33 @@ def api_upload(request):
             'data': image.as_dict(True,True)
         }
         return JsonResponse(context, status=201)
+
+def get_image(request, image_id):
+    # Retrieve API key from the GET URL
+    api_key = request.GET.get('api_key')
+
+    # Do we have a user with this api key?
+    try:
+        profile = Profile.objects.get(api_key=api_key)
+    except:
+        return JsonResponse(bad_api_key_error)
+
+    # Try to get image with this id
+    try:
+        image = Image.objects.get(id=image_id)
+    except:
+        return JsonResponse(not_found_error("Image not found"))
+
+    # If incorrect user, return not found
+    if image.user != profile.user:
+        return JsonResponse(not_found_error("Image not found"))
+
+    # Return the image data
+    context = {
+        'data': image.as_dict(True,True)
+    }
+    return JsonResponse(context)
+
 
 def get_albums(request):
     # Retrieve API key from the GET URL

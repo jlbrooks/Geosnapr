@@ -23,15 +23,19 @@
   ],
   "tags": [
     {
-      "name": "image",
+      "name": "images",
       "description": "Access to Geosnapr images"
+    },
+    {
+      "name": "albums",
+      "description": "Access to Geosnapr image albums"
     }
   ],
   "paths": {
     "/image": {
       "post": {
         "tags": [
-          "image"
+          "images"
         ],
         "summary": "Add a new image to the map",
         "description": "",
@@ -78,7 +82,7 @@
     "/image/{imageId}": {
       "get": {
         "tags": [
-          "image"
+          "images"
         ],
         "summary": "Find image by id",
         "description": "",
@@ -98,7 +102,10 @@
         ],
         "responses": {
           "404": {
-            "description": "Image not found"
+            "description": "Image not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
           },
           "403": {
             "description": "Bad API key",
@@ -110,6 +117,33 @@
             "descipton": "Successful Operation",
             "schema": {
               "$ref": "#/definitions/ImageGet"
+            }
+          }
+        }
+      }
+    },
+    "/album": {
+      "get": {
+        "tags": [
+          "albums"
+        ],
+        "summary": "List all albums for user",
+        "description": "Retreives all the albums for the user associated with the given api key",
+        "operationId": "getAlbumList",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "403": {
+            "description": "Bad API key",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "200": {
+            "descipton": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/AlbumList"
             }
           }
         }
@@ -134,6 +168,51 @@
       "properties": {
         "data": {
           "$ref": "ImageGetData"
+        }
+      }
+    },
+    "AlbumList": {
+      "required": [
+        "data"
+      ],
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "AlbumPostData"
+          }
+        }
+      }
+    },
+    "AlbumPostData": {
+      "required": [
+        "type",
+        "id",
+        "attributes"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "albums"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "example": 52
+        },
+        "attributes": {
+          "$ref": "AlbumAttributes"
+        }
+      }
+    },
+    "AlbumAttributes": {
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Spring Break"
         }
       }
     },

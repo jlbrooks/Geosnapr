@@ -135,7 +135,7 @@ def get_albums(request):
 
     # Create the response object
 
-    album_dicts = [album.as_dict() for album in albums]
+    album_dicts = [album.as_dict(True,False) for album in albums]
 
     data = {
         'data': album_dicts

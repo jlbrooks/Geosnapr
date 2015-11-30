@@ -2,8 +2,10 @@ from geosnapr.models import Image, Profile, Album
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.core.files.temp import NamedTemporaryFile
+from django.views.decorators.csrf import csrf_exempt
 from django.core.files import File
 from urllib.request import urlopen
+import json
 
 # Error response for wrong method type
 wrong_method_error = {
@@ -53,24 +55,27 @@ def swagger(request):
 
     return render(request, 'swagger.html', context)
 
+@csrf_exempt
 def api_upload(request):
     if request.method != "POST":
         return JsonResponse(wrong_method_error)
 
-    data = request.POST.get('data')
+    data = json.loads(request.body.decode('utf-8')).get('data')
+
+    print(data)
 
     if not data:
         return JsonResponse(bad_format_errors(["Missing 'data' component of request"]))
 
     api_key = request.GET.get('api_key')
+    attributes = data.get('attributes')
+    lat = attributes.get('lat')
+    lng = attributes.get('lng')
+    caption = attributes.get('caption')
+    album_ids = data.get('album_ids', [])
 
-    lat = data.get('lat')
-    lng = data.get('lng')
-    caption = data.get('caption')
-    album_ids = data.get('album_ids')
-
-    src = data.get('src')
-    src_type = data.get('type')
+    src = attributes.get('src')
+    src_type = data.get('src_type')
 
     # Does this api key exist?
     try:
@@ -86,7 +91,7 @@ def api_upload(request):
     else:
         pic = src
 
-    image,errs = Image.create(Profile.user.username, pic, lat, lng, caption, album_ids)
+    image,errs = Image.create(profile.user.username, pic, lat, lng, caption, album_ids)
 
     if errs:
         return JsonResponse(bad_format_errors(errs))
@@ -97,6 +102,7 @@ def api_upload(request):
         }
         return JsonResponse(context, status=201)
 
+@csrf_exempt
 def get_image(request, image_id):
     # Retrieve API key from the GET URL
     api_key = request.GET.get('api_key')
@@ -123,7 +129,7 @@ def get_image(request, image_id):
     }
     return JsonResponse(context)
 
-
+@csrf_exempt
 def get_albums(request):
     # Retrieve API key from the GET URL
     api_key = request.GET.get('api_key')

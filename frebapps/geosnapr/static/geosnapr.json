@@ -6,7 +6,7 @@
     "title": "Geosnapr",
     "termsOfService": "http://swagger.io/terms/",
     "contact": {
-      "url": "geosnapr.com",
+      "url": "https://geosnapr.com",
       "name": "Geosnapr",
       "email": "jacobbro@andrew.cmu.edu"
     },
@@ -53,7 +53,7 @@
             "description": "Image object to be created",
             "required": false,
             "schema": {
-              "$ref": "ImagePost"
+              "$ref": "#/definitions/ImagePost"
             }
           }
         ],
@@ -157,7 +157,7 @@
       ],
       "properties": {
         "data": {
-          "$ref": "ImagePostData"
+          "$ref": "#/definitions/ImagePostData"
         }
       }
     },
@@ -167,7 +167,7 @@
       ],
       "properties": {
         "data": {
-          "$ref": "ImageGetData"
+          "$ref": "#/definitions/ImageGetData"
         }
       }
     },
@@ -179,7 +179,7 @@
         "data": {
           "type": "array",
           "items": {
-            "$ref": "AlbumPostData"
+            "$ref": "#/definitions/AlbumPostData"
           }
         }
       }
@@ -201,7 +201,7 @@
           "example": 52
         },
         "attributes": {
-          "$ref": "AlbumAttributes"
+          "$ref": "#/definitions/AlbumAttributes"
         }
       }
     },
@@ -231,7 +231,7 @@
           "type": "string",
         },
         "attributes": {
-          "$ref": "ImageAttributes"
+          "$ref": "#/definitions/ImageAttributes"
         }
       }
     },
@@ -252,10 +252,10 @@
           "example": 52
         },
         "attributes": {
-          "$ref": "ImageAttributes"
+          "$ref": "#/definitions/ImageAttributes"
         },
         "relationships": {
-          "$ref": "ImageRelationships"
+          "$ref": "#/definitions/ImageRelationships"
         }
       }
     },
@@ -286,12 +286,12 @@
     "ImageRelationships": {
       "properties": {
         "user": {
-          "$ref": "SimpleUser"
+          "$ref": "#/definitions/SimpleUser"
         },
         "albums": {
           "type": "array",
           "items": {
-            "$ref": "SimpleAlbum"
+            "$ref": "#/definitions/SimpleAlbum"
           }
         }
       }
@@ -336,7 +336,7 @@
         "errors": {
           "type": "array",
           "items": {
-            "$ref": "Error"
+            "$ref": "#/definitions/Error"
           }
         }
       }

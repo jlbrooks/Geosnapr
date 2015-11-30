@@ -163,7 +163,7 @@ class Image(models.Model):
 
         if with_attributes:
             data['attributes'] = {
-                'src': self.image,
+                'src': self.image.url,
                 'lat': self.lat,
                 'lng': self.lng,
                 'caption': self.caption

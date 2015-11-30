@@ -89,7 +89,7 @@ def api_upload(request):
         img_temp.flush()
         pic = File(img_temp)
     else:
-        pic = src
+        return JsonResponse(bad_format_errors(["Invalid src_type parameter"]))
 
     image,errs = Image.create(profile.user.username, pic, lat, lng, caption, album_ids)
 

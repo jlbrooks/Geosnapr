@@ -229,6 +229,10 @@
         },
         "src_type": {
           "type": "string",
+          "example": "url",
+          "enum": [
+            "url"
+          ]
         },
         "attributes": {
           "$ref": "#/definitions/ImageAttributes"
@@ -271,12 +275,14 @@
           "example": "http://example.com/foo.jpg"
         },
         "lat": {
-          "type": "integer",
-          "format": "int64"
+          "type": "number",
+          "format": "double",
+          "example": 40.11
         },
         "lng": {
-          "type": "integer",
-          "format": "int64"
+          "type": "number",
+          "format": "double",
+          "example": -80.2,
         },
         "caption": {
           "type": "string"

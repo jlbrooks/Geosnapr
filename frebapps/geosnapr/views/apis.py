@@ -1,4 +1,4 @@
-from geosnapr.models import Image
+from geosnapr.models import Image, Profile, Album
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.core.files.temp import NamedTemporaryFile
@@ -47,7 +47,11 @@ def not_found_error(msg):
 # View functions
 
 def swagger(request):
-    return render(request, 'swagger.html')
+    context = {'api_key': ''}
+    if request.user.is_authenticated():
+        context['api_key'] = request.user.profile.api_key
+
+    return render(request, 'swagger.html', context)
 
 def api_upload(request):
     if request.method != "POST":
@@ -127,7 +131,8 @@ def get_albums(request):
     # Do we have a user with this api key?
     try:
         profile = Profile.objects.get(api_key=api_key)
-    except:
+    except Exception as e:
+        print(e)
         return JsonResponse(bad_api_key_error)
 
     # Retrieve all albums for this user

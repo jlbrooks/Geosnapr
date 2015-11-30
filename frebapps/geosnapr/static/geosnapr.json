@@ -53,7 +53,7 @@
             "description": "Image object to be created",
             "required": false,
             "schema": {
-              "$ref": "#/definitions/ImagePost"
+              "$ref": "ImagePost"
             }
           }
         ],

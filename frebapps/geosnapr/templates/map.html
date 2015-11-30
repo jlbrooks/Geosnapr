@@ -10,7 +10,6 @@
 <link href="{% static "select2/css/select2.min.css" %}" rel="stylesheet" type='text/css'>
 <link href="{% static "sidr/jquery.sidr.dark.css" %}" rel="stylesheet" type="text/css">
 
-<script src="{% static "foundation/js/jquery.js" %}"></script>
 <script src="{% static "infobubble/infobubble.js" %}"></script>
 <script src="{% static "sidr/jquery.sidr.min.js" %}"></script>
 <script src="{% static "js/image.js" %}"></script>
@@ -48,6 +47,7 @@
 <div id="sidr">
   <ul>
     <li><a href="#" id="edit-profile" data-reveal-id="editProfileModal">Edit Profile</a></li>
+    <li><a href="#", id="get-api-key", data-reveal-id="apiKeyModal">View API Key</a></li>
     <li><a href="{%url 'logout' %}">Logout</a></li>
   </ul>
 </div>
@@ -65,7 +65,7 @@
       <img src="{% static "img/insta_glyph_colored.png" %}" alt="Instagram" class="oauth-img tip-top" data-tooltip aria-haspopup="true" title="View your Instagram app permissions">
     </a>
     {% else %}
-    <p class="josefin">Link you Instagram</p>
+    <p class="josefin">Link your Instagram</p>
     <a href="{{insta_auth_url}}">
       <img src="{% static "img/insta_glyph_colored.png" %}" alt="Instagram" class="oauth-img faded tip-top" data-tooltip aria-haspopup="true" title="Link your account to Instagram!">
     </a>
@@ -280,6 +280,12 @@
   <h2 id="deleteModalTitle">Delete Profile</h2>
   <p>Are you sure you want to delete your profile? This is permanent, and cannot be reverted!</p>
   <a href="{% url 'delete_profile' %}" class="button alert">Delete!</a>
+  <a aria-label="Close" class="close-reveal-modal">&#215;</a>
+</div>
+
+<div id="apiKeyModal" class="reveal-modal" data-reveal aria-labelledby="apiKeyModalTitle" aria-hidden="true" role="dialog">
+  <h2 id="apiKeyModalTitle">Your API Key</h2>
+  <p>{{ api_key }}</p>
   <a aria-label="Close" class="close-reveal-modal">&#215;</a>
 </div>
 

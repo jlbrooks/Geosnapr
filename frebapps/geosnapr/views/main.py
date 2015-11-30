@@ -77,7 +77,8 @@ def main_map(request):
         'user': request.user,
         'insta_auth_url': insta_auth_url,
         'insta_account_url': 'https://instagram.com/accounts/manage_access/',
-        'albums': Album.objects.filter(user=request.user)
+        'albums': Album.objects.filter(user=request.user),
+        'api_key': request.user.profile.get_or_create_api_key()
     }
 
     return render(request, 'map.html', context)

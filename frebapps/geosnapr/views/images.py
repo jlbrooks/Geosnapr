@@ -5,11 +5,12 @@ from django.core.files.temp import NamedTemporaryFile
 from django.core.files import File
 from geosnapr.models import Image, Album
 from urllib.request import urlopen
+from .main import index, main_map
 
 @login_required
 def upload(request):
     if request.method != 'POST':
-        return redirect(main.main_map)
+        return redirect(main_map)
     context = {}
     errs = []
     context['errors'] = errs
@@ -52,7 +53,7 @@ def upload(request):
 @login_required
 def edit_image(request):
     if request.method != 'POST':
-        return redirect(main.main_map)
+        return redirect(main_map)
     context = {}
     errs = []
     context['errors'] = errs
@@ -85,7 +86,7 @@ def edit_image(request):
 @login_required
 def delete_image(request):
     if request.method != "POST":
-        return redirect(main.index)
+        return redirect(index)
     im_id = request.POST.get('img_id')
     print(im_id)
     try:
@@ -102,12 +103,12 @@ def delete_image(request):
     # Delete the image
     image.delete()
 
-    return redirect(main.index)
+    return redirect(index)
 
 @login_required
 def create_album(request):
     if request.method != 'POST':
-        return redirect(main.main_map)
+        return redirect(main_map)
     context = {}
     errs = []
     context['errors'] = errs

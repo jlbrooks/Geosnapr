@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from instagram import client, InstagramClientError, InstagramAPIError
 from urllib.request import urlopen
+from .main import index, main_map
 
 def instagram_callback(request):
     # Callback URI
@@ -31,17 +32,17 @@ def instagram_callback(request):
             user.profile.save()
 
             # Return to the map
-            return redirect(main.main_map)
+            return redirect(main_map)
         else:
             # Return the user information to assist with account creation
             print(user_info)
-            return redirect(main.main.index)
+            return redirect(index)
     except InstagramClientError as e:
         data['error'] = e.error_message
     except InstagramAPIError as e:
         data['error'] = e.error_message
 
-    return redirect(main.index)
+    return redirect(index)
 
 @login_required
 def get_insta_images(request):

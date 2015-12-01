@@ -128,7 +128,7 @@
           "albums"
         ],
         "summary": "List all albums for user",
-        "description": "Retreives all the albums for the user associated with the given api key",
+        "description": "Retrieves all the albums for the user associated with the given api key",
         "operationId": "getAlbumList",
         "produces": [
           "application/json"
@@ -144,6 +144,88 @@
             "descipton": "Successful Operation",
             "schema": {
               "$ref": "#/definitions/AlbumList"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "albums"
+        ],
+        "summary": "Add a new Album to your account",
+        "description": "",
+        "operationId": "addAlbum",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "image",
+            "description": "Album object to be created",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AlbumPost"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Client error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Bad API key",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "200": {
+            "descipton": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/AlbumGet"
+            }
+          }
+        }
+      }
+    },
+    "/album/{albumId}": {
+      "get": {
+        "tags": [
+          "albums"
+        ],
+        "summary": "Find album by ID",
+        "description": "Retrieves data for the given album ID, including all related image IDs",
+        "operationId": "getAlbum",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "albumId",
+            "description": "ID of the album to be retrieved",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "403": {
+            "description": "Bad API key",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "200": {
+            "descipton": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/AlbumGet"
             }
           }
         }
@@ -179,12 +261,56 @@
         "data": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/AlbumPostData"
+            "$ref": "#/definitions/AlbumListData"
           }
         }
       }
     },
-    "AlbumPostData": {
+    "AlbumGet": {
+      "required": [
+        "data"
+      ],
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/AlbumGetData"
+        }
+      }
+    },
+    "AlbumPost": {
+      "required": [
+        "data"
+      ],
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/AlbumPostData"
+        }
+      }
+    },
+    "AlbumGetData": {
+      "required": [
+        "type",
+        "id",
+        "attributes"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "albums"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "example": 52
+        },
+        "attributes": {
+          "$ref": "#/definitions/AlbumAttributes"
+        },
+        "relationships": {
+          "$ref": "#/definitions/AlbumRelationships"
+        }
+      }
+    },
+    "AlbumListData": {
       "required": [
         "type",
         "id",
@@ -205,6 +331,21 @@
         }
       }
     },
+    "AlbumPostData": {
+      "required": [
+        "type",
+        "attributes"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "albums"
+        },
+        "attributes": {
+          "$ref": "#/definitions/AlbumAttributes"
+        }
+      }
+    },
     "AlbumAttributes": {
       "required": [
         "name"
@@ -213,6 +354,19 @@
         "name": {
           "type": "string",
           "example": "Spring Break"
+        }
+      }
+    },
+    "AlbumRelationships": {
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/SimpleUser"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SimpleImage"
+          }
         }
       }
     },
@@ -327,6 +481,22 @@
         "type": {
           "type": "string",
           "example": "albums"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "SimpleImage": {
+      "required": [
+        "type",
+        "id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "images"
         },
         "id": {
           "type": "integer",

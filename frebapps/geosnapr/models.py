@@ -325,7 +325,7 @@ class Album(models.Model):
                     'data': self.user.profile.as_dict(False, False)
                 },
                 'images': {
-                    'data': [image.as_dict(False,False) for image in self.images]
+                    'data': [image.as_dict(False,False) for image in self.images.all()]
                 }
             }
 

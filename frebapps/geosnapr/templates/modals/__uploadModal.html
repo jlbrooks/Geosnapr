@@ -1,0 +1,67 @@
+<div id="uploadModal" class="reveal-modal" data-reveal aria-labelledby="uploadModalTitle" aria-hidden="true" role="dialog">
+  <div class="container">
+    <div class="row">
+      <div class="columns large-12">
+        <h2 id="uploadModalTitle">Upload new image</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="columns large-12">
+        <ul class="tabs" data-tab>
+          <li class="tab-title active"><a href="#panel1">Local File</a></li>
+          <li class="tab-title"><a href="#panel2">Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+    <form id="upload-img-form" action="{% url 'upload' %}" method="POST" enctype="multipart/form-data">
+      <div class="row">
+        {% csrf_token %}
+        {# Tabs for the different image upload types #}
+        <div class="columns large-6">
+          <div class="tabs-content">
+            <div class="content active" id="panel1">
+              <input type="file" name="pic" class="file-input" id="upload-file">
+              <img id="upload-img" />
+            </div>
+            <div class="content" id="panel2">
+              {% if not user.profile.insta_access_key %}
+                <a href="{{insta_auth_url}}" id="insta-link">Link your Instagram account now!</a>
+              {% endif %}
+              <div id="insta-images">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns large-6">
+          <fieldset class="hidden" id="img-loc-form">
+            <div class="row">
+              <div class="columns large-12">
+                <label for="location">Where was this photo taken?
+                  <input type="text" id="imagelocation" name="location" placeholder="Location"/>
+                </label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="columns large-12">
+                <label for="upload-album">Choose albums for your photo:</label>
+                {% include "__album_select.html" with id="upload-album" multiple=True %}
+              </div>
+            </div>
+            <div class="row">
+              <div class="columns large-12">
+                <label for="caption">Caption your new photo!
+                  <input type="text" name="caption" id="caption" placeholder="Caption"/>
+                </label>
+              </div>
+            </div>
+            <input type="hidden" id="autolat" name="lat" placeholder="Latitude"/>
+            <input type="hidden" id="autolng" name="lng" placeholder="Longitude"/>
+            <button type="submit" id="upload-img-btn">Add Image!</button>
+          </fieldset>
+        </div>
+      </div>
+    </form>
+  </div>
+  <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+</div>

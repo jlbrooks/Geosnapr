@@ -1,0 +1,25 @@
+<div id="createAlbumModal" class="reveal-modal" data-reveal aria-labelledby="createAlbumTitle" aria-hidden="true" role="dialog">
+  <div class="container">
+    <div class="row">
+      <div class="columns large-12">
+        <h2 id="createAlbumTitle">Create New Album</h2>
+      </div>
+    </div>
+    <form id="create-album-form" data-abide="ajax" action="{% url 'create_album' %}" method="POST">
+      {% csrf_token %}
+      <div class="row">
+        <div class="colums large-12">
+          <label for="album_name">Album Name:
+            <input type="text" id="album-name" name="album_name" value="Untitled Album" required>
+          </label>
+        </div>
+        <div class="row">
+          <div class="columns large-12">
+            <button type="submit" class="button" id="create-album-btn">Create Album</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+</div>

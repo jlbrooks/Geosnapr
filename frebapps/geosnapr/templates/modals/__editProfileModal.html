@@ -1,0 +1,58 @@
+<div id="editProfileModal" class="reveal-modal" data-reveal aria-labelledby="editModalTitle" aria-hidden="true" role="dialog">
+  <div class="container">
+    <div class="row">
+      <div class="columns large-12">
+        <h2 id="editModalTitle">Edit Profile</h2>
+        <p class="hidden" id="profile-notification"></p>
+      </div>
+    </div>
+    <form id="edit-profile-form" data-abide="ajax" action="{% url 'edit_profile' %}" method="POST">
+      {% csrf_token %}
+      <div class="row">
+        <div class="input-wrapper columns large-12">
+          <label for="first_name">First Name:
+            <input type="text" name="first_name" placeholder="First Name" value="{{user.first_name}}" required>
+          </label>
+          <small class="error">First name is required.</small>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-wrapper columns large-12">
+          <label for="last_name">Last Name:
+            <input type="text" name="last_name" placeholder="Last Name" value="{{user.last_name}}" required>
+          </label>
+          <small class="error">Last name is required.</small>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-wrapper columns large-12">
+          <label for="email">Email:
+            <input type="email" name="email" placeholder="Email" value="{{user.email}}" required>
+          </label>
+          <small class="error">Email is required.</small>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-wrapper columns large-12">
+          <input id="password" type="password" name="password" placeholder="New Password">
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-wrapper columns large-12">
+          <input type="password" name="confirm_password" placeholder="Confirm New Password" data-equalto="password">
+          <small class="error">Passwords must match</small>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="columns large-10">
+          <button type="submit" class="button" id="edit-profile-btn">Save Changes</button>
+        </div>
+        <div class="columns large-2">
+          <a href="#" data-reveal-id="confirmDeleteModal" class="button alert small">Delete Profile</a>
+        </div>
+      </div>
+    </form>
+  </div>
+  <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+</div>

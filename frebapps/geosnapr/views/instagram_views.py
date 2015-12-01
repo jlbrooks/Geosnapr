@@ -1,13 +1,15 @@
 from django.http import JsonResponse
 from django.conf import settings
+from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 from instagram import client, InstagramClientError, InstagramAPIError
 from urllib.request import urlopen
 
 def instagram_callback(request):
     # Import here to prevent circularity issues
     from .main import index, main_map
-    
+
     # Callback URI
     insta_callback_uri = request.build_absolute_uri(reverse(instagram_callback))
 

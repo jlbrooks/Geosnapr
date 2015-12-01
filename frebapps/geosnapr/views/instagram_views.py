@@ -3,9 +3,11 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from instagram import client, InstagramClientError, InstagramAPIError
 from urllib.request import urlopen
-from .main import index, main_map
 
 def instagram_callback(request):
+    # Import here to prevent circularity issues
+    from .main import index, main_map
+    
     # Callback URI
     insta_callback_uri = request.build_absolute_uri(reverse(instagram_callback))
 

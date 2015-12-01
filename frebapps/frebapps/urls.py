@@ -38,7 +38,7 @@ urlpatterns = [
     url(r'^get_album$', images.get_album, name='get_album'),
     # API urls
     url(r'^v1/doc$', apis.swagger, name='swagger'),
-    url(r'^v1/image$', apis.api_upload, name='api_upload'),
+    url(r'^v1/image$', apis.post_image, name='post_image'),
     url(r'^v1/image/(?P<image_id>[0-9]+)$', apis.get_image, name='api_get_image'),
     url(r'^v1/album$', apis.route_album_method, name='api_route_albums'),
     url(r'^v1/album/(?P<album_id>[0-9]+)$', apis.get_album, name='api_get_album'),

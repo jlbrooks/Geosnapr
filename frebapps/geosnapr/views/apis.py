@@ -56,7 +56,7 @@ def swagger(request):
     return render(request, 'swagger.html', context)
 
 @csrf_exempt
-def api_upload(request):
+def post_image(request):
     if request.method != "POST":
         return JsonResponse(wrong_method_error)
 
@@ -71,14 +71,24 @@ def api_upload(request):
     api_key = request.GET.get('api_key')
     attributes = data.get('attributes')
     try:
+        src = attributes.get('src')
         lat = attributes.get('lat')
         lng = attributes.get('lng')
         caption = attributes.get('caption')
-        album_ids = data.get('album_ids', [])
     except:
         return JsonResponse(bad_format_errors(["Missing 'attributes' component of request data"]))
 
-    src = attributes.get('src')
+    relationships = data.get('relationships')
+    if relationships:
+        album_objects = relationships.get('albums', [])
+
+        try:
+            album_ids = [a.get('id') for a in album_objects]
+        except:
+            return JsonResponse(bad_format_errors(["Malformed 'album' relationship objects"]))
+    else:
+        album_ids = []
+
     src_type = data.get('src_type')
 
     # Does this api key exist?

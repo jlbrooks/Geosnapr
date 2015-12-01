@@ -390,6 +390,9 @@
         },
         "attributes": {
           "$ref": "#/definitions/ImageAttributes"
+        },
+        "relationships": {
+          "$ref": "#/definitions/ImagePostRelationships"
         }
       }
     },
@@ -448,6 +451,16 @@
         "user": {
           "$ref": "#/definitions/SimpleUser"
         },
+        "albums": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SimpleAlbum"
+          }
+        }
+      }
+    },
+    "ImagePostRelationships": {
+      "properties": {
         "albums": {
           "type": "array",
           "items": {

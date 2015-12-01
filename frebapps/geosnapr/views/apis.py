@@ -38,6 +38,60 @@ def not_found_error(msg):
 
     return context
 
+# Helper functions
+
+# Getting a resource is similar for both types of objects. Last parameter is the resource class
+def get_resource(request, obj_id, Obj):
+    # Retrieve API key from the GET URL
+    api_key = request.GET.get('api_key')
+
+    # Do we have a user with this api key?
+    try:
+        profile = Profile.objects.get(api_key=api_key)
+    except:
+        return JsonResponse(bad_api_key_error)
+
+    # Try to get object with this id
+    try:
+        obj = Obj.objects.get(id=obj_id)
+    except:
+        return JsonResponse(not_found_error("Resource not found"))
+
+    # If incorrect user, return not found
+    if obj.user != profile.user:
+        return JsonResponse(not_found_error("Resource not found"))
+
+    # Return the object data
+    context = {
+        'data': obj.as_dict(True,True)
+    }
+    return JsonResponse(context)
+
+# Helper to delete a resource.
+def delete_resource(request, obj_id, Obj):
+    # Retrieve API key from the GET URL
+    api_key = request.GET.get('api_key')
+
+    # Do we have a user with this api key?
+    try:
+        profile = Profile.objects.get(api_key=api_key)
+    except:
+        return JsonResponse(bad_api_key_error)
+
+    # Try to get object with this id
+    try:
+        obj = Obj.objects.get(id=obj_id)
+    except:
+        return JsonResponse(not_found_error("Resource not found"))
+
+    # If incorrect user, return not found
+    if obj.user != profile.user:
+        return JsonResponse(not_found_error("Resource not found"))
+
+    # Delete the object
+    obj.delete()
+    return JsonResponse({})
+
 # View functions
 
 def swagger(request):
@@ -194,55 +248,11 @@ def route_image_id_method(request, image_id):
 
 @csrf_exempt
 def get_image(request, image_id):
-    # Retrieve API key from the GET URL
-    api_key = request.GET.get('api_key')
-
-    # Do we have a user with this api key?
-    try:
-        profile = Profile.objects.get(api_key=api_key)
-    except:
-        return JsonResponse(bad_api_key_error)
-
-    # Try to get image with this id
-    try:
-        image = Image.objects.get(id=image_id)
-    except:
-        return JsonResponse(not_found_error("Image not found"))
-
-    # If incorrect user, return not found
-    if image.user != profile.user:
-        return JsonResponse(not_found_error("Image not found"))
-
-    # Return the image data
-    context = {
-        'data': image.as_dict(True,True)
-    }
-    return JsonResponse(context)
+    return get_resource(request, image_id, Image)
 
 @csrf_exempt
 def delete_image(request, image_id):
-    # Retrieve API key from the GET URL
-    api_key = request.GET.get('api_key')
-
-    # Do we have a user with this api key?
-    try:
-        profile = Profile.objects.get(api_key=api_key)
-    except:
-        return JsonResponse(bad_api_key_error)
-
-    # Try to get image with this id
-    try:
-        image = Image.objects.get(id=image_id)
-    except:
-        return JsonResponse(not_found_error("Image not found"))
-
-    # If incorrect user, return not found
-    if image.user != profile.user:
-        return JsonResponse(not_found_error("Image not found"))
-
-    # Delete the image
-    image.delete()
-    return JsonResponse({})
+    return delete_resource(request, image_id, Image)
 
 @csrf_exempt
 def route_album_method(request):
@@ -285,55 +295,11 @@ def route_album_id_method(request, album_id):
 
 @csrf_exempt
 def get_album(request, album_id):
-    # Retrieve API key from the GET URL
-    api_key = request.GET.get('api_key')
-
-    # Do we have a user with this api key?
-    try:
-        profile = Profile.objects.get(api_key=api_key)
-    except:
-        return JsonResponse(bad_api_key_error)
-
-    # Try to get album with this id
-    try:
-        album = Album.objects.get(id=album_id)
-    except:
-        return JsonResponse(not_found_error("Album not found"))
-
-    # If incorrect user, return not found
-    if album.user != profile.user:
-        return JsonResponse(not_found_error("Album not found"))
-
-    # Return the album data
-    context = {
-        'data': album.as_dict(True,True)
-    }
-    return JsonResponse(context)
+    return get_resource(request, album_id, Album)
 
 @csrf_exempt
 def delete_album(request, album_id):
-    # Retrieve API key from the GET URL
-    api_key = request.GET.get('api_key')
-
-    # Do we have a user with this api key?
-    try:
-        profile = Profile.objects.get(api_key=api_key)
-    except:
-        return JsonResponse(bad_api_key_error)
-
-    # Try to get album with this id
-    try:
-        album = Album.objects.get(id=album_id)
-    except:
-        return JsonResponse(not_found_error("Album not found"))
-
-    # If incorrect user, return not found
-    if album.user != profile.user:
-        return JsonResponse(not_found_error("Album not found"))
-
-    # Delete the album
-    album.delete()
-    return JsonResponse({})
+    return delete_resource(request, album_id, Album)
 
 @csrf_exempt
 def post_album(request):

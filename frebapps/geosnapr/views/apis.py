@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.core.files.temp import NamedTemporaryFile
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files import File
+from django.conf import settings
 from urllib.request import urlopen
 import json
 
@@ -278,7 +279,7 @@ def get_albums(request):
 
     # Create the response object
 
-    album_dicts = [album.as_dict(True,False) for album in albums]
+    album_dicts = [album.as_dict(True,False) for album in albums if album.name != settings.DEFAULT_ALBUM_NAME]
 
     data = {
         'data': album_dicts

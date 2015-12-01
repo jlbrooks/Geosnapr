@@ -77,6 +77,51 @@
             }
           }
         }
+      },
+      "patch": {
+        "tags": [
+          "images"
+        ],
+        "summary": "Edit an image",
+        "description": "",
+        "operationId": "editImage",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "image",
+            "description": "Image object to be edited. The lat, lng, and caption fields will be updated only if they are present. Albums to be added should be placed in the relationships->albums->add list, likewise with remove.",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ImagePatch"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Client error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Bad API key",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "200": {
+            "descipton": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/ImageGet"
+            }
+          }
+        }
       }
     },
     "/image/{imageId}": {
@@ -319,6 +364,16 @@
         }
       }
     },
+    "ImagePatch": {
+      "required": [
+        "data"
+      ],
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/ImagePatchData"
+        }
+      }
+    },
     "ImageGet": {
       "required": [
         "data"
@@ -472,6 +527,30 @@
         }
       }
     },
+    "ImagePatchData": {
+      "required": [
+        "type",
+        "id",
+        "attributes"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "images"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "example": 52
+        },
+        "attributes": {
+          "$ref": "#/definitions/ImagePatchAttributes"
+        },
+        "relationships": {
+          "$ref": "#/definitions/ImagePatchRelationships"
+        }
+      }
+    },
     "ImageGetData": {
       "required": [
         "type",
@@ -522,6 +601,23 @@
         }
       }
     },
+    "ImagePatchAttributes": {
+      "properties": {
+        "lat": {
+          "type": "number",
+          "format": "double",
+          "example": 40.11
+        },
+        "lng": {
+          "type": "number",
+          "format": "double",
+          "example": -80.2,
+        },
+        "caption": {
+          "type": "string"
+        }
+      }
+    },
     "ImageRelationships": {
       "properties": {
         "user": {
@@ -538,6 +634,29 @@
     "ImagePostRelationships": {
       "properties": {
         "albums": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SimpleAlbum"
+          }
+        }
+      }
+    },
+    "ImagePatchRelationships": {
+      "properties": {
+        "albums": {
+          "$ref": "#/definitions/AddRemoveAlbum"
+        }
+      }
+    },
+    "AddRemoveAlbum": {
+      "properties": {
+        "add": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SimpleAlbum"
+          }
+        },
+        "remove": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/SimpleAlbum"

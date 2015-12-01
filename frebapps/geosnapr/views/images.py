@@ -28,7 +28,7 @@ def upload(request):
     # Get lat/lng/caption data
     lat = request.POST.get('lat')
     lng = request.POST.get('lng')
-    caption = request.POST.get('caption')
+    caption = request.POST.get('caption', '')
     user = request.user
     albums_str = request.POST.get('upload-album')
     # Parse albums string into array of ints

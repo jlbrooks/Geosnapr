@@ -7,14 +7,6 @@ from django.core.files import File
 from urllib.request import urlopen
 import json
 
-# Error response for wrong method type
-wrong_method_error = {
-    'errors': [{
-        'status': '405',
-        'detail': 'Method not allowed'
-    }]
-}
-
 bad_api_key_error = {
     'errors': [{
         'status': '403',
@@ -56,10 +48,14 @@ def swagger(request):
     return render(request, 'swagger.html', context)
 
 @csrf_exempt
-def post_image(request):
-    if request.method != "POST":
-        return JsonResponse(wrong_method_error)
+def route_image_method(request):
+    if request.method == 'POST':
+        return post_image(request)
+    elif request.method == 'PATCH':
+        return patch_image(request)
 
+@csrf_exempt
+def post_image(request):
     try:
         data = json.loads(request.body.decode('utf-8')).get('data')
     except:
@@ -69,6 +65,13 @@ def post_image(request):
         return JsonResponse(bad_format_errors(["Missing 'data' component of request"]))
 
     api_key = request.GET.get('api_key')
+    # Does this api key exist?
+    try:
+        profile = Profile.objects.get(api_key=api_key)
+    except:
+        return JsonResponse(bad_api_key_error)
+
+
     attributes = data.get('attributes')
     try:
         src = attributes.get('src')
@@ -91,12 +94,6 @@ def post_image(request):
 
     src_type = data.get('src_type')
 
-    # Does this api key exist?
-    try:
-        profile = Profile.objects.get(api_key=api_key)
-    except:
-        return JsonResponse(bad_api_key_error)
-
     if src_type == 'url':
         img_temp = NamedTemporaryFile()
         img_temp.write(urlopen(src).read())
@@ -115,6 +112,78 @@ def post_image(request):
         'data': image.as_dict(True,True)
     }
     return JsonResponse(context, status=201)
+
+@csrf_exempt
+def patch_image(request):
+    try:
+        data = json.loads(request.body.decode('utf-8')).get('data')
+    except:
+        return JsonResponse(bad_format_errors(["Could not parse JSON body"]))
+
+    if not data:
+        return JsonResponse(bad_format_errors(["Missing 'data' component of request"]))
+
+    api_key = request.GET.get('api_key')
+    # Does this api key exist?
+    try:
+        profile = Profile.objects.get(api_key=api_key)
+    except:
+        return JsonResponse(bad_api_key_error)
+
+    image_id = data.get('id')
+
+    # Try to get image with this id
+    try:
+        image = Image.objects.get(id=image_id)
+    except:
+        return JsonResponse(not_found_error("Image not found"))
+
+    # If incorrect user, return not found
+    if image.user != profile.user:
+        return JsonResponse(not_found_error("Image not found"))
+
+    # Retrieve attribute data
+    attributes = data.get('attributes', {})
+
+    lat = attributes.get('lat')
+    lng = attributes.get('lng')
+    caption = attributes.get('caption', None)
+
+    # Retrieve new album data
+    relationships = data.get('relationships')
+    if relationships:
+        album_diff = relationships.get('albums', {})
+        add = album_diff.get('add', [])
+        remove = album_diff.get('remove', [])
+
+        try:
+            curr_album_ids = image.album_ids()
+
+            add_ids = [a.get('id') for a in add if a.get('id') not in curr_album_ids]
+            remove_ids = [a.get('id') for a in remove]
+
+            # Add new elements to list
+            curr_album_ids.extend(add_ids)
+
+            # Remove elements to remove
+            album_ids = [x for x in curr_album_ids if x not in remove_ids]
+        except:
+            return JsonResponse(bad_format_errors(["Malformed 'album' relationship objects"]))
+    else:
+        album_ids = image.album_ids()
+
+    image,errs = Image.update(im_id=image_id,
+        username=profile.user.username, lat=lat, lng=lng, caption=caption, albums=album_ids)
+
+    if errs:
+        return JsonResponse(bad_format_errors(errs))
+
+    # Create response object
+    context = {
+        'data': image.as_dict(True,True)
+    }
+    return JsonResponse(context)
+
 
 @csrf_exempt
 def route_image_id_method(request, image_id):

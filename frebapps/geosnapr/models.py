@@ -269,7 +269,8 @@ class Image(models.Model):
             image.lng = Decimal('%.6f' % float(lng))
 
         # Update caption
-        image.caption = caption
+        if caption != None:
+            image.caption = caption
 
         # Find all albums that this image is currently in
         for album in image.album_set.all():

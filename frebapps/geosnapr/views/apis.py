@@ -49,17 +49,17 @@ def get_resource(request, obj_id, Obj):
     try:
         profile = Profile.objects.get(api_key=api_key)
     except:
-        return JsonResponse(bad_api_key_error)
+        return JsonResponse(bad_api_key_error, status=403)
 
     # Try to get object with this id
     try:
         obj = Obj.objects.get(id=obj_id)
     except:
-        return JsonResponse(not_found_error("Resource not found"))
+        return JsonResponse(not_found_error("Resource not found"), status=404)
 
     # If incorrect user, return not found
     if obj.user != profile.user:
-        return JsonResponse(not_found_error("Resource not found"))
+        return JsonResponse(not_found_error("Resource not found"), status=404)
 
     # Return the object data
     context = {
@@ -76,17 +76,17 @@ def delete_resource(request, obj_id, Obj):
     try:
         profile = Profile.objects.get(api_key=api_key)
     except:
-        return JsonResponse(bad_api_key_error)
+        return JsonResponse(bad_api_key_error, status=403)
 
     # Try to get object with this id
     try:
         obj = Obj.objects.get(id=obj_id)
     except:
-        return JsonResponse(not_found_error("Resource not found"))
+        return JsonResponse(not_found_error("Resource not found"), status=404)
 
     # If incorrect user, return not found
     if obj.user != profile.user:
-        return JsonResponse(not_found_error("Resource not found"))
+        return JsonResponse(not_found_error("Resource not found"), status=404)
 
     # Delete the object
     obj.delete()
@@ -113,17 +113,17 @@ def post_image(request):
     try:
         data = json.loads(request.body.decode('utf-8')).get('data')
     except:
-        return JsonResponse(bad_format_errors(["Could not parse JSON body"]))
+        return JsonResponse(bad_format_errors(["Could not parse JSON body"]), status=400)
 
     if not data:
-        return JsonResponse(bad_format_errors(["Missing 'data' component of request"]))
+        return JsonResponse(bad_format_errors(["Missing 'data' component of request"]), status=400)
 
     api_key = request.GET.get('api_key')
     # Does this api key exist?
     try:
         profile = Profile.objects.get(api_key=api_key)
     except:
-        return JsonResponse(bad_api_key_error)
+        return JsonResponse(bad_api_key_error, status=403)
 
 
     attributes = data.get('attributes')
@@ -133,7 +133,7 @@ def post_image(request):
         lng = attributes.get('lng')
         caption = attributes.get('caption')
     except:
-        return JsonResponse(bad_format_errors(["Missing 'attributes' component of request data"]))
+        return JsonResponse(bad_format_errors(["Missing 'attributes' component of request data"]), status=400)
 
     relationships = data.get('relationships')
     if relationships:
@@ -142,7 +142,7 @@ def post_image(request):
         try:
             album_ids = [a.get('id') for a in album_objects]
         except:
-            return JsonResponse(bad_format_errors(["Malformed 'album' relationship objects"]))
+            return JsonResponse(bad_format_errors(["Malformed 'album' relationship objects"]), status=400)
     else:
         album_ids = []
 
@@ -154,12 +154,12 @@ def post_image(request):
         img_temp.flush()
         pic = File(img_temp)
     else:
-        return JsonResponse(bad_format_errors(["Invalid src_type parameter"]))
+        return JsonResponse(bad_format_errors(["Invalid src_type parameter"]), status=400)
 
     image,errs = Image.create(profile.user.username, pic, lat, lng, caption, album_ids)
 
     if errs:
-        return JsonResponse(bad_format_errors(errs))
+        return JsonResponse(bad_format_errors(errs), status=400)
 
     # Create response object
     context = {
@@ -172,17 +172,17 @@ def patch_image(request):
     try:
         data = json.loads(request.body.decode('utf-8')).get('data')
     except:
-        return JsonResponse(bad_format_errors(["Could not parse JSON body"]))
+        return JsonResponse(bad_format_errors(["Could not parse JSON body"]), status=400)
 
     if not data:
-        return JsonResponse(bad_format_errors(["Missing 'data' component of request"]))
+        return JsonResponse(bad_format_errors(["Missing 'data' component of request"]), status=400)
 
     api_key = request.GET.get('api_key')
     # Does this api key exist?
     try:
         profile = Profile.objects.get(api_key=api_key)
     except:
-        return JsonResponse(bad_api_key_error)
+        return JsonResponse(bad_api_key_error, status=403)
 
     image_id = data.get('id')
 
@@ -190,11 +190,11 @@ def patch_image(request):
     try:
         image = Image.objects.get(id=image_id)
     except:
-        return JsonResponse(not_found_error("Image not found"))
+        return JsonResponse(not_found_error("Image not found"), status=404)
 
     # If incorrect user, return not found
     if image.user != profile.user:
-        return JsonResponse(not_found_error("Image not found"))
+        return JsonResponse(not_found_error("Image not found"), status=404)
 
     # Retrieve attribute data
     attributes = data.get('attributes', {})
@@ -222,7 +222,7 @@ def patch_image(request):
             # Remove elements to remove
             album_ids = [x for x in curr_album_ids if x not in remove_ids]
         except:
-            return JsonResponse(bad_format_errors(["Malformed 'album' relationship objects"]))
+            return JsonResponse(bad_format_errors(["Malformed 'album' relationship objects"]), status=400)
     else:
         album_ids = image.album_ids()
 
@@ -230,7 +230,7 @@ def patch_image(request):
         username=profile.user.username, lat=lat, lng=lng, caption=caption, albums=album_ids)
 
     if errs:
-        return JsonResponse(bad_format_errors(errs))
+        return JsonResponse(bad_format_errors(errs), status=400)
 
     # Create response object
     context = {
@@ -271,7 +271,7 @@ def get_albums(request):
         profile = Profile.objects.get(api_key=api_key)
     except Exception as e:
         print(e)
-        return JsonResponse(bad_api_key_error)
+        return JsonResponse(bad_api_key_error, status=403)
 
     # Retrieve all albums for this user
     albums = Album.objects.filter(user=profile.user)
@@ -310,29 +310,29 @@ def post_album(request):
     try:
         profile = Profile.objects.get(api_key=api_key)
     except Exception as e:
-        return JsonResponse(bad_api_key_error)
+        return JsonResponse(bad_api_key_error, status=403)
 
     # Try to get the data
     try:
         data = json.loads(request.body.decode('utf-8')).get('data')
     except:
-        return JsonResponse(bad_format_errors(["Could not parse JSON body"]))
+        return JsonResponse(bad_format_errors(["Could not parse JSON body"]), status=400)
 
     if not data:
-        return JsonResponse(bad_format_errors(["Missing 'data' component of request"]))
+        return JsonResponse(bad_format_errors(["Missing 'data' component of request"]), status=400)
 
     # Retrieve the name
     attributes = data.get('attributes')
     try:
         name = attributes.get('name')
     except:
-        return JsonResponse(bad_format_errors(["Missing 'attributes' component of request data"]))
+        return JsonResponse(bad_format_errors(["Missing 'attributes' component of request data"]), status=400)
 
     # Try to create the album
     album,errs = Album.create(profile.user.username, name)
 
     if errs:
-        return JsonResponse(bad_format_errors(errs))
+        return JsonResponse(bad_format_errors(errs), status=400)
 
     # Create response object
     context = {

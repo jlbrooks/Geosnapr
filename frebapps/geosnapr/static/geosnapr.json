@@ -114,10 +114,48 @@
             }
           },
           "200": {
-            "descipton": "Successful Operation",
+            "description": "Successful Operation",
             "schema": {
               "$ref": "#/definitions/ImageGet"
             }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "images"
+        ],
+        "summary": "Delete image by id",
+        "description": "",
+        "operationId": "deleteImageById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "imageId",
+            "description": "ID of the image to be deleted",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Image not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Bad API key",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "200": {
+            "description": "Image successfully deleted"
           }
         }
       }
@@ -227,6 +265,44 @@
             "schema": {
               "$ref": "#/definitions/AlbumGet"
             }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "albums"
+        ],
+        "summary": "Delete album by id",
+        "description": "",
+        "operationId": "deleteAlbumById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "albumId",
+            "description": "ID of the album to be deleted",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Album not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Bad API key",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "200": {
+            "description": "Album successfully deleted"
           }
         }
       }
@@ -538,7 +614,7 @@
       "properties": {
         "status": {
           "type": "string",
-          "example": "400"
+          "example": "4xx"
         },
         "detail": {
           "type": "string",

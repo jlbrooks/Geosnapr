@@ -85,7 +85,7 @@ def edit_image(request):
 @login_required
 def delete_image(request):
     if request.method != "POST":
-        return redirect(main.main.index)
+        return redirect(main.index)
     im_id = request.POST.get('img_id')
     print(im_id)
     try:
@@ -102,7 +102,7 @@ def delete_image(request):
     # Delete the image
     image.delete()
 
-    return redirect(main.main.index)
+    return redirect(main.index)
 
 @login_required
 def create_album(request):

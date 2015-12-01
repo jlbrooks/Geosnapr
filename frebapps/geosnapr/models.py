@@ -29,6 +29,7 @@ class Profile(models.Model):
             data['relationships'] = {
                 ''
             }
+        return data
 
     @classmethod
     def create(cls, username, email, password, first_name, last_name):

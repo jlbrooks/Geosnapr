@@ -154,11 +154,14 @@ function initialize() {
       pixelOffset: [0,32]
     });
 
+    if (cluster.infoWindow != undefined) {
+      cluster.infoWindow.close();
+    }
     infobubble.open(map);
     cluster.infoWindow = infobubble;
   });
 
-  google.maps.event.addListener(markerclusterer, 'mouseoff', function(cluster) {
+  google.maps.event.addListener(markerclusterer, 'mouseout', function(cluster) {
     if (cluster.infoWindow != undefined) {
       cluster.infoWindow.close();
     }

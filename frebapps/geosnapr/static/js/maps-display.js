@@ -119,6 +119,23 @@ function upload_image(event) {
   event.preventDefault();
   var form = $("#upload-img-form");
   var formData = new FormData(document.getElementById("upload-img-form"));
+  if ($("#autolat").val() == '') {
+    $("#img-loc-form").prepend('<div data-alert class="alert-box alert radius">\
+      Location information is required.\
+      <a href="#" class="close">&times;</a>\
+    </div>');
+    $(document).foundation();
+
+    return;
+  };
+  if ($("#autolng").val() == '') {
+    $("#img-loc-form").prepend('<div data-alert class="alert-box alert radius">\
+      Location information is required.\
+      <a href="#" class="close">&times;</a>\
+    </div>');
+    $(document).foundation();
+    return;
+  };
   formData.append("upload-album", $("#upload-album").val());
   // Are we in the instagram tab?
   if ($("#panel2").attr('aria-hidden') == 'false') {
@@ -188,6 +205,23 @@ function edit_image() {
   event.preventDefault();
   var form = $("#img-edit-form");
   var formData = new FormData(document.getElementById("img-edit-form"));
+  if ($("#autoeditlat").val() == '') {
+    $("#img-edit-form").prepend('<div data-alert class="alert-box alert radius">\
+      Location information is required.\
+      <a href="#" class="close">&times;</a>\
+    </div>');
+    $(document).foundation();
+
+    return;
+  };
+  if ($("#autoeditlng").val() == '') {
+    $("#img-edit-form").prepend('<div data-alert class="alert-box alert radius">\
+      Location information is required.\
+      <a href="#" class="close">&times;</a>\
+    </div>');
+    $(document).foundation();
+    return;
+  };
 
   // Set up the loading spinner
   var opts = {

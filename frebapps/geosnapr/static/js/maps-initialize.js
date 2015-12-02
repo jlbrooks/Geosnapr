@@ -1,5 +1,7 @@
 $(document).ready(function(){
 
+  $(document).foundation();
+
   $.event.special.hoverintent = {
     setup: function() {
       $( this ).bind( "mouseover", jQuery.event.special.hoverintent.handler );

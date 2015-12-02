@@ -52,28 +52,30 @@
   </ul>
 </div>
 
-<div id="accordion" class="accordion full-width row overflow-hidden">
-  <div class="accheader create columns large-3 large-offset-9">
-    <h3 class="accheadertitle josefin">Create</h3>
-  </div>
-  <div class="create-content columns large-3 large-offset-9">
-    <a href="#" data-reveal-id="uploadModal" class="button round expand">Upload New Image</a>
-    <a href="#" data-reveal-id="createAlbumModal" class="button round expand">Create New Album</a>
-    {% if user.profile.insta_access_key %}
-    <a href="{{insta_account_url}}">
-      <div tabindex="0" class="button success expand">
-        <p class="josefin inline">Instagram Linked</p>
-        <img src="{% static "img/insta_glyph_colored.png" %}" alt="Instagram" class="oauth-img tip-top inline" data-tooltip aria-haspopup="true" title="View your Instagram app permissions">
-      </div>
-    </a>
-    {% else %}
-    <a href="{{insta_auth_url}}">
-      <div tabindex="0" class="button alert expand">
-        <p class="josefin inline">Link your Instagram</p>
-        <img src="{% static "img/insta_glyph_colored.png" %}" alt="Instagram" class="oauth-img faded tip-top inline" data-tooltip aria-haspopup="true" title="Link your account to Instagram!">
-      </div>
-    </a>
-    {% endif %}
+<div class="accordion full-width row">
+  <div id="accordion" class="columns large-3 large-offset-9 overflow-hidden create-header">
+    <div class="accheader create">
+      <h3 class="accheadertitle josefin">Create</h3>
+    </div>
+    <div class="create-content">
+      <a href="#" data-reveal-id="uploadModal" class="button round expand">Upload New Image</a>
+      <a href="#" data-reveal-id="createAlbumModal" class="button round expand">Create New Album</a>
+      {% if user.profile.insta_access_key %}
+      <a href="{{insta_account_url}}">
+        <div tabindex="0" class="button round success expand">
+          <p class="josefin inline">Instagram Linked</p>
+          <img src="{% static "img/insta_glyph_colored.png" %}" alt="Instagram" class="oauth-img tip-top inline" data-tooltip aria-haspopup="true" title="View your Instagram app permissions">
+        </div>
+      </a>
+      {% else %}
+      <a href="{{insta_auth_url}}">
+        <div tabindex="0" class="button round alert expand">
+          <p class="josefin inline">Link your Instagram</p>
+          <img src="{% static "img/insta_glyph_colored.png" %}" alt="Instagram" class="oauth-img faded tip-top inline" data-tooltip aria-haspopup="true" title="Link your account to Instagram!">
+        </div>
+      </a>
+      {% endif %}
+    </div>
   </div>
 </div>
 

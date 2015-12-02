@@ -79,6 +79,7 @@ class Profile(models.Model):
 
         # Create the default album
         Album.get_or_create_default_for_user(username=user.username)
+        Album.create_public(username=user.username)
 
         # Return the created profile
         return profile,None
@@ -309,6 +310,8 @@ class Album(models.Model):
 
     images = models.ManyToManyField(Image)
 
+    public = models.BooleanField(default=False)
+
     def as_dict(self, with_attributes, with_relationships):
         data = {
             'type': 'albums',
@@ -352,6 +355,26 @@ class Album(models.Model):
 
         # Create the new album
         album = cls.objects.create(user=user, name=name)
+        album.save()
+
+        return album,None
+
+    @classmethod
+    def create_public(cls, username):
+        err = []
+
+        # Make sure the user exists
+        try:
+            user = User.objects.get(username=username)
+        except:
+            err.append('User does not exist.')
+
+        # Return if we have errors
+        if err:
+            return None,err
+
+        # Create the new album
+        album = cls.objects.create(user=user, name='Public', public=True)
         album.save()
 
         return album,None

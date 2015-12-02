@@ -6,6 +6,11 @@ var imagecount=0;
 var gotInsta = false;
 var next_insta_url = '';
 
+var markerclustererpublic;
+var allmarkerspublic;
+var imagepubliccount=0;
+
+
 ///////////////////////////////
 // Alert functions
 ///////////////////////////////
@@ -309,50 +314,43 @@ function show_album() {
   var id = $('#map-albums').val();
   markerclusterer.clearMarkers();
 
-  if (id == 1) {
-    markerclusterer.addMarkers(allmarkers);
-    markerclusterer.repaint();
-  }
-  else {
-    $.ajax({
-      type: "POST",
-      url: "get_album",
-      data: {'a_id':id},
-      success: function(data) {
-        var images = data.images;
-        for (var i = 0; i < allmarkers.length; i++) {
-          var marker = allmarkers[i];
-          var check = parseInt(marker.photoid);
-          if (images.indexOf(check) > -1) {
-            markerclusterer.addMarker(marker);
-          }
+  $.ajax({
+    type: "POST",
+    url: "get_album",
+    data: {'a_id':id},
+    success: function(data) {
+      var images = data.images;
+      for (var i = 0; i < allmarkers.length; i++) {
+        var marker = allmarkers[i];
+        var check = parseInt(marker.photoid);
+        if (images.indexOf(check) > -1) {
+          markerclusterer.addMarker(marker);
         }
-        markerclusterer.repaint();
-        var markers = markerclusterer.getMarkers();
-
-        if (markers.length > 0) {
-          console.log('resizing');
-          var bounds = new google.maps.LatLngBounds();
-          for (var i = 0; i < markers.length; ++i) {
-            var marker = markers[i];
-            bounds.extend(marker.position);
-          }
-          map.fitBounds(bounds);
-          var listener = google.maps.event.addListenerOnce(map, "idle", function() {
-              if (map.getZoom() > 8) map.setZoom(8);
-          });
-        }
-        else {
-          map.setCenter(new google.maps.LatLng(40, -79));
-          map.setZoom(8);
-        }
-      },
-      error: function(data) {
-        console.log(data);
       }
-    });
-  }
+      markerclusterer.repaint();
+      var markers = markerclusterer.getMarkers();
 
+      if (markers.length > 0) {
+        console.log('resizing');
+        var bounds = new google.maps.LatLngBounds();
+        for (var i = 0; i < markers.length; ++i) {
+          var marker = markers[i];
+          bounds.extend(marker.position);
+        }
+        map.fitBounds(bounds);
+        var listener = google.maps.event.addListenerOnce(map, "idle", function() {
+            if (map.getZoom() > 8) map.setZoom(8);
+        });
+      }
+      else {
+        map.setCenter(new google.maps.LatLng(40, -79));
+        map.setZoom(8);
+      }
+    },
+    error: function(data) {
+      console.log(data);
+    }
+  });
 }
 
 // Maps functions

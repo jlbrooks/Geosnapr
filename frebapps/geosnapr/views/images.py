@@ -149,6 +149,7 @@ def get_album(request):
     except:
         raise Http404()
     context = {
-        'album': album
+        'album': album,
+        'public': album.public
     }
     return render(request, 'json/album.json', context, content_type="application/json")

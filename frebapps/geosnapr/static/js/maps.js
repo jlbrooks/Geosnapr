@@ -422,6 +422,10 @@ function initialize() {
       }
   });
 
+  $('#imagelocation').keydown(function (e) {
+  if (e.which == 13 && $('.pac-container:visible').length) return false;
+  });
+
   // creates objects for image edit location search
   var imageeditinput = (document.getElementById('imageeditlocation'));
   var imageeditautocomplete = new google.maps.places.Autocomplete(imageeditinput);

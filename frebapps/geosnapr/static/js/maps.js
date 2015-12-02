@@ -4,6 +4,7 @@ var allmarkers;
 var imagecount=0;
 // For now, just do the get once
 var gotInsta = false;
+var next_insta_url = '';
 
 ///////////////////////////////
 // Alert functions
@@ -732,7 +733,7 @@ function loadScript() {
 }
 
 function getInstaImages() {
-  var url = "/get_insta_images";
+  var url = "/get_insta_images?next=" + encodeURIComponent(next_insta_url);
   var parent = $('#insta-images');
   // Set up the spinner
   var opts = {
@@ -751,11 +752,12 @@ function getInstaImages() {
       if (data.error) {
         console.log(data.error);
       } else {
+        next_insta_url = data.next_insta_url;
         for (i = 0; i < data.photos.length; i++) {
           var photo = data.photos[i];
           var div = document.createElement('div');
           var img = document.createElement('img');
-          img.src = photo.image;
+          img.setAttribute('data-lazy', photo.image);
           img.setAttribute('data-lat', photo.lat);
           img.setAttribute('data-lng', photo.lng);
           img.setAttribute('data-caption', photo.caption);
@@ -766,6 +768,16 @@ function getInstaImages() {
         }
         // Stop the spinner
         spinner.stop();
+
+        //Callback to get more instagram images
+        if (next_insta_url != '') {
+          $("#insta-images").children(".slick-next").click(function() {
+            var slick = parent.slick('getSlick');
+            if ((slick.slideCount - slick.currentSlide) == slick.options.slidesToShow) {
+              getInstaImages();
+            }
+          });
+        }
       }
     },
     error: function(data) {
@@ -844,9 +856,10 @@ $(document).ready(function () {
 
     // Set up slick for instagram
     $("#insta-images").slick({
-      infinite: true,
+      infinite: false,
       slidesToShow: 3,
       slidesToScroll: 1,
+      lazyLoad: 'ondemand'
     });
 
     $('#insta-images').on('click', '.slick-slide', toggleSelectedImage);

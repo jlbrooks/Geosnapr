@@ -60,7 +60,13 @@ def get_insta_images(request):
         api = client.InstagramAPI(access_token=access_token,
             client_secret=settings.INSTAGRAM_APP_SECRET)
 
-        recent_media, next = api.user_recent_media()
+        provided_next = request.GET.get('next')
+
+        if provided_next:
+            recent_media, _next = api.user_recent_media(with_next_url=provided_next)
+        else:
+            recent_media, _next = api.user_recent_media()
+
         photos = []
         data['photos'] = photos
         for media in recent_media:
@@ -80,5 +86,10 @@ def get_insta_images(request):
         data['error'] = e.error_message
         request.user.profile.insta_access_key = ''
         request.user.profile.save()
+
+    if _next:
+        data['next_insta_url'] = _next
+    else:
+        data['next_insta_url'] = ''
 
     return JsonResponse(data)

@@ -77,14 +77,17 @@
 }
 .create-content {
   background-color: #00c853;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 1em;
+}
+
+.create-header {
+  padding: 0;
 }
 
 .overflow-hidden {
   overflow: hidden
-}
-
-.create-margin {
-  margin-bottom: 1em;
 }
 
 .user-margin {
@@ -95,6 +98,12 @@
   display: none;
 }
 
+/* Create Box Styling */
+
+.inline {
+  display: inline-block;
+  margin: 0;
+}
 
 .relative-position {
   position: relative;

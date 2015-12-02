@@ -307,8 +307,6 @@ function openImageEditForm(image) {
 
 function show_album() {
   var id = $('#map-albums').val();
-  console.log('album value');
-  console.log(id);
   markerclusterer.clearMarkers();
 
   if (id == 1) {
@@ -316,7 +314,6 @@ function show_album() {
     markerclusterer.repaint();
   }
   else {
-    console.log('not all images');
     $.ajax({
       type: "POST",
       url: "get_album",
@@ -327,13 +324,9 @@ function show_album() {
           var marker = allmarkers[i];
           var check = parseInt(marker.photoid);
           if (images.indexOf(check) > -1) {
-            console.log(marker);
             markerclusterer.addMarker(marker);
-            console.log(markerclusterer.getMarkers().length)
           }
         }
-        console.log('done adding correct ones');
-        console.log(markerclusterer);
         markerclusterer.repaint();
         var markers = markerclusterer.getMarkers();
 
@@ -424,7 +417,7 @@ function initialize() {
   });
 
   $('#imagelocation').keydown(function (e) {
-  if (e.which == 13 && $('.pac-container:visible').length) return false;
+    if (e.which == 13 && $('.pac-container:visible').length) return false;
   });
 
   // creates objects for image edit location search
@@ -505,7 +498,7 @@ function initialize() {
     cluster.infoWindow = infobubble;
   });
 
-  google.maps.event.addListener(markerclusterer, 'mouseout', function(cluster) {
+  google.maps.event.addListener(markerclusterer, 'mouseoff', function(cluster) {
     if (cluster.infoWindow != undefined) {
       cluster.infoWindow.close();
     }
@@ -612,14 +605,15 @@ function showImageInfoWindow(map, marker) {
   })
 
   infobubble.open(map, marker);
+  if (marker.infoWindow != undefined) {
+    marker.infoWindow.close();
+  }
   marker.infoWindow = infobubble;
 }
 
 function addMarkers(json) {
-  console.log(json);
   // adds each image object in the json object to the markerclusterer
   for (var i = 0; i < json.length; i++) {
-    console.log('adding single new photo');
     var image = json[i];
     var latitude = image['lat'];
     var longitude = image['lng'];
@@ -640,7 +634,6 @@ function addMarkers(json) {
   }
 
   for (var i = 0; i < json.length; ++i) {
-    console.log('adding bindings');
     var markers = allmarkers;
     var key = imagecount;
 
@@ -662,6 +655,8 @@ function addMarkers(json) {
         openImageEditForm(image);
       }
     }(key));
+
+
     imagecount++;
   }
   console.log('show album');

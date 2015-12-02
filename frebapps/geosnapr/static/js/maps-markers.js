@@ -2,6 +2,10 @@ function hideImageInfoWindow(marker) {
   // should always be defined if function is called
   if (marker.infoWindow != undefined) {
     marker.infoWindow.close();
+    marker.infoWindowExists = false;
+  }
+  else {
+    marker.infoWindowExists = false;
   }
 }
 
@@ -23,10 +27,14 @@ function showImageInfoWindow(map, marker) {
   })
 
   infobubble.open(map, marker);
+  if (marker.infoWindowExists == true) {
+    marker.infoWindow.close();
+  }
   if (marker.infoWindow != undefined) {
     marker.infoWindow.close();
   }
   marker.infoWindow = infobubble;
+  marker.infoWindowExists = true;
 }
 
 function addMarkers(json) {
@@ -148,7 +156,7 @@ function addMarkersPublic(json) {
         } else {
           openImageViewForm(image);
         }
-        
+
       }
     }(key));
 

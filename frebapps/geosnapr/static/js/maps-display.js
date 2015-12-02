@@ -299,43 +299,84 @@ function openImageEditForm(image) {
 
 function show_album() {
   var id = $('#map-albums').val();
+  console.log(id);
   markerclusterer.clearMarkers();
+  markerclustererpublic.clearMarkers();
 
-  $.ajax({
-    type: "POST",
-    url: "get_album",
-    data: {'a_id':id},
-    success: function(data) {
-      var images = data.images;
-      for (var i = 0; i < allmarkers.length; i++) {
-        var marker = allmarkers[i];
-        var check = parseInt(marker.photoid);
-        if (images.indexOf(check) > -1) {
-          markerclusterer.addMarker(marker);
+  if (id == 0) {
+    $.ajax({
+      type: "POST",
+      url: "get_public",
+      success: function(data) {
+        console.log(data);
+        var images = data.images;
+        addMarkersPublic(images);
+
+        var markers = markerclustererpublic.getMarkers();
+
+        if (markers.length > 0) {
+          console.log('resizing');
+          var bounds = new google.maps.LatLngBounds();
+          for (var i = 0; i < markers.length; ++i) {
+            var marker = markers[i];
+            bounds.extend(marker.position);
+          }
+          map.fitBounds(bounds);
+          var listener = google.maps.event.addListenerOnce(map, "idle", function() {
+              if (map.getZoom() > 8) map.setZoom(8);
+          });
         }
-      }
-
-      var markers = markerclusterer.getMarkers();
-
-      if (markers.length > 0) {
-        console.log('resizing');
-        var bounds = new google.maps.LatLngBounds();
-        for (var i = 0; i < markers.length; ++i) {
-          var marker = markers[i];
-          bounds.extend(marker.position);
+        else {
+          map.setCenter(new google.maps.LatLng(40, -79));
+          map.setZoom(8);
         }
-        map.fitBounds(bounds);
-        var listener = google.maps.event.addListenerOnce(map, "idle", function() {
-            if (map.getZoom() > 8) map.setZoom(8);
-        });
+      },
+      error: function(data) {
+        console.log(data);
       }
-      else {
-        map.setCenter(new google.maps.LatLng(40, -79));
-        map.setZoom(8);
+    });
+  }
+
+  else {
+    $.ajax({
+      type: "POST",
+      url: "get_album",
+      data: {'a_id':id},
+      success: function(data) {
+        var images = data.images;
+
+        // extracts the photos from the album to show
+        for (var i = 0; i < allmarkers.length; i++) {
+          var marker = allmarkers[i];
+          var check = parseInt(marker.photoid);
+          if (images.indexOf(check) > -1) {
+            markerclusterer.addMarker(marker);
+          }
+        }
+
+        var markers = markerclusterer.getMarkers();
+
+        if (markers.length > 0) {
+          console.log('resizing');
+          var bounds = new google.maps.LatLngBounds();
+          for (var i = 0; i < markers.length; ++i) {
+            var marker = markers[i];
+            bounds.extend(marker.position);
+          }
+          map.fitBounds(bounds);
+          var listener = google.maps.event.addListenerOnce(map, "idle", function() {
+              if (map.getZoom() > 8) map.setZoom(8);
+          });
+        }
+        else {
+          map.setCenter(new google.maps.LatLng(40, -79));
+          map.setZoom(8);
+        }
+      },
+      error: function(data) {
+        console.log(data);
       }
-    },
-    error: function(data) {
-      console.log(data);
-    }
-  });
+    });
+  }
+
 }

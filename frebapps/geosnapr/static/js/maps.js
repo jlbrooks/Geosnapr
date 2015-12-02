@@ -213,6 +213,8 @@ function initialize() {
     $('#album-modal').foundation('reveal','open');
   });
 
+  $("#map-albums").prepend('<option value="0">All Public Images</option>');
+
   $("#map-albums").change(function() {
     show_album();
   });

@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^instagram_callback', instagram_views.instagram_callback, name='instagram_callback'),
     url(r'^get_insta_images$', instagram_views.get_insta_images, name='get_insta_images'),
     url(r'^get_album$', images.get_album, name='get_album'),
+    url(r'^get_public$', images.get_public, name='get_public'),
     # API urls
     url(r'^v1/doc$', apis.swagger, name='swagger'),
     url(r'^v1/image$', apis.route_image_method, name='api_image_method'),

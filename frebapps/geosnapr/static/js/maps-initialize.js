@@ -80,7 +80,10 @@ $(document).ready(function(){
   });
 
   $("#edit-profile").on("click", function() {
-    console.log('logged edit profile click');
+        $.sidr('close','sidr');
+    });
+
+  $("#get-api-key").on("click", function() {
         $.sidr('close','sidr');
     });
 });

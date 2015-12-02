@@ -103,6 +103,9 @@ USE_TZ = True
 # Default album name
 DEFAULT_ALBUM_NAME = "All Images"
 
+# Default public album name
+DEFAULT_PUBLIC_NAME = "My Public Images"
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 

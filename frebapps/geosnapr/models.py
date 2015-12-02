@@ -77,9 +77,9 @@ class Profile(models.Model):
         profile = cls.objects.create(user=user)
         profile.save()
 
-        # Create the default album
+        # Create the default albums
         Album.get_or_create_default_for_user(username=user.username)
-        Album.create_public(username=user.username)
+        Album.create(username=user.username, name=settings.DEFAULT_PUBLIC_NAME, public=True)
 
         # Return the created profile
         return profile,None
@@ -336,7 +336,7 @@ class Album(models.Model):
         return data
 
     @classmethod
-    def create(cls, username, name):
+    def create(cls, username, name, public=False):
         err = []
 
         # Set default name
@@ -354,27 +354,7 @@ class Album(models.Model):
             return None,err
 
         # Create the new album
-        album = cls.objects.create(user=user, name=name)
-        album.save()
-
-        return album,None
-
-    @classmethod
-    def create_public(cls, username):
-        err = []
-
-        # Make sure the user exists
-        try:
-            user = User.objects.get(username=username)
-        except:
-            err.append('User does not exist.')
-
-        # Return if we have errors
-        if err:
-            return None,err
-
-        # Create the new album
-        album = cls.objects.create(user=user, name='Public', public=True)
+        album = cls.objects.create(user=user, name=name, public=public)
         album.save()
 
         return album,None
@@ -390,4 +370,17 @@ class Album(models.Model):
             return cls.objects.get(user=user, name=settings.DEFAULT_ALBUM_NAME)
         except:
             album,errs = cls.create(user.username, settings.DEFAULT_ALBUM_NAME)
+            return album
+
+    @classmethod
+    def get_or_create_public_for_user(cls, username):
+        try:
+            user = User.objects.get(username=username)
+        except:
+            return None
+
+        try:
+            return cls.objects.get(user=user, name=settings.DEFAULT_PUBLIC_NAME)
+        except:
+            album,errs = cls.create(user.username, settings.DEFAULT_PUBLIC_NAME, public=True)
             return album

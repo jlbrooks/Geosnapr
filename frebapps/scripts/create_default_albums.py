@@ -22,3 +22,6 @@ if __name__ == '__main__':
             if image not in album.images.all():
                 album.images.add(image)
             album.save()
+
+        # Create the public album
+        public = Album.get_or_create_public_for_user(username=user.username)

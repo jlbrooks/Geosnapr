@@ -95,6 +95,12 @@
   display: none;
 }
 
+/* Create Box Styling */
+
+.inline {
+  display: inline-block;
+}
+
 
 .relative-position {
   position: relative;

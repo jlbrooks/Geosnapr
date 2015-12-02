@@ -659,15 +659,11 @@ function addMarkers(json) {
 
     imagecount++;
   }
-  console.log('show album');
   show_album();
-  console.log('get markers');
   var markers2 = markerclusterer.getMarkers();
-  console.log(markers2.length);
 
   // rezooms based on what was added
   if (markers2.length > 0) {
-    console.log('resizing');
     var bounds = new google.maps.LatLngBounds();
     for (var i = 0; i < markers.length; ++i) {
       var marker = markers2[i];

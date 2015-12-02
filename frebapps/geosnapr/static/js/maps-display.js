@@ -297,6 +297,16 @@ function openImageEditForm(image) {
   $("#edit-img-btn").on('click', edit_image);
 }
 
+function openImageViewForm(image) {
+  $("#img-edit-form-hidden").hide();
+  $("#img-edit-form-show").hide();
+  $("#delete-image").hide();
+  $('#photo-modal-link').attr("src",image.image.replace(/&amp;/g, '&'));
+  $('#photo-modal-comment').text(image.caption);
+  $('#photo-modal-user').text("Photo by: " + image.username);
+  $('#photo-modal').foundation('reveal','open');
+}
+
 function show_album() {
   var id = $('#map-albums').val();
   console.log(id);

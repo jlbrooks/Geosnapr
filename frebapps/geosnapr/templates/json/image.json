@@ -1,1 +1,1 @@
-{"image": "{{image.image.url}}", "lat": {{image.lat}}, "lng": {{image.lng}}, "caption": "{{image.caption}}", "id": "{{image.id}}", "albums": {{image.album_ids}}}
+{"image": "{{image.image.url}}", "lat": {{image.lat}}, "lng": {{image.lng}}, "caption": "{{image.caption}}", "id": "{{image.id}}", "albums": {{image.album_ids}}, "username": "{{image.user.username}}"}

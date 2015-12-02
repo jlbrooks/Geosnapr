@@ -5,6 +5,7 @@ var imagecount=0;
 // For now, just do the get once
 var gotInsta = false;
 var next_insta_url = '';
+var currentUsername;
 
 var markerclustererpublic;
 var allmarkerspublic;

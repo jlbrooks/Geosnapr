@@ -1,13 +1,13 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "These are the API docs for the Geosnapr application",
+    "description": "These are the API docs for the Geosnapr application. All requests require an API key, sent as the `api_key` GET parameter. If you are authenticated with Geosnapr, your API key should be filled in the upper right. Otherwise, you can obtain the key from the profile tab on the main site.",
     "version": "1.0.0",
     "title": "Geosnapr",
     "termsOfService": "http://swagger.io/terms/",
     "contact": {
       "url": "https://geosnapr.com",
-      "name": "Geosnapr",
+      "name": "Jacob Brooks and Guochen Shen",
       "email": "jacobbro@andrew.cmu.edu"
     },
     "license": {

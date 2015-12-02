@@ -31,7 +31,7 @@
   <div class="columns large-4 medium-6 small-12 top-margin-small">
       <input type="text" id="locationsearch" placeholder="Search..."/>
   </div>
-  <div class="columns large-2 large-offset-2 medium-3 small-9 top-margin-small end">
+  <div class="columns large-2 large-offset-1 medium-3 small-9 top-margin-small end">
     {% include "__album_select.html" with id="map-albums" all_images=True %}
   </div>
 
@@ -39,6 +39,7 @@
     <a id="sidrtoggle" href="#sidr"><img src="{% static "img/user-small.png" %}" class="user-image"></a>
   </div>
 </div>
+
 
 <div class="alert-box success" id="message" style="display: none;">
   <a class="close" href="#">×</a>

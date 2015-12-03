@@ -28,6 +28,9 @@ function initialize() {
     mapTypeControl: false,
     streetViewControl: false,
     zoomControl: true,
+    zoomControlOptions: {
+        position: google.maps.ControlPosition.RIGHT_CENTER
+    },
     styles: [{ featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }]}]
   };
 

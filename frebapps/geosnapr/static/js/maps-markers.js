@@ -104,6 +104,9 @@ function addMarkers(json, public) {
     if (public == false) {
       imagecount++;
     }
+    if (public == true) {
+      imagepubliccount++;
+    }
     imagecounter++;
   }
 

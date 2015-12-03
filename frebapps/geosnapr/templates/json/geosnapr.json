@@ -18,7 +18,7 @@
   "host": "{{host}}",
   "basePath": "/v1",
   "schemes": [
-    "{{scheme}}",
+    "{{scheme}}"
   ],
   "tags": [
     {
@@ -578,7 +578,7 @@
       "required": [
         "src",
         "lat",
-        "lng",
+        "lng"
       ],
       "properties": {
         "src": {
@@ -593,7 +593,7 @@
         "lng": {
           "type": "number",
           "format": "double",
-          "example": -80.2,
+          "example": -80.2
         },
         "caption": {
           "type": "string"
@@ -610,7 +610,7 @@
         "lng": {
           "type": "number",
           "format": "double",
-          "example": -80.2,
+          "example": -80.2
         },
         "caption": {
           "type": "string"

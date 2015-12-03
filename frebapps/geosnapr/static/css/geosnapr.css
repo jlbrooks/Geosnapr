@@ -242,6 +242,9 @@ fieldset.hidden {
   z-index: 2;
   padding-bottom: 1em;
 }
+.album-select-fit {
+  width: 100%;
+}
 
 /* Map Display CSS */
 

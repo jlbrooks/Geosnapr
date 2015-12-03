@@ -43,11 +43,13 @@
 
 <div class="full-width row">
 
-  <div class="columns large-2 medium-3 small-9 top-margin-small album-select overflow-hidden">
-    {% include "__album_select.html" with id="map-albums" all_images=True %}
+  <div class="columns large-3 medium-6 small-12 top-margin-small font-small josefin overflow-hidden album-select">
+    <div class="album-select-fit">
+      {% include "__album_select.html" with id="map-albums" class="josefin font-small" all_images=True %}
+    </div>
   </div>
 
-  <div id="accordion" class="accordion columns large-3 large-offset-9 overflow-hidden create-header">
+  <div id="accordion" class="accordion columns large-3 large-offset-9 medium-6 medium-offset-6 overflow-hidden create-header">
     <div class="accheader create">
       <h3 class="accheadertitle josefin">Create</h3>
     </div>

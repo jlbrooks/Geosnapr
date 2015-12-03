@@ -154,7 +154,7 @@ class Image(models.Model):
 
     lng = models.DecimalField(max_digits=9, decimal_places=6)
 
-    caption = models.CharField(max_length=100)
+    caption = models.CharField(max_length=500)
 
     def album_ids(self):
         return [album.id for album in self.album_set.all()]

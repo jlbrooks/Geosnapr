@@ -1,34 +1,38 @@
-{% extends "_base.html" %}
-
-{% load staticfiles %}
-
-{% block title %}Login | GeoSnapr{% endblock title %}
-
-{% block description %}Login page for the GeoSnapr web application.{% endblock description %}
-
-{% block resources %}
+{% extends "_base.html" %} {% load staticfiles %} {% block title %}Login | GeoSnapr{% endblock title %} {% block description %}Login page for the GeoSnapr web application.{% endblock description %} {% block resources %}
 <link href='https://fonts.googleapis.com/css?family=Josefin+Sans:700,400' rel='stylesheet' type='text/css'>
 <link href="{% static "slick/slick.css" %}" rel="stylesheet" type='text/css'>
 <link href="{% static "slick/slick-theme.css" %}" rel="stylesheet" type='text/css'>
 <script src="{% static "slick/slick.js" %}"></script>
 <script src="{% static "jqueryui/jquery-ui.js" %}"></script>
 <script src="{% static "js/index.js" %}"></script>
-{% endblock resources %}
-
-{% block content %}
+{% endblock resources %} {% block content %}
 
 <div class="viewport">
 
   <div class="row viewport carousel-back">
     <div class="columns large-12 medium-12 small-12 no-pad-left no-pad-right hideoverflowx">
       <div class="background-carousel">
-        <div><img src="{% static "img/background3.jpg" %}" class="min-height"/></div>
-        <div><img src="{% static "img/background5.jpg" %}" class="min-height"/></div>
-        <div><img src="{% static "img/background2.jpg" %}" class="min-height"/></div>
-        <div><img src="{% static "img/background4.jpg" %}" class="min-height"/></div>
-        <div><img src="{% static "img/background1.jpg" %}" class="min-height"/></div>
-        <div><img src="{% static "img/background6.jpg" %}" class="min-height"/></div>
-        <div><img src="{% static "img/background7.jpg" %}" class="min-height"/></div>
+        <div>
+          <img src="{% static "img/background3.jpg" %}" class="min-height" />
+        </div>
+        <div>
+          <img src="{% static "img/background5.jpg" %}" class="min-height" />
+        </div>
+        <div>
+          <img src="{% static "img/background2.jpg" %}" class="min-height" />
+        </div>
+        <div>
+          <img src="{% static "img/background4.jpg" %}" class="min-height" />
+        </div>
+        <div>
+          <img src="{% static "img/background1.jpg" %}" class="min-height" />
+        </div>
+        <div>
+          <img src="{% static "img/background6.jpg" %}" class="min-height" />
+        </div>
+        <div>
+          <img src="{% static "img/background7.jpg" %}" class="min-height" />
+        </div>
       </div>
     </div>
   </div>
@@ -43,20 +47,19 @@
     <div class="row">
       <div class="columns large-6 large-offset-3 medium-8 medium-offset-2 small-12 panel panel-opacity">
         <h4 class="josefin font-large">GeoSnapr</h1>
-        <h6 class="josefin font-small">Your photos. Your world.</h6>
+          <h6 class="josefin font-small">Your photos. Your world.</h6>
 
-        <form action="{% url 'login' %}" method="POST">
-          {% csrf_token %}
-          {% if error %}
-          <div data-alert class="alert-box alert radius">
-            Incorrect login credentials.
-            <a href="#" class="close">&times;</a>
-          </div>
-          {% endif %}
-          <input type="text" name="username" placeholder="Username" required/>
-          <input type="password" name="password" placeholder="Password" required/>
-          <button type="submit" class="button radius">Log In</button>
-        </form>
+          <form action="{% url 'login' %}" method="POST">
+            {% csrf_token %} {% if error %}
+            <div data-alert class="alert-box alert radius">
+              Incorrect login credentials.
+              <a href="#" class="close">&times;</a>
+            </div>
+            {% endif %}
+            <input type="text" name="username" placeholder="Username" required/>
+            <input type="password" name="password" placeholder="Password" required/>
+            <button type="submit" class="button radius">Log In</button>
+          </form>
       </div>
     </div>
   </div>
@@ -114,49 +117,50 @@
           <p class="josefin" data-reveal-id="contactModal">Contact Us</p>
         </div>
         <div class="columns large-6">
-          <p class="josefin">Some other fine print stuff<p class="josefin">
+          <p class="josefin">Some other fine print stuff
+            <p class="josefin">
         </div>
       </div>
     </div>
   </div>
 
-<!-- reveal modals -->
+  <!-- reveal modals -->
 
   <div id="registerModal" class="reveal-modal xlarge" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
     <h3 id="modalTitle">Register for an account:</h3>
-      <form data-abide action="{% url 'register' %}" method="POST">
-        {% csrf_token %}
-        <input type="text" name="first_name" placeholder="First Name" required/>
-        <input type="text" name="last_name" placeholder="Last Name" required/>
-        <input type="text" name="username" placeholder="Username" required/>
-        <input type="email" name="email" placeholder="Email" required/>
-        <input type="password" name="password" placeholder="Password" required/>
-        <input type="password" name="confirm_password" placeholder="Confirm Password" required/>
-        <button type="submit" class="button">Register</button>
-      </form>
+    <form data-abide action="{% url 'register' %}" method="POST">
+      {% csrf_token %}
+      <input type="text" name="first_name" placeholder="First Name" required/>
+      <input type="text" name="last_name" placeholder="Last Name" required/>
+      <input type="text" name="username" placeholder="Username" required/>
+      <input type="email" name="email" placeholder="Email" required/>
+      <input type="password" name="password" placeholder="Password" required/>
+      <input type="password" name="confirm_password" placeholder="Confirm Password" required/>
+      <button type="submit" class="button">Register</button>
+    </form>
     <a class="close-reveal-modal" aria-label="Close">&#215;</a>
   </div>
 
   <div id="teamModal" class="reveal-modal xlarge" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
     <h3 id="modalTitle" class="josefin-black">The Team:</h3>
-      <div class="row">
-        <div class="columns large-6">
-          <h1 class="josefin-black">Jacob Brooks</h1>
-        </div>
-
-        <div class="columns large-6">
-          <h1 class="josefin-black">Guochen Shen</h2>
-        </div>
+    <div class="row">
+      <div class="columns large-6">
+        <h1 class="josefin-black">Jacob Brooks</h1>
       </div>
+
+      <div class="columns large-6">
+        <h1 class="josefin-black">Guochen Shen</h2>
+      </div>
+    </div>
     </form>
     <a class="close-reveal-modal" aria-label="Close">&#215;</a>
   </div>
 
   <div id="contactModal" class="reveal-modal xlarge" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
     <h3 id="modalTitle" class="josefin-black">How to Contact Us:</h3>
-      <div class="row">
-        <p class="josefin-black">This is how you contact us.</p>
-      </div>
+    <div class="row">
+      <p class="josefin-black">This is how you contact us.</p>
+    </div>
     </form>
     <a class="close-reveal-modal" aria-label="Close">&#215;</a>
   </div>

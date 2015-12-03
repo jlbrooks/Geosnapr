@@ -18,8 +18,7 @@
   "host": "{{host}}",
   "basePath": "/v1",
   "schemes": [
-    "http",
-    "https"
+    "{{scheme}}",
   ],
   "tags": [
     {

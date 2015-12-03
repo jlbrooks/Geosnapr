@@ -105,7 +105,8 @@ def swagger(request):
 @csrf_exempt
 def api_description(request):
     context = {
-        "host": settings.HOSTNAME
+        "host": settings.HOSTNAME,
+        "scheme": settings.SCHEME
     }
     return render(request, 'json/geosnapr.json', context)
 

@@ -2,7 +2,7 @@
 
 .josefin {
   font-family: 'Josefin Sans', sans-serif;
-  color: white;
+  color: white !important;
 }
 
 .josefin-black {
@@ -68,6 +68,13 @@
   margin: 100px;
   padding: 100px;
   border: 100px;
+}
+
+.panel-opacity {
+  background-color: rgba(0,0,0,0.5);
+  border: 0;
+  color: #FFFFFF;
+  font-color: #FFFFFF;
 }
 
 /* Map Page Styling */

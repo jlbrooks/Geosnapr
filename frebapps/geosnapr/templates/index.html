@@ -41,9 +41,9 @@
     </div>
 
     <div class="row">
-      <div class="columns large-6 large-offset-3 medium-8 medium-offset-2 small-12 panel">
-        <h4 class="josefin-black font-large">GeoSnapr</h1>
-        <h6 class="josefin-black font-small">Your photos. Your world.</h6>
+      <div class="columns large-6 large-offset-3 medium-8 medium-offset-2 small-12 panel panel-opacity">
+        <h4 class="josefin font-large">GeoSnapr</h1>
+        <h6 class="josefin font-small">Your photos. Your world.</h6>
 
         <form action="{% url 'login' %}" method="POST">
           {% csrf_token %}
@@ -74,7 +74,7 @@
         </div>
         <div class="columns large-4 medium-5 small-9">
           <p class="josefin">This is GeoSnapr.</p>
-          <p class="josefin">It's a web based application where you can upload your photos.</p>
+          <p class="josefin">It's a web application where you can upload your photos.</p>
           <p class="josefin">Choose locations for your photos and browse them on a map.</p>
         </div>
         <div class="columns large-2 medium-1 small-3">
@@ -82,6 +82,7 @@
         </div>
         <div class="columns large-4 medium-5 small-9">
           <p class="josefin">Share photos with your friends and family.</p>
+          <p class="josefin">Revisit all of the places you've been to.</p>
         </div>
       </div>
     </div>

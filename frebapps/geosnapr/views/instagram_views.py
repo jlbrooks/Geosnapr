@@ -83,16 +83,25 @@ def get_insta_images(request):
                     if hasattr(media.caption, 'text'):
                         img['caption'] = media.caption.text
                 photos.append(img)
+
+        if _next:
+            data['next_insta_url'] = _next
+        else:
+            data['next_insta_url'] = ''
+
     except InstagramClientError as e:
         data['error'] = e.error_message
     except InstagramAPIError as e:
         data['error'] = e.error_message
         request.user.profile.insta_access_key = ''
         request.user.profile.save()
-
-    if _next:
-        data['next_insta_url'] = _next
-    else:
-        data['next_insta_url'] = ''
+        # Send the auth url back
+        insta_auth_url = ('https://api.instagram.com/oauth/authorize/' +
+        '?client_id=' + settings.INSTAGRAM_APP_ID +
+        '&redirect_uri=' + request.build_absolute_uri(reverse(instagram_callback)) +
+        '&response_type=code')
+        data['insta_auth_url'] = insta_auth_url
+    except:
+        data['error'] = "Error communicating with Instagram servers"
 
     return JsonResponse(data)

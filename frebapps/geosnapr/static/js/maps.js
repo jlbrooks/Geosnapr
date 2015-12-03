@@ -311,8 +311,15 @@ function getInstaImages() {
     url: url,
 
     success: function(data) {
+      // Stop the spinner
+      spinner.stop();
+
       if (data.error) {
         console.log(data.error);
+        $("#panel2").html("Error retrieving Instagram images: " + data.error)
+        if (data.insta_auth_url) {
+          $("#panel2").append($("<a>", {href: data.insta_auth_url, text: "Re-link your Instagram account now!"}));
+        }
       } else {
         next_insta_url = data.next_insta_url;
         for (i = 0; i < data.photos.length; i++) {
@@ -328,9 +335,7 @@ function getInstaImages() {
           div.appendChild(img);
           parent.slick('slickAdd',div);
         }
-        // Stop the spinner
-        spinner.stop();
-
+        
         //Callback to get more instagram images
         if (next_insta_url != '') {
           $("#insta-images").children(".slick-next").click(function() {
@@ -344,6 +349,7 @@ function getInstaImages() {
     },
     error: function(data) {
       spinner.stop();
+      $("#panel2").html("Error communicating with the Geosnapr servers! Refresh the page and try again!");
       console.log(data);
     }
   });

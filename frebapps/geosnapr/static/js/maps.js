@@ -12,9 +12,21 @@ var markerclustererpublic;
 var allmarkerspublic;
 var imagepubliccount=0;
 
-
-
 // Maps functions
+
+function clearclusterinfowindow() {
+  var clusterarray = [markerclusterer, markerclustererpublic];
+  for (var i = 0; i < 2; i++) {
+    var clusters = clusterarray[i].getClusters();
+    for (var j = 0; j < clusters.length; j++) {
+      var cluster = clusters[j]
+      if (cluster.infoWindow != null) {
+        cluster.infoWindow.close();
+        delete cluster.infoWindow;
+      }
+    }
+  }
+}
 
 // Initialize objects in the map
 function initialize() {
@@ -211,23 +223,9 @@ function initialize() {
     });
   }
 
+  var self = this;
   google.maps.event.addListener(map, 'zoom_changed', function() {
-    var clusters = markerclusterer.getClusters();
-    for (var i = 0; i < clusters.length; ++i) {
-      var cluster = clusters[i];
-      if (cluster.infoWindow != null) {
-        cluster.infoWindow.close();
-        delete cluster.infoWindow;
-      }
-    }
-    clusters = markerclustererpublic.getClusters();
-    for (var i = 0; i < clusters.length; ++i) {
-      var cluster = clusters[i];
-      if (cluster.infoWindow != null) {
-        cluster.infoWindow.close();
-        delete cluster.infoWindow;
-      }
-    }
+    self.clearclusterinfowindow();
   });
 
   // creates slick carousel for album viewing

@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.template.defaultfilters import filesizeformat
 from decimal import Decimal
 import uuid
 
@@ -190,6 +191,14 @@ class Image(models.Model):
         # Image must exist
         if not image:
             err.append('Image must be present')
+
+        # Image must actually be an image
+        if image.content_type.split('/')[0] not in settings.CONTENT_TYPES:
+            err.append('Uploaded file must be an image')
+
+        if image._size > settings.MAX_UPLOAD_SIZE:
+            err.append('Uploaded file exceeds maximum allowable size: %s. Your filesize: %s' %
+                (filesizeformat(settings.MAX_UPLOAD_SIZE), filesizeformat(image._size)))
 
         # Lat must exist
         if not lat:

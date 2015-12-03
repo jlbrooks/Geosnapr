@@ -106,9 +106,20 @@ DEFAULT_ALBUM_NAME = "All Images"
 # Default public album name
 DEFAULT_PUBLIC_NAME = "My Public Images"
 
+# Server hostname
 HOSTNAME = 'localhost:8000'
 
+# HTTP scheme
 SCHEME = 'http'
+
+# Acceptable content types to upload
+CONTENT_TYPES = ['image']
+
+# Maximum allowable file size -> 5MB
+MAX_UPLOAD_SIZE = 5242880
+
+# Maximum images that a user can own
+MAX_PHOTOS = 200
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/

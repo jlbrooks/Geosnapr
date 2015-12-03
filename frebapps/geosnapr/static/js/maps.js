@@ -220,10 +220,7 @@ function initialize() {
         delete cluster.infoWindow;
       }
     }
-  });
-
-  google.maps.event.addListener(map, 'zoom_changed', function() {
-    var clusters = markerclustererpublic.getClusters();
+    clusters = markerclustererpublic.getClusters();
     for (var i = 0; i < clusters.length; ++i) {
       var cluster = clusters[i];
       if (cluster.infoWindow != null) {

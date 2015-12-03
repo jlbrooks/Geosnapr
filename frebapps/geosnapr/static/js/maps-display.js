@@ -320,7 +320,7 @@ function openImageEditForm(image) {
     $("#img-edit-form-show").hide();
   });
   $('#photo-modal-link').attr("src",image.image.replace(/&amp;/g, '&'));
-  console.log(image.caption);
+  $('#photo-modal-user').text('')
   $('#photo-modal-comment').html(image.caption);
   $("#editcaption").val($('#photo-modal-comment').text());
   $("#img-id").val(image.id);
@@ -337,7 +337,7 @@ function openImageViewForm(image) {
   $("#img-edit-form-show").hide();
   $("#delete-image").hide();
   $('#photo-modal-link').attr("src",image.image.replace(/&amp;/g, '&'));
-  $('#photo-modal-comment').text(image.caption);
+  $('#photo-modal-comment').html(image.caption);
   $('#photo-modal-user').text("Photo by: " + image.username);
   $('#photo-modal').foundation('reveal','open');
 }

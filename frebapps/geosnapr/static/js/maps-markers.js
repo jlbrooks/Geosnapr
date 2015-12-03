@@ -56,7 +56,9 @@ function addMarkers(json, public) {
     var longitude = image['lng'];
     var id = image['id'];
     var albums = image['albums'];
-    currentUsername = image['username'];
+    if (public == false) {
+      currentUsername = image['username'];
+    }
 
     var latlng = new google.maps.LatLng({lat:latitude, lng:longitude});
     // creates new marker
@@ -97,7 +99,12 @@ function addMarkers(json, public) {
     google.maps.event.addListener(markers[key],'click', function(key2) {
       return function() {
         var image = markers[key2].image;
-        openImageEditForm(image);
+        if (image.username == currentUsername) {
+          openImageEditForm(image);
+        } else {
+          openImageViewForm(image);
+        }
+        
       }
     }(key));
 

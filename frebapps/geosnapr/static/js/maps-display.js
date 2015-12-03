@@ -45,6 +45,8 @@ function geocodeForm(lat, lng, latElem, lngElem, resultElem) {
 function imageChosen(input) {
   var reader = new FileReader();
 
+  clearImageForm();
+
   reader.onload = function (e) {
     // get loaded data and render thumbnail.
     document.getElementById("upload-img").src = e.target.result;
@@ -112,29 +114,20 @@ function clearImageForm() {
   $("#autolng").val('');
   $("#imagelocation").val('');
   $("#caption").val('');
+  $("#upload-notification").html('');
+  $("#upload-notification").removeClass();
 }
 
 function upload_image(event) {
   event.preventDefault();
   var form = $("#upload-img-form");
   var formData = new FormData(document.getElementById("upload-img-form"));
-  if ($("#autolat").val() == '') {
-    $("#img-loc-form").prepend('<div data-alert class="alert-box alert radius">\
-      Location information is required.\
-      <a href="#" class="close">&times;</a>\
-    </div>');
-    $(document).foundation();
+  if ($("#autolat").val() == '' || $("#autolng").val() == '') {
+    $("#upload-notification").html("Location information is required");
+    $("#upload-notification").addClass("alert-box alert radius");
+    return;
+  };
 
-    return;
-  };
-  if ($("#autolng").val() == '') {
-    $("#img-loc-form").prepend('<div data-alert class="alert-box alert radius">\
-      Location information is required.\
-      <a href="#" class="close">&times;</a>\
-    </div>');
-    $(document).foundation();
-    return;
-  };
   formData.append("upload-album", $("#upload-album").val());
   // Are we in the instagram tab?
   if ($("#panel2").attr('aria-hidden') == 'false') {
@@ -159,18 +152,24 @@ function upload_image(event) {
     processData: false,
     contentType: false,
     success: function (data) {
-      // Add a new marker
-      addMarkers([data.image]);
-      // Remove the form dataå
-      clearImageForm();
-      //$("#upload-img").val(null);
-      $("#upload-img").attr('src', '');
-      $("#upload-file").replaceWith($("#upload-file").clone(true));
-      // Close the modal
-      $('#uploadModal').foundation('reveal', 'close');
       // Stop the spinner
       spinner.stop();
-      alertMsg(data.message, "success");
+      if (data.errors.length > 0) {
+        $("#upload-notification").html(data.errors[0]);
+        $("#upload-notification").addClass("alert-box alert radius");
+      } else {
+        // Add a new marker
+        addMarkers([data.image]);
+        // Remove the form dataå
+        clearImageForm();
+        //$("#upload-img").val(null);
+        $("#upload-img").attr('src', '');
+        $("#upload-file").replaceWith($("#upload-file").clone(true));
+        // Close the modal
+        $('#uploadModal').foundation('reveal', 'close');
+        // Alert success
+        alertMsg(data.message, "success");
+      }
     },
     error: function (data) {
       console.log(data);

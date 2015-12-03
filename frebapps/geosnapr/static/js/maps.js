@@ -106,131 +106,107 @@ function initialize() {
     if (e.which == 13 && $('.pac-container:visible').length) return false;
   });
 
-  google.maps.event.addListener(markerclusterer, 'mouseover', function(cluster) {
-    if (cluster.infoWindow != undefined) {
-      cluster.infoWindow.open();
-    }
-    else {
-      var markers = cluster.getMarkers();
-      var content = "<div class='infowindow-container'>";
+  var clustererarray = [markerclusterer, markerclustererpublic];
 
-      for (var i = 0; i < markers.length; ++i) {
-        var marker = markers[i]
+  for (var i = 0; i < 2; i++) {
+    google.maps.event.addListener(clustererarray[i], 'mouseover', function(cluster) {
+      if (cluster.infoWindow != undefined) {
+        cluster.infoWindow.open();
+      }
+      else {
+        var markers = cluster.getMarkers();
+        var content = "<div class='infowindow-container'>";
 
-        if (i % 3 == 0) {
+        for (var i = 0; i < markers.length; ++i) {
+          var marker = markers[i]
+
+          if (i % 3 == 0) {
+            var htmlcontent = `
+              <div class="row">`
+            content = content + htmlcontent
+          }
           var htmlcontent = `
-            <div class="row">`
-          content = content + htmlcontent
-        }
-        var htmlcontent = `
-          <div class="columns large-4 thumbnail-container">
-            <img border="0" class="thumbnail" src="` + marker.image.image + `">
-            <p>` + marker.image.caption + `</p>
-          </div>`;
-        content = content + htmlcontent;
+            <div class="columns large-4 thumbnail-container">
+              <img border="0" class="thumbnail" src="` + marker.image.image + `">
+              <p>` + marker.image.caption + `</p>
+            </div>`;
+          content = content + htmlcontent;
 
-        if (i % 3 == 2) {
-          var htmlcontent = `</div>`;
+          if (i % 3 == 2) {
+            var htmlcontent = `</div>`;
+            content = content + htmlcontent;
+          }
+        };
+
+        if (markers.length % 3 == 1) {
+          htmlcontent = `<div class="columns large-4 thumbnail-container"></div>
+            <div class="columns large-4 thumbnail-container"></div>
+            </div></div>`;
           content = content + htmlcontent;
         }
-      };
 
-      if (markers.length % 3 == 1) {
-        htmlcontent = `<div class="columns large-4 thumbnail-container"></div>
-          <div class="columns large-4 thumbnail-container"></div>
-          </div></div>`;
-        content = content + htmlcontent;
-      }
-
-      if (markers.length % 3 == 2) {
-        htmlcontent = `<div class="columns large-4 thumbnail-container"></div>
-          </div></div>`;
-        content = content + htmlcontent;
-      }
-
-      var infobubble = new InfoBubble({
-        content: content,
-        disableAutoPan: true,
-        hideCloseButton: true,
-        borderWidth: 0,
-        padding: 0,
-        position: (cluster.getCenter()),
-        pixelOffset: [0,32]
-      });
-
-      infobubble.open(map);
-      cluster.infoWindow = infobubble;
-    }
-  });
-
-  google.maps.event.addListener(markerclustererpublic, 'mouseover', function(cluster) {
-    if (cluster.infoWindow != undefined) {
-      cluster.infoWindow.open();
-    }
-    else {
-      var markers = cluster.getMarkers();
-      var content = "<div class='infowindow-container'>";
-
-      for (var i = 0; i < markers.length; ++i) {
-        var marker = markers[i]
-
-        if (i % 3 == 0) {
-          var htmlcontent = `
-            <div class="row">`
-          content = content + htmlcontent
-        }
-        var htmlcontent = `
-          <div class="columns large-4 thumbnail-container">
-            <img border="0" class="thumbnail" src="` + marker.image.image + `">
-            <p>` + marker.image.caption + `</p>
-          </div>`;
-        content = content + htmlcontent;
-
-        if (i % 3 == 2) {
-          var htmlcontent = `</div>`;
+        if (markers.length % 3 == 2) {
+          htmlcontent = `<div class="columns large-4 thumbnail-container"></div>
+            </div></div>`;
           content = content + htmlcontent;
         }
-      };
 
-      if (markers.length % 3 == 1) {
-        htmlcontent = `<div class="columns large-4 thumbnail-container"></div>
-          <div class="columns large-4 thumbnail-container"></div>
-          </div></div>`;
-        content = content + htmlcontent;
+        var infobubble = new InfoBubble({
+          content: content,
+          disableAutoPan: true,
+          hideCloseButton: true,
+          borderWidth: 0,
+          padding: 0,
+          position: (cluster.getCenter()),
+          pixelOffset: [0,32]
+        });
+
+        infobubble.open(map);
+        cluster.infoWindow = infobubble;
+      }
+    });
+
+    // opens album modal for album clusters
+    google.maps.event.addListener(clustererarray[i], 'clusterclick', function(cluster) {
+      var markers = cluster.getMarkers();
+      var htmlcontent = "";
+      if (cluster.infoWindow != null) {
+          cluster.infoWindow.close();
       }
 
-      if (markers.length % 3 == 2) {
-        htmlcontent = `<div class="columns large-4 thumbnail-container"></div>
+      for (var i = 0; i < markers.length; ++i) {
+        var marker = markers[i];
+        var content = `<div data-id="` + i + `"><div class="row">
+          <div class="columns large-8">
+          <img src="`+ marker.image.image + `"/></div>
+          <div class="columns large-4">
+          <p>` + marker.image.caption + `</p>
+          </div>
           </div></div>`;
-        content = content + htmlcontent;
-      }
+        htmlcontent = htmlcontent + content;
 
-      var infobubble = new InfoBubble({
-        content: content,
-        disableAutoPan: true,
-        hideCloseButton: true,
-        borderWidth: 0,
-        padding: 0,
-        position: (cluster.getCenter()),
-        pixelOffset: [0,32]
+      }
+      $('#albumcarousel').empty();
+      $('#albumcarousel').on('click', '.slick-slide', function () {
+        var id = $(this).attr('data-id');
+        openImageEditForm(markers[id].image);
       });
+      $('#albumcarousel').append(htmlcontent);
+      $('#album-modal').foundation('reveal','open');
+    });
 
-      infobubble.open(map);
-      cluster.infoWindow = infobubble;
-    }
-  });
+    google.maps.event.addListener(clustererarray[i], 'mouseout', function(cluster) {
+      if (cluster.infoWindow != undefined) {
+        cluster.infoWindow.close();
+      }
+    });
 
-  google.maps.event.addListener(markerclusterer, 'mouseout', function(cluster) {
-    if (cluster.infoWindow != undefined) {
-      cluster.infoWindow.close();
-    }
-  });
-
-  google.maps.event.addListener(markerclustererpublic, 'mouseout', function(cluster) {
-    if (cluster.infoWindow != undefined) {
-      cluster.infoWindow.close();
-    }
-  });
+    google.maps.event.addListener(clustererarray[i], 'mouseout', function(cluster) {
+      if (cluster.infoWindow != undefined) {
+        cluster.infoWindow.close();
+      }
+    });
+  }
 
   google.maps.event.addListener(map, 'zoom_changed', function() {
     var clusters = markerclusterer.getClusters();
@@ -241,7 +217,10 @@ function initialize() {
         delete cluster.infoWindow;
       }
     }
-    clusters = markerclustererpublic.getClusters();
+  });
+
+  google.maps.event.addListener(map, 'zoom_changed', function() {
+    var clusters = markerclustererpublic.getClusters();
     for (var i = 0; i < clusters.length; ++i) {
       var cluster = clusters[i];
       if (cluster.infoWindow != null) {
@@ -249,66 +228,7 @@ function initialize() {
         delete cluster.infoWindow;
       }
     }
-  })
-
-  // opens album modal for album clusters
-  google.maps.event.addListener(markerclusterer, 'clusterclick', function(cluster) {
-    var markers = cluster.getMarkers();
-    var htmlcontent = "";
-    if (cluster.infoWindow != null) {
-        cluster.infoWindow.close();
-    }
-
-    for (var i = 0; i < markers.length; ++i) {
-      var marker = markers[i];
-      var content = `<div data-id="` + i + `"><div class="row">
-        <div class="columns large-8">
-        <img src="`+ marker.image.image + `"/></div>
-        <div class="columns large-4">
-        <p>` + marker.image.caption + `</p>
-        </div>
-        </div></div>`;
-      htmlcontent = htmlcontent + content;
-
-    }
-    $('#albumcarousel').empty();
-    $('#albumcarousel').on('click', '.slick-slide', function () {
-      var id = $(this).attr('data-id');
-      openImageEditForm(markers[id].image);
-    });
-    $('#albumcarousel').append(htmlcontent);
-    $('#album-modal').foundation('reveal','open');
   });
-
-  // opens album modal for album clusters
-  google.maps.event.addListener(markerclustererpublic, 'clusterclick', function(cluster) {
-    var markers = cluster.getMarkers();
-    var htmlcontent = "";
-    if (cluster.infoWindow != null) {
-        cluster.infoWindow.close();
-    }
-
-    for (var i = 0; i < markers.length; ++i) {
-      var marker = markers[i];
-      var content = `<div data-id="` + i + `"><div class="row">
-        <div class="columns large-8">
-        <img src="`+ marker.image.image + `"/></div>
-        <div class="columns large-4">
-        <p>` + marker.image.caption + `</p>
-        </div>
-        </div></div>`;
-      htmlcontent = htmlcontent + content;
-
-    }
-    $('#albumcarousel').empty();
-    $('#albumcarousel').on('click', '.slick-slide', function () {
-      var id = $(this).attr('data-id');
-      openImageEditForm(markers[id].image);
-    });
-    $('#albumcarousel').append(htmlcontent);
-    $('#album-modal').foundation('reveal','open');
-  });
-
 
   // creates slick carousel for album viewing
   $(document).on('opened.fndtn.reveal', '[data-reveal]', function() {

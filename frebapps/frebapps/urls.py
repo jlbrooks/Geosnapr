@@ -20,23 +20,28 @@ from django.conf import settings
 from geosnapr.views import main, instagram_views, images, apis
 
 urlpatterns = [
+    # Basic urls
+    url(r'^$', main.index, name='index'),
     url(r'^login$', main.login_view, name='login'),
     url(r'^logout$', main.logout_view, name='logout'),
     url(r'^register$', main.register, name='register'),
     url(r'^map$', main.main_map, name='map'),
+    # Profile urls
+    url(r'^edit_profile$', main.edit_profile, name='edit_profile'),
+    url(r'^delete_profile$', main.delete_profile, name='delete_profile'),
+    # Image urls
     url(r'^upload$', images.upload, name='upload'),
     url(r'^edit_image$', images.edit_image, name='edit_image'),
     url(r'^delete_image$', images.delete_image, name='delete_image'),
+    url(r'^get_images$', images.get_images, name='get_images'),
+    url(r'^get_public$', images.get_public, name='get_public'),
+    # Album urls
     url(r'^create_album$', images.create_album, name='create_album'),
     url(r'^album/(?P<a_id>[0-9]+)$', images.get_album, name='get_album'),
-    url(r'^edit_profile$', main.edit_profile, name='edit_profile'),
-    url(r'^delete_profile$', main.delete_profile, name='delete_profile'),
-    url(r'^$', main.index, name='index'),
-    url(r'^get_images$', images.get_images, name='get_images'),
+    url(r'^get_album$', images.get_album, name='get_album'),
+    # Instagram urls
     url(r'^instagram_callback', instagram_views.instagram_callback, name='instagram_callback'),
     url(r'^get_insta_images$', instagram_views.get_insta_images, name='get_insta_images'),
-    url(r'^get_album$', images.get_album, name='get_album'),
-    url(r'^get_public$', images.get_public, name='get_public'),
     # API urls
     url(r'^v1/doc/geosnapr.json$', apis.api_description, name="api_description"),
     url(r'^v1/doc$', apis.swagger, name='swagger'),

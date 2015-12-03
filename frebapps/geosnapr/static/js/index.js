@@ -110,9 +110,8 @@ $(document).ready(function(){
 
   $(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
       $(document).foundation('abide', 'reflow');
+      $("#register-form").on('valid.fndtn.abide', register_user);
   });
-
-  $("#register-form-submit").click(register_user);
 
   $( "#accordion" ).accordion({
     event: "click hoverintent",

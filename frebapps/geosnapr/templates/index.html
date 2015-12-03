@@ -130,7 +130,7 @@
 
   <!-- reveal modals -->
 
-  <div id="registerModal" class="reveal-modal xlarge" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+  <div data-abide="ajax" id="registerModal" class="reveal-modal xlarge" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
     <h3 id="modalTitle">Register for an account:</h3>
     <p class="hidden" id="register-notification"></p>
     <form id="register-form" action="{% url 'register' %}" method="POST">

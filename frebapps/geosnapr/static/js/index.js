@@ -16,6 +16,7 @@ function register_user(event) {
     url: form.attr('action'),
     data: form.serialize(),
     success: function (data) {
+      $(document).foundation('abide', 'reflow');
       // Stop the spinner
       spinner.stop();
       var msg = $('#register-notification');
@@ -30,6 +31,7 @@ function register_user(event) {
       msg.removeClass("hidden");
     },
     error: function (data) {
+      $(document).foundation('abide', 'reflow');
       // Stop the spinner
       spinner.stop();
       console.log(data);

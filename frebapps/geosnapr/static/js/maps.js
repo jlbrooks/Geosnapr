@@ -1,7 +1,7 @@
 var map;
 var markerclusterer;
 var allmarkers;
-var imagecount = 0;
+var imagecount=0;
 
 // For now, just do the get once
 var gotInsta = false;
@@ -10,7 +10,7 @@ var currentUsername;
 
 var markerclustererpublic;
 var allmarkerspublic;
-var imagepubliccount = 0;
+var imagepubliccount=0;
 
 
 
@@ -28,13 +28,7 @@ function initialize() {
     mapTypeControl: false,
     streetViewControl: false,
     zoomControl: true,
-    styles: [{
-      featureType: "poi",
-      elementType: "labels",
-      stylers: [{
-        visibility: "off"
-      }]
-    }]
+    styles: [{ featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }]}]
   };
 
   map = new google.maps.Map(document.getElementById('map-canvas'),
@@ -47,11 +41,9 @@ function initialize() {
 
   // changes icon for the cluster icon
   var clustererOptions = {
-    styles: [{
-      url: '/static/img/marker_album_small.png',
-      height: 64,
-      width: 64
-    }],
+    styles: [{url: '/static/img/marker_album_small.png',
+                          height: 64,
+                          width: 64}],
     zoomOnClick: false
   }
 
@@ -80,17 +72,17 @@ function initialize() {
 
   imageautocomplete.addListener('place_changed', function() {
     var place = imageautocomplete.getPlace();
-    if (place.geometry) {
-      var latform = document.getElementById("autolat");
-      var lngform = document.getElementById("autolng");
-      latform.value = place.geometry.location.lat();
-      lngform.value = place.geometry.location.lng();
-    }
+      if (place.geometry) {
+        var latform = document.getElementById("autolat");
+        var lngform = document.getElementById("autolng");
+        latform.value = place.geometry.location.lat();
+        lngform.value = place.geometry.location.lng();
+      }
   });
 
   // when user hits enter on the image location search bar,
   // form doesn't submit, instead selects the location
-  $('#imagelocation').keydown(function(e) {
+  $('#imagelocation').keydown(function (e) {
     if (e.which == 13 && $('.pac-container:visible').length) return false;
   });
 
@@ -110,14 +102,15 @@ function initialize() {
 
   // when user hits enter on the image edit location search bar,
   // form doesn't submit, instead selects the location
-  $('#imageeditlocation').keydown(function(e) {
+  $('#imageeditlocation').keydown(function (e) {
     if (e.which == 13 && $('.pac-container:visible').length) return false;
   });
 
   google.maps.event.addListener(markerclusterer, 'mouseover', function(cluster) {
     if (cluster.infoWindow != undefined) {
       cluster.infoWindow.open();
-    } else {
+    }
+    else {
       var markers = cluster.getMarkers();
       var content = "<div class='infowindow-container'>";
 
@@ -162,7 +155,7 @@ function initialize() {
         borderWidth: 0,
         padding: 0,
         position: (cluster.getCenter()),
-        pixelOffset: [0, 32]
+        pixelOffset: [0,32]
       });
 
       infobubble.open(map);
@@ -173,7 +166,8 @@ function initialize() {
   google.maps.event.addListener(markerclustererpublic, 'mouseover', function(cluster) {
     if (cluster.infoWindow != undefined) {
       cluster.infoWindow.open();
-    } else {
+    }
+    else {
       var markers = cluster.getMarkers();
       var content = "<div class='infowindow-container'>";
 
@@ -218,7 +212,7 @@ function initialize() {
         borderWidth: 0,
         padding: 0,
         position: (cluster.getCenter()),
-        pixelOffset: [0, 32]
+        pixelOffset: [0,32]
       });
 
       infobubble.open(map);
@@ -262,14 +256,14 @@ function initialize() {
     var markers = cluster.getMarkers();
     var htmlcontent = "";
     if (cluster.infoWindow != null) {
-      cluster.infoWindow.close();
+        cluster.infoWindow.close();
     }
 
     for (var i = 0; i < markers.length; ++i) {
       var marker = markers[i];
       var content = `<div data-id="` + i + `"><div class="row">
         <div class="columns large-8">
-        <img src="` + marker.image.image + `"/></div>
+        <img src="`+ marker.image.image + `"/></div>
         <div class="columns large-4">
         <p>` + marker.image.caption + `</p>
         </div>
@@ -278,12 +272,12 @@ function initialize() {
 
     }
     $('#albumcarousel').empty();
-    $('#albumcarousel').on('click', '.slick-slide', function() {
+    $('#albumcarousel').on('click', '.slick-slide', function () {
       var id = $(this).attr('data-id');
       openImageEditForm(markers[id].image);
     });
     $('#albumcarousel').append(htmlcontent);
-    $('#album-modal').foundation('reveal', 'open');
+    $('#album-modal').foundation('reveal','open');
   });
 
   // opens album modal for album clusters
@@ -291,14 +285,14 @@ function initialize() {
     var markers = cluster.getMarkers();
     var htmlcontent = "";
     if (cluster.infoWindow != null) {
-      cluster.infoWindow.close();
+        cluster.infoWindow.close();
     }
 
     for (var i = 0; i < markers.length; ++i) {
       var marker = markers[i];
       var content = `<div data-id="` + i + `"><div class="row">
         <div class="columns large-8">
-        <img src="` + marker.image.image + `"/></div>
+        <img src="`+ marker.image.image + `"/></div>
         <div class="columns large-4">
         <p>` + marker.image.caption + `</p>
         </div>
@@ -307,19 +301,19 @@ function initialize() {
 
     }
     $('#albumcarousel').empty();
-    $('#albumcarousel').on('click', '.slick-slide', function() {
+    $('#albumcarousel').on('click', '.slick-slide', function () {
       var id = $(this).attr('data-id');
       openImageEditForm(markers[id].image);
     });
     $('#albumcarousel').append(htmlcontent);
-    $('#album-modal').foundation('reveal', 'open');
+    $('#album-modal').foundation('reveal','open');
   });
 
 
   // creates slick carousel for album viewing
   $(document).on('opened.fndtn.reveal', '[data-reveal]', function() {
     $('.album-carousel').slick({
-      autoplay: false,
+      autoplay:false,
     });
   });
 
@@ -339,24 +333,24 @@ function initialize() {
 
 // Django CSRF methods
 function csrfSafeMethod(method) {
-  // these HTTP methods do not require CSRF protection
-  return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
 
 function getCookie(name) {
-  var cookieValue = null;
-  if (document.cookie && document.cookie != '') {
-    var cookies = document.cookie.split(';');
-    for (var i = 0; i < cookies.length; i++) {
-      var cookie = jQuery.trim(cookies[i]);
-      // Does this cookie string begin with the name we want?
-      if (cookie.substring(0, name.length + 1) == (name + '=')) {
-        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-        break;
-      }
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
     }
-  }
-  return cookieValue;
+    return cookieValue;
 }
 
 function loadImages(map) {
@@ -373,29 +367,24 @@ function loadImages(map) {
 
   $.ajaxSetup({
     beforeSend: function(xhr, settings) {
-      if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-      }
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
     }
   });
 
   $.ajax({
-    type: "POST",
-    url: "/get_images",
-    data: {
-      "latN": latN,
-      "latS": latS,
-      "lngE": lngE,
-      "lngW": lngW
-    },
+      type: "POST",
+      url: "/get_images",
+      data: {"latN":latN,"latS":latS,"lngE":lngE,"lngW":lngW},
 
-    success: function(json) {
-      addMarkers(json, false);
-    },
-    error: function(json, error) {
-      console.log(json);
-      console.log(error);
-    }
+      success: function(json) {
+          addMarkers(json, false);
+      },
+      error: function(json, error) {
+          console.log(json);
+          console.log(error);
+      }
   });
 }
 
@@ -431,10 +420,7 @@ function getInstaImages() {
         console.log(data.error);
         $("#panel2").html("Error retrieving Instagram images: " + data.error)
         if (data.insta_auth_url) {
-          $("#panel2").append($("<a>", {
-            href: data.insta_auth_url,
-            text: "Re-link your Instagram account now!"
-          }));
+          $("#panel2").append($("<a>", {href: data.insta_auth_url, text: "Re-link your Instagram account now!"}));
         }
       } else {
         next_insta_url = data.next_insta_url;
@@ -449,7 +435,7 @@ function getInstaImages() {
           $(img).addClass('slick-img');
           //img.onclick = toggleSelectedImage;
           div.appendChild(img);
-          parent.slick('slickAdd', div);
+          parent.slick('slickAdd',div);
         }
 
         //Callback to get more instagram images
@@ -484,7 +470,7 @@ function toggleSelectedImage() {
     var lat = parseFloat(img.attr('data-lat'));
     var lng = parseFloat(img.attr('data-lng'));
     // Fill the form with data
-    geocodeForm(lat, lng, $("#autolat"), $("#autolng"), $('#imagelocation'));
+    geocodeForm(lat,lng,$("#autolat"), $("#autolng"), $('#imagelocation'));
 
     $("#caption").val(img.attr('data-caption'));
   } else {
@@ -494,61 +480,61 @@ function toggleSelectedImage() {
 
 // Set up all bindings
 
-$(document).ready(function() {
-  //Display the image when we choose a file
-  $("#upload-file").on('change', function() {
-    if (this.value != null) {
-      imageChosen(this);
-    }
-  });
-
-  loadScript();
-
-  $(document).on('opened.fndtn.reveal', '[data-reveal]', function() {
-    $(document).foundation('abide', 'reflow');
-    $(document).foundation('tab', 'reflow');
-
-    // Create album form submit
-    $("#create-album-form").on('valid.fndtn.abide', create_album);
-
-    // Edit profile submit
-    $("#edit-profile-form").on('valid.fndtn.abide', edit_profile);
-
-    // Multiple select
-    $("#upload-album").select2({
-      width: "100%"
+$(document).ready(function () {
+    //Display the image when we choose a file
+    $("#upload-file").on('change', function() {
+      if (this.value != null) {
+        imageChosen(this);
+      }
     });
 
-    // Multiple select
-    $("#edit-album").select2({
-      width: "100%"
+    loadScript();
+
+    $(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
+      $(document).foundation('abide', 'reflow');
+      $(document).foundation('tab', 'reflow');
+
+      // Create album form submit
+      $("#create-album-form").on('valid.fndtn.abide', create_album);
+
+      // Edit profile submit
+      $("#edit-profile-form").on('valid.fndtn.abide', edit_profile);
+
+      // Multiple select
+      $("#upload-album").select2({
+        width: "100%"
+      });
+
+      // Multiple select
+      $("#edit-album").select2({
+        width: "100%"
+      });
     });
-  });
 
-  // Submit image form
-  $("#upload-img-btn").on('click', upload_image);
+    // Submit image form
+    $("#upload-img-btn").on('click', upload_image);
 
-  // Load insta images on toggled tab
-  $("#panel2").on('toggled', function(e, tab) {
-    $("#insta-images").slick('setPosition');
+    // Load insta images on toggled tab
+    $("#panel2").on('toggled', function(e, tab) {
+      $("#insta-images").slick('setPosition');
 
-    if (!gotInsta && !($("#insta-link").length)) {
-      getInstaImages();
-      gotInsta = true;
-    }
-  });
+      if (!gotInsta && !($("#insta-link").length)) {
+        getInstaImages();
+        gotInsta = true;
+      }
+    });
 
-  // Set up slick for instagram
-  $("#insta-images").slick({
-    infinite: false,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    lazyLoad: 'ondemand'
-  });
+    // Set up slick for instagram
+    $("#insta-images").slick({
+      infinite: false,
+      slidesToShow: 3,
+      slidesToScroll: 1,
+      lazyLoad: 'ondemand'
+    });
 
-  $('#insta-images').on('click', '.slick-slide', toggleSelectedImage);
+    $('#insta-images').on('click', '.slick-slide', toggleSelectedImage);
 
-  $("#map-albums").select2();
+    $("#map-albums").select2();
 
-  $("#delete-image").on('click', delete_image);
+    $("#delete-image").on('click', delete_image);
 });

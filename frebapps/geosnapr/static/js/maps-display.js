@@ -4,7 +4,7 @@
 
 function fadeAlert(type) {
   var msg = $("#message");
-  msg.fadeOut(500, function() {
+  msg.fadeOut(500, function () {
     msg.removeClass(type);
     msg.html();
   });
@@ -17,9 +17,7 @@ function alertMsg(content, type) {
   msg.fadeIn(500);
 
   // Fade the alert
-  setTimeout(function() {
-    fadeAlert(type)
-  }, 3000);
+  setTimeout(function() {fadeAlert(type)}, 3000);
 }
 
 function geocodeForm(lat, lng, latElem, lngElem, resultElem) {
@@ -33,9 +31,7 @@ function geocodeForm(lat, lng, latElem, lngElem, resultElem) {
     lng: lng
   };
 
-  geocoder.geocode({
-    'location': loc
-  }, function(results, status) {
+  geocoder.geocode({'location': loc}, function(results, status) {
     if (status === google.maps.GeocoderStatus.OK) {
       if (results[1]) {
         $(resultElem).val(results[1].formatted_address);
@@ -51,7 +47,7 @@ function imageChosen(input) {
 
   clearImageForm();
 
-  reader.onload = function(e) {
+  reader.onload = function (e) {
     // get loaded data and render thumbnail.
     document.getElementById("upload-img").src = e.target.result;
   };
@@ -59,7 +55,7 @@ function imageChosen(input) {
   // read the image file as a data URL.
   reader.readAsDataURL(input.files[0]);
 
-  $(input).fileExif(function(exifObject) {
+  $(input).fileExif(function (exifObject) {
     console.log(exifObject);
 
     if (exifObject.GPSLatitude && exifObject.GPSLongitude) {
@@ -67,9 +63,9 @@ function imageChosen(input) {
       var lngArray = exifObject.GPSLongitude;
 
       // Convert lat/lng to decimal
-      var latDecimal = latArray[0] + (latArray[1] / 60) + (latArray[2] / 3600);
+      var latDecimal = latArray[0] + (latArray[1]/60) + (latArray[2]/3600);
 
-      var lngDecimal = lngArray[0] + (lngArray[1] / 60) + (lngArray[2] / 3600);
+      var lngDecimal = lngArray[0] + (lngArray[1]/60) + (lngArray[2]/3600);
 
       // N/S/E/W
       if (exifObject.GPSLatitudeRef === "S") {
@@ -94,7 +90,7 @@ function edit_profile(event) {
     type: form.attr('method'),
     url: form.attr('action'),
     data: form.serialize(),
-    success: function(data) {
+    success: function (data) {
       var msg = $('#profile-notification');
 
       if (data.errors.length > 0) {
@@ -107,7 +103,7 @@ function edit_profile(event) {
       }
       msg.removeClass("hidden");
     },
-    error: function(data) {
+    error: function (data) {
       console.log(data);
     }
   });
@@ -149,13 +145,13 @@ function upload_image(event) {
   // Show the loading spinner
   form.append(spinner.el);
 
-  $.ajax({
+ $.ajax({
     type: form.attr('method'),
     url: form.attr('action'),
     data: formData,
     processData: false,
     contentType: false,
-    success: function(data) {
+    success: function (data) {
       // Stop the spinner
       spinner.stop();
       if (data.errors.length > 0) {
@@ -175,7 +171,7 @@ function upload_image(event) {
         alertMsg(data.message, "success");
       }
     },
-    error: function(data) {
+    error: function (data) {
       // Stop the spinner
       spinner.stop();
       $("#upload-notification").html("Error communicating with server! Try again soon?");
@@ -195,11 +191,11 @@ function delete_image() {
     type: "POST",
     url: $(this).attr('href'),
     data: data,
-    success: function(data) {
+    success: function (data) {
       // For now, redirect to this page
       location.reload();
     },
-    error: function(data) {
+    error: function (data) {
       console.log(data);
     }
   })
@@ -253,10 +249,7 @@ function edit_image() {
           marker.image.lat = data.image.lat;
           marker.image.lng = data.image.lng;
           marker.image.albums = data.image.albums;
-          var latlng = new google.maps.LatLng({
-            lat: data.image.lat,
-            lng: data.image.lng
-          });
+          var latlng = new google.maps.LatLng({lat:data.image.lat, lng:data.image.lng});
           marker.setPosition(latlng);
         }
       }
@@ -307,7 +300,7 @@ function create_album() {
       $("#edit-album").append($(option).clone());
       // Clear the form data
       $("#album-name").val('Untitled Album')
-        // Close the modal
+      // Close the modal
       $('#uploadModal').foundation('reveal', 'close');
       // Stop the spinner
       spinner.stop();
@@ -326,7 +319,7 @@ function openImageEditForm(image) {
     $("#img-edit-form-hidden").show();
     $("#img-edit-form-show").hide();
   });
-  $('#photo-modal-link').attr("src", image.image.replace(/&amp;/g, '&'));
+  $('#photo-modal-link').attr("src",image.image.replace(/&amp;/g, '&'));
   console.log(image.caption);
   $('#photo-modal-comment').html(image.caption);
   $("#editcaption").val($('#photo-modal-comment').text());
@@ -334,7 +327,7 @@ function openImageEditForm(image) {
   $("#edit-album").val(image.albums);
   geocodeForm(image.lat, image.lng, $("#autoeditlat"), $("#autoeditlng"), $('#imageeditlocation'));
 
-  $('#photo-modal').foundation('reveal', 'open');
+  $('#photo-modal').foundation('reveal','open');
   $("#edit-img-btn").unbind('click');
   $("#edit-img-btn").on('click', edit_image);
 }
@@ -343,10 +336,10 @@ function openImageViewForm(image) {
   $("#img-edit-form-hidden").hide();
   $("#img-edit-form-show").hide();
   $("#delete-image").hide();
-  $('#photo-modal-link').attr("src", image.image.replace(/&amp;/g, '&'));
+  $('#photo-modal-link').attr("src",image.image.replace(/&amp;/g, '&'));
   $('#photo-modal-comment').text(image.caption);
   $('#photo-modal-user').text("Photo by: " + image.username);
-  $('#photo-modal').foundation('reveal', 'open');
+  $('#photo-modal').foundation('reveal','open');
 }
 
 function show_album() {
@@ -375,9 +368,10 @@ function show_album() {
           }
           map.fitBounds(bounds);
           var listener = google.maps.event.addListenerOnce(map, "idle", function() {
-            if (map.getZoom() > 8) map.setZoom(8);
+              if (map.getZoom() > 8) map.setZoom(8);
           });
-        } else {
+        }
+        else {
           map.setCenter(new google.maps.LatLng(40, -79));
           map.setZoom(8);
         }
@@ -386,13 +380,13 @@ function show_album() {
         console.log(data);
       }
     });
-  } else {
+  }
+
+  else {
     $.ajax({
       type: "POST",
       url: "get_album",
-      data: {
-        'a_id': id
-      },
+      data: {'a_id':id},
       success: function(data) {
         var images = data.images;
 
@@ -416,9 +410,10 @@ function show_album() {
           }
           map.fitBounds(bounds);
           var listener = google.maps.event.addListenerOnce(map, "idle", function() {
-            if (map.getZoom() > 8) map.setZoom(8);
+              if (map.getZoom() > 8) map.setZoom(8);
           });
-        } else {
+        }
+        else {
           map.setCenter(new google.maps.LatLng(40, -79));
           map.setZoom(8);
         }

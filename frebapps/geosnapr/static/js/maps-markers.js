@@ -12,7 +12,8 @@ function showImageInfoWindow(map, marker) {
   if (marker.infoWindow != undefined) {
     console.log("already created");
     marker.infoWindow.open();
-  } else {
+  }
+  else {
     var htmlcontent = `
     <div class="thumbnail-container">
       <img border="0" class="thumbnail" src="` + marker.image.image + `">
@@ -26,7 +27,7 @@ function showImageInfoWindow(map, marker) {
       hideCloseButton: true,
       borderWidth: 0,
       padding: 0,
-      pixelOffset: [0, 0],
+      pixelOffset: [0,0],
     })
 
     infobubble.open(map, marker);
@@ -42,7 +43,8 @@ function addMarkers(json, public) {
   if (public == false) {
     markerarray = allmarkers;
     imagecounter = imagecount;
-  } else {
+  }
+  else {
     markerarray = allmarkerspublic;
     imagecounter = imagepubliccount;
   }
@@ -56,13 +58,10 @@ function addMarkers(json, public) {
     var albums = image['albums'];
     currentUsername = image['username'];
 
-    var latlng = new google.maps.LatLng({
-      lat: latitude,
-      lng: longitude
-    });
+    var latlng = new google.maps.LatLng({lat:latitude, lng:longitude});
     // creates new marker
     var marker = new google.maps.Marker({
-      position: latlng,
+      position:latlng,
       icon: 'static/img/marker_picture_small.png'
     });
 
@@ -83,19 +82,19 @@ function addMarkers(json, public) {
     var markers = markerarray;
     var key = imagecounter;
 
-    google.maps.event.addListener(markers[key], 'mouseover', function(key2) {
+    google.maps.event.addListener(markers[key],'mouseover', function(key2) {
       return function() {
         showImageInfoWindow(map, markers[key2]);
       }
     }(key));
 
-    google.maps.event.addListener(markers[key], 'mouseout', function(key2) {
+    google.maps.event.addListener(markers[key],'mouseout', function(key2) {
       return function() {
         hideImageInfoWindow(markers[key2]);
       }
     }(key));
 
-    google.maps.event.addListener(markers[key], 'click', function(key2) {
+    google.maps.event.addListener(markers[key],'click', function(key2) {
       return function() {
         var image = markers[key2].image;
         openImageEditForm(image);
@@ -132,9 +131,10 @@ function addMarkers(json, public) {
     }
     map.fitBounds(bounds);
     var listener = google.maps.event.addListenerOnce(map, "idle", function() {
-      if (map.getZoom() > 8) map.setZoom(8);
+        if (map.getZoom() > 8) map.setZoom(8);
     });
-  } else {
+  }
+  else {
     map.setCenter(new google.maps.LatLng(40, -79));
     map.setZoom(8);
   }

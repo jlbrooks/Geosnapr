@@ -4,57 +4,65 @@
   font-family: 'Josefin Sans', sans-serif;
   color: white !important;
 }
+
 .josefin-black {
   font-family: 'Josefin Sans', sans-serif;
 }
+
 .font-large {
   font-weight: 700;
   font-size: 4em;
 }
+
 .font-small {
   font-weight: 400;
   font-size: 1em;
 }
+
 .button {
   background-color: #0091ea !important;
 }
-.button:hover, .button:focus {
-  background-color: #01579B !important;
+
+.button:hover,
+.button:focus {
+background-color: #01579B !important;
 }
 
 /* Login Page CSS Styling */
 
-.viewport {
-  /* fills viewport of the page */
+.viewport { /* fills viewport of the page */
   min-height: 100vh;
   max-height: 100vh;
   min-width: 100vw;
   max-width: 100vw;
   overflow: hidden;
 }
-.carousel-back {
-  /* sends the carousel to the background */
+
+.carousel-back { /* sends the carousel to the background */
   position: absolute;
   top: 0;
   left: 0;
   z-index: -1;
 }
-.overlay {
-  /* overlays the forms onto the carousel */
+
+.overlay { /* overlays the forms onto the carousel */
   position: relative;
   top: 0;
   left: 0;
   z-index: 1;
 }
+
 .accordion {
   position: absolute;
   bottom: 0;
   z-index: 2;
 }
+
 .accheadertitle {
-  text-align: center;
+  text-align:center;
   margin: 0;
 }
+
 .acc1 {
   background-color: #0091ea;
 }
@@ -73,6 +81,7 @@
 .acc3-content {
   background-color: #ffab00;
 }
+
 .registerInput {
   color: #FFFF00;
   background-color: #FFFF00;
@@ -81,8 +90,9 @@
   padding: 100px;
   border: 100px;
 }
+
 .panel-opacity {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0,0,0,0.5);
   border: 0;
   color: #FFFFFF;
   font-color: #FFFFFF;
@@ -99,19 +109,24 @@
   padding-right: 1em;
   padding-top: 1em;
 }
+
 .create-header {
   padding: 0;
 }
+
 .overflow-hidden {
   overflow: hidden
 }
+
 .user-margin {
   margin-top: 1em;
 }
+
 .user-image {
   width: 64px;
   height: auto;
 }
+
 #sidr {
   display: none;
 }
@@ -122,18 +137,23 @@
   display: inline-block;
   margin: 0;
 }
+
 .relative-position {
   position: relative;
 }
+
 .no-pad-right {
-  padding-right: 0;
+padding-right: 0;
 }
-.no-pad-left {
-  padding-left: 0;
+
+.no-pad-left{
+padding-left: 0;
 }
+
 .sign-up-top-margin {
   margin-top: 1em;
 }
+
 .full-width {
   width: 100%;
   margin-left: auto;
@@ -151,83 +171,107 @@
   left: 0;
   background-color: #000000
 }
+
 .image-fit {
   max-height: 75vh;
   width: auto;
 }
+
 .login-bar {
-  margin-top: 25px;
+    margin-top: 25px;
 }
+
 .pac-container {
   z-index: 1050 !important;
 }
+
 .bottom {
   position: fixed;
   bottom: 0;
   margin-bottom: 2%;
 }
+
 .bottom a {
   display: inline;
   margin-left: 1%;
 }
+
 .upper-right {
   position: fixed;
   top: 1%;
   right: 1%;
 }
+
 .header {
   margin-top: 5%;
 }
+
 .oauth-img {
   width: 42px;
   height: 42px;
 }
+
 .faded {
   opacity: .5;
 }
+
 .full {
   min-height: 100%;
   min-width: 100%;
 }
+
 .min-height {
   min-height: 100vh;
   overflow: hidden;
 }
+
 .background {
   background-color: #CCFF32;
 }
+
 .hideoverflowx {
   overflow-x: hidden;
 }
+
 .back {
   position: relative;
   z-index: -1 !important;
 }
+
 .logo-overlay {
   position: relative;
   z-index: 1 !important;
   top: 3em;
 }
+
+
+
 fieldset.hidden {
   display: none;
 }
+
 .success {
   color: green;
 }
+
 .error {
   color: red;
 }
+
 .thumbnail {
   position: relative;
   width: 300px;
   height: auto;
 }
+
 .top-margin {
   margin-top: 2em;
 }
+
 .top-margin-small {
   margin-top: 1em;
 }
+
 .bottom-right-modal {
   position: absolute;
   bottom: 0;
@@ -240,23 +284,26 @@ fieldset.hidden {
 .infowindow-container {
   min-width: 30vw;
 }
+
 .gm-style-iw {
-  overflow: hidden !important;
-  line-height: 1.35;
-  white-space: nowrap;
+   overflow: hidden !important;
+   line-height: 1.35;
+   white-space: nowrap;
 }
+
 .thumbnail-container {
   min-width: 300px;
   max-width: 300px;
   white-space: nowrap;
-  overflow: hidden !important;
-  ;
+  overflow: hidden !important;;
 }
+
 .thumbnail {
   min-width: 300px;
   max-width: 300px;
   overflow: hidden !important;
 }
+
 .slick-prev:after {
   content: "<";
   color: red;
@@ -267,37 +314,45 @@ fieldset.hidden {
   color: red;
   font-size: 30px;
 }
+
 #insta-images div div.slick-slide {
   margin-left: 5px;
   margin-right: 5px;
 }
+
 #upload-img {
   width: 200px;
 }
+
 #selected-img {
   border-color: green;
   border-style: solid;
   border-width: 3px;
 }
+
 .tab-title a {
   background-color: #f2f2f2 !important;
 }
+
 .tab-title.active a {
   background-color: #cccccc !important;
 }
+
 #message {
   position: fixed;
   top: 2%;
   left: 40%;
   font-size: 12pt;
 }
+
 select {
   font-size: 0.875rem;
 }
 
+
 /* Google Maps InfoWindow CSS */
 
 .gm-style-iw {
-  top: 0 !important;
-  left: 0 !important;
+   top: 0 !important;
+   left: 0 !important;
 }

@@ -162,14 +162,15 @@ def get_album(request):
 @login_required
 def get_public(request):
     try:
-        allalbums = []
+        images = []
         albums = Album.objects.filter(public=True)
         for album in albums:
-            allalbums.append(album)
+            images.extend(album.images.all())
+
     except:
         raise Http404()
     context = {
-        'albums': allalbums,
+        'images': images,
         'public': album.public
     }
     return render(request, 'json/album-public.json', context, content_type="application/json")

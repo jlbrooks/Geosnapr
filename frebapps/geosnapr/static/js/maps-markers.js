@@ -99,8 +99,6 @@ function addMarkers(json, public) {
     google.maps.event.addListener(markers[key],'click', function(key2) {
       return function() {
         var image = markers[key2].image;
-        console.log(image.username);
-        console.log(currentUsername);
         if (image.username == currentUsername) {
           openImageEditForm(image);
         } else {

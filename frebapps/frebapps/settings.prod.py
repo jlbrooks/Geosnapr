@@ -41,7 +41,6 @@ with open('/etc/instagram_secret.txt') as f:
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',

@@ -355,7 +355,7 @@ function show_album() {
       success: function(data) {
         console.log(data);
         var images = data.images;
-        addMarkersPublic(images);
+        addMarkers(images, true);
 
         var markers = markerclustererpublic.getMarkers();
 

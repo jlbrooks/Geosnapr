@@ -151,6 +151,12 @@ SCHEME = 'https'
 # Acceptable image content types
 CONTENT_TYPES = ['image']
 
+# Maximum allowable file size -> 5MB
+MAX_UPLOAD_SIZE = 5242880
+
+# Maximum images that a user can own
+MAX_PHOTOS = 200
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 

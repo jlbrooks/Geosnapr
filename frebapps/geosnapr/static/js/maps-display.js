@@ -180,6 +180,20 @@ function upload_image(event) {
   });
 }
 
+// ajax call to delete image instead of refresh
+function remove_image(data) {
+  var deleteid = data["img_id"];
+  for (var i = 0; i < allmarkers.length; i++) {
+    var marker = allmarkers[i];
+    if (marker.photoid == deleteid) {
+      allmarkers.splice(i, 1);
+      $('#uploadModal').foundation('reveal', 'close');
+      show_album();
+      return;
+    }
+  }
+}
+
 function delete_image() {
   event.preventDefault();
   var id = $("#img-id").val();
@@ -192,8 +206,7 @@ function delete_image() {
     url: $(this).attr('href'),
     data: data,
     success: function (data) {
-      // For now, redirect to this page
-      location.reload();
+      remove_image(data);
     },
     error: function (data) {
       console.log(data);

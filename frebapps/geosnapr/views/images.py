@@ -108,7 +108,7 @@ def delete_image(request):
     # Delete the image
     image.delete()
 
-    return redirect(index)
+    return JsonResponse({"img_id":im_id})
 
 @login_required
 def create_album(request):

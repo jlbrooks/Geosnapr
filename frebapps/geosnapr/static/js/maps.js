@@ -27,7 +27,8 @@ function initialize() {
     center: new google.maps.LatLng(40.4433, -79.9436),
     mapTypeControl: false,
     streetViewControl: false,
-    zoomControl: true
+    zoomControl: true,
+    styles: [{ featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }]}]
   };
 
   map = new google.maps.Map(document.getElementById('map-canvas'),

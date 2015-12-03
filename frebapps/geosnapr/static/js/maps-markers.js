@@ -36,7 +36,7 @@ function showImageInfoWindow(map, marker) {
 }
 
 // add markers to the map
-function addMarkers(json, public = false) {
+function addMarkers(json, public) {
   var markerarray;
   var imagecounter;
 
@@ -75,7 +75,7 @@ function addMarkers(json, public = false) {
   }
 
   if (public == true) {
-    imagecounter = 0;
+    imagecount = 0;
   }
 
   for (var i = 0; i < json.length; ++i) {
@@ -100,6 +100,10 @@ function addMarkers(json, public = false) {
         openImageEditForm(image);
       }
     }(key));
+
+    if (public == false) {
+      imagecount++;
+    }
     imagecounter++;
   }
 

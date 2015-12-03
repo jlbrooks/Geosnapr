@@ -277,7 +277,7 @@ function loadImages(map) {
       data: {"latN":latN,"latS":latS,"lngE":lngE,"lngW":lngW},
 
       success: function(json) {
-          addMarkers(json);
+          addMarkers(json, false);
       },
       error: function(json, error) {
           console.log(json);
@@ -335,7 +335,7 @@ function getInstaImages() {
           div.appendChild(img);
           parent.slick('slickAdd',div);
         }
-        
+
         //Callback to get more instagram images
         if (next_insta_url != '') {
           $("#insta-images").children(".slick-next").click(function() {

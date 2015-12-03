@@ -1,40 +1,36 @@
 function hideImageInfoWindow(marker) {
-  // should always be defined if function is called
   if (marker.infoWindow != undefined) {
     marker.infoWindow.close();
-    marker.infoWindowExists = false;
-  }
-  else {
-    marker.infoWindowExists = false;
   }
 }
 
 function showImageInfoWindow(map, marker) {
-  var htmlcontent = `
-  <div class="thumbnail-container">
-    <img border="0" class="thumbnail" src="` + marker.image.image + `">
-  </div>`;
-
-  var infobubble = new InfoBubble({
-    maxWidth: 300,
-    minWidth: 300,
-    content: htmlcontent,
-    disableAutoPan: true,
-    hideCloseButton: true,
-    borderWidth: 0,
-    padding: 0,
-    pixelOffset: [0,0],
-  })
-
-  infobubble.open(map, marker);
-  if (marker.infoWindowExists == true) {
-    marker.infoWindow.close();
-  }
+  // creates new info window for the marker if it does not exist
+  // opens it if it already exists
   if (marker.infoWindow != undefined) {
-    marker.infoWindow.close();
+    console.log("already created");
+    marker.infoWindow.open();
   }
-  marker.infoWindow = infobubble;
-  marker.infoWindowExists = true;
+  else {
+    var htmlcontent = `
+    <div class="thumbnail-container">
+      <img border="0" class="thumbnail" src="` + marker.image.image + `">
+    </div>`;
+
+    var infobubble = new InfoBubble({
+      maxWidth: 300,
+      minWidth: 300,
+      content: htmlcontent,
+      disableAutoPan: true,
+      hideCloseButton: true,
+      borderWidth: 0,
+      padding: 0,
+      pixelOffset: [0,0],
+    })
+
+    infobubble.open(map, marker);
+    marker.infoWindow = infobubble;
+  }
 }
 
 function addMarkers(json) {

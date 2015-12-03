@@ -2,6 +2,7 @@ var map;
 var markerclusterer;
 var allmarkers;
 var imagecount=0;
+
 // For now, just do the get once
 var gotInsta = false;
 var next_insta_url = '';
@@ -11,15 +12,19 @@ var markerclustererpublic;
 var allmarkerspublic;
 var imagepubliccount=0;
 
+
+
 // Maps functions
 
+// Initialize objects in the map
 function initialize() {
+  // sets the options for the map
   var mapOptions = {
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     zoom: 16,
     minZoom: 3, // most the map can zoom out
     maxZoom: 20, // most the map can zoom in
-    center: new google.maps.LatLng(40, -79),
+    center: new google.maps.LatLng(40.4433, -79.9436),
     mapTypeControl: false,
     streetViewControl: false,
     zoomControl: true
@@ -28,31 +33,29 @@ function initialize() {
   map = new google.maps.Map(document.getElementById('map-canvas'),
     mapOptions);
 
-  // changes icon for the cluster icon
-  var markerstyles = [{url: '/static/img/marker_album_small.png',
-                        height: 64,
-                        width: 64}]
-  var clustererOptions = {
-    styles: markerstyles,
-    zoomOnClick: false
-  }
-
-  markerclusterer = new MarkerClusterer(map, [], clustererOptions);
-
-  allmarkers = [];
-
-  markerclustererpublic = new MarkerClusterer(map, [], clustererOptions);
-
-  allmarkerspublic = [];
-
+  // gets images in new bounds when bounds change
   google.maps.event.addListenerOnce(map, 'bounds_changed', function() {
     loadImages(map);
   });
 
-  // creates objects for map location search
+  // changes icon for the cluster icon
+  var clustererOptions = {
+    styles: [{url: '/static/img/marker_album_small.png',
+                          height: 64,
+                          width: 64}],
+    zoomOnClick: false
+  }
+
+  markerclusterer = new MarkerClusterer(map, [], clustererOptions);
+  markerclustererpublic = new MarkerClusterer(map, [], clustererOptions);
+
+  allmarkers = [];
+  allmarkerspublic = [];
+
+  // instantiates search bar for map location search
   var input = (document.getElementById('locationsearch'));
   var autocomplete = new google.maps.places.Autocomplete(input);
-  autocomplete.bindTo('bounds', map);
+  autocomplete.bindTo('bounds', map); // biases search results to visible bounds
 
   autocomplete.addListener('place_changed', function() {
     var place = autocomplete.getPlace();
@@ -62,7 +65,7 @@ function initialize() {
     }
   });
 
-  // creates objects for image location search
+  // instantiates search bar for image location search
   var imageinput = (document.getElementById('imagelocation'));
   var imageautocomplete = new google.maps.places.Autocomplete(imageinput);
 
@@ -76,11 +79,13 @@ function initialize() {
       }
   });
 
+  // when user hits enter on the image location search bar,
+  // form doesn't submit, instead selects the location
   $('#imagelocation').keydown(function (e) {
     if (e.which == 13 && $('.pac-container:visible').length) return false;
   });
 
-  // creates objects for image edit location search
+  // instantiates search bar for image edit location search
   var imageeditinput = (document.getElementById('imageeditlocation'));
   var imageeditautocomplete = new google.maps.places.Autocomplete(imageeditinput);
 
@@ -94,71 +99,67 @@ function initialize() {
     };
   });
 
+  // when user hits enter on the image edit location search bar,
+  // form doesn't submit, instead selects the location
+  $('#imageeditlocation').keydown(function (e) {
+    if (e.which == 13 && $('.pac-container:visible').length) return false;
+  });
+
   google.maps.event.addListener(markerclusterer, 'mouseover', function(cluster) {
-    var markers = cluster.getMarkers();
-    var content = "<div class='infowindow-container'>";
-
-    for (var i = 0; i < markers.length; ++i) {
-      var marker = markers[i]
-      if (i % 3 == 0) {
-        var htmlcontent = `
-          <div class="row">
-          <div class="columns large-4 thumbnail-container">
-            <img border="0" class="thumbnail" src="` + marker.image.image + `">
-            <p>` + marker.image.caption + `</p>
-          </div>`;
-        content = content + htmlcontent;
-      }
-      else if (i % 3 == 1) {
-        var htmlcontent = `
-          <div class="columns large-4 thumbnail-container">
-            <img border="0" class="thumbnail" src="` + marker.image.image + `">
-            <p>` + marker.image.caption + `</p>
-          </div>`;
-        content = content + htmlcontent;
-      }
-      else if (i % 3 == 2) {
-        var htmlcontent = `
-          <div class="columns large-4 thumbnail-container">
-            <img border="0" class="thumbnail" src="` + marker.image.image + `">
-            <p>` + marker.image.caption + `</p>
-          </div>
-          </div>`;
-        content = content + htmlcontent;
-      }
-    };
-
-    if (markers.length % 3 == 1) {
-      htmlcontent = `
-        <div class="columns large-4 thumbnail-container">
-        </div>
-        <div class="columns large-4 thumbnail-container">
-        </div>
-        </div></div>`;
-      content = content + htmlcontent;
-    }
-
-    if (markers.length % 3 == 2) {
-      htmlcontent = `<div class="columns large-4 thumbnail-container">
-              </div></div></div>`;
-      content = content + htmlcontent;
-    }
-
-    var infobubble = new InfoBubble({
-      disableAutoPan: true,
-      hideCloseButton: true,
-      borderWidth: 0,
-      padding: 0,
-      content: content,
-      position: (cluster.getCenter()),
-      pixelOffset: [0,32]
-    });
-
     if (cluster.infoWindow != undefined) {
-      cluster.infoWindow.close();
+      cluster.infoWindow.open();
     }
-    infobubble.open(map);
-    cluster.infoWindow = infobubble;
+    else {
+      var markers = cluster.getMarkers();
+      var content = "<div class='infowindow-container'>";
+
+      for (var i = 0; i < markers.length; ++i) {
+        var marker = markers[i]
+
+        if (i % 3 == 0) {
+          var htmlcontent = `
+            <div class="row">`
+          content = content + htmlcontent
+        }
+        var htmlcontent = `
+          <div class="columns large-4 thumbnail-container">
+            <img border="0" class="thumbnail" src="` + marker.image.image + `">
+            <p>` + marker.image.caption + `</p>
+          </div>`;
+        content = content + htmlcontent;
+
+        if (i % 3 == 2) {
+          var htmlcontent = `</div>`;
+          content = content + htmlcontent;
+        }
+      };
+
+      if (markers.length % 3 == 1) {
+        htmlcontent = `<div class="columns large-4 thumbnail-container"></div>
+          <div class="columns large-4 thumbnail-container"></div>
+          </div></div>`;
+        content = content + htmlcontent;
+      }
+
+      if (markers.length % 3 == 2) {
+        htmlcontent = `<div class="columns large-4 thumbnail-container"></div>
+          </div></div>`;
+        content = content + htmlcontent;
+      }
+
+      var infobubble = new InfoBubble({
+        content: content,
+        disableAutoPan: true,
+        hideCloseButton: true,
+        borderWidth: 0,
+        padding: 0,
+        position: (cluster.getCenter()),
+        pixelOffset: [0,32]
+      });
+
+      infobubble.open(map);
+      cluster.infoWindow = infobubble;
+    }
   });
 
   google.maps.event.addListener(markerclusterer, 'mouseout', function(cluster) {
@@ -173,6 +174,7 @@ function initialize() {
       var cluster = clusters[i];
       if (cluster.infoWindow != null) {
         cluster.infoWindow.close();
+        delete cluster.infoWindow;
       }
     }
   })

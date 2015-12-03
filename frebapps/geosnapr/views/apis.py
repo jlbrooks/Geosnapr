@@ -107,7 +107,7 @@ def api_description(request):
     context = {
         "host": settings.HOSTNAME
     }
-    return render(request, 'json/geosnapr.json')
+    return render(request, 'json/geosnapr.json', context)
 
 @csrf_exempt
 def route_image_method(request):

@@ -41,22 +41,22 @@
   </ul>
 </div>
 
-<div class="full-width row">
+<div class="full-width row map-bottom">
 
-  <div class="columns large-3 medium-6 small-12 font-small josefin album-select">
+  <div class="columns large-3 medium-6 small-12 font-small josefin album-select" id="album-selector">
     <div class="album-select-fit">
       {% include "__album_select.html" with id="map-albums" class="josefin font-small" all_images=True %}
     </div>
   </div>
 
-  <div id="accordion" class="accordion columns large-3 large-offset-9 medium-6 medium-offset-6 overflow-hidden create-header">
+  <div id="accordion" class="accordion columns large-3 large-offset-9 medium-6 medium-offset-6 small-12 overflow-hidden create-header">
     <div class="accheader create">
       <h3 class="accheadertitle josefin">Create</h3>
     </div>
     <div class="create-content">
       {% if user.profile.insta_access_key %}
-      <a href="#" data-reveal-id="uploadModal" class="button radius expand">Upload from File/Instagram</a>
-      <a href="#" data-reveal-id="createAlbumModal" class="button radius expand">Create New Album</a>
+      <a href="#" data-reveal-id="uploadModal" class="button button-override radius expand">Upload from File/Instagram</a>
+      <a href="#" data-reveal-id="createAlbumModal" class="button button-override radius expand">Create New Album</a>
       <a href="{{insta_account_url}}">
         <div tabindex="0" class="button radius success expand">
           <p class="josefin inline">Instagram Linked</p>
@@ -64,8 +64,8 @@
         </div>
       </a>
       {% else %}
-      <a href="#" data-reveal-id="uploadModal" class="button radius expand">Upload from File</a>
-      <a href="#" data-reveal-id="createAlbumModal" class="button radius expand">Create New Album</a>
+      <a href="#" data-reveal-id="uploadModal" class="button button-override radius expand">Upload from File</a>
+      <a href="#" data-reveal-id="createAlbumModal" class="button button-override radius expand">Create New Album</a>
       <a href="{{insta_auth_url}}">
         <div tabindex="0" class="button radius alert expand">
           <p class="josefin inline">Link your Instagram</p>

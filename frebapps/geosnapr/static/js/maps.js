@@ -179,18 +179,7 @@ function initialize() {
     }
   })
 
-  $(document).on('opened.fndtn.reveal', '[data-reveal]', function() {
-    $('.album-carousel').slick({
-      autoplay:true,
-      autoplaySpeed: 3000
-    });
-  });
-
-  $(document).on('closed.fndtn.reveal', '[data-reveal]', function() {
-    $('.album-carousel').slick("unslick");
-  })
-
-
+  // opens album modal for album clusters
   google.maps.event.addListener(markerclusterer, 'clusterclick', function(cluster) {
     var markers = cluster.getMarkers();
     var htmlcontent = "";
@@ -201,12 +190,12 @@ function initialize() {
     for (var i = 0; i < markers.length; ++i) {
       var marker = markers[i];
       var content = `<div data-id="` + i + `"><div class="row">
-<div class="columns large-8">
-<img src="`+ marker.image.image + `"/></div>
-<div class="columns large-4">
-<p>` + marker.image.caption + `</p>
-</div>
-</div></div>`;
+        <div class="columns large-8">
+        <img src="`+ marker.image.image + `"/></div>
+        <div class="columns large-4">
+        <p>` + marker.image.caption + `</p>
+        </div>
+        </div></div>`;
       htmlcontent = htmlcontent + content;
 
     }
@@ -219,13 +208,28 @@ function initialize() {
     $('#album-modal').foundation('reveal','open');
   });
 
+  // creates slick carousel for album viewing
+  $(document).on('opened.fndtn.reveal', '[data-reveal]', function() {
+    $('.album-carousel').slick({
+      autoplay:false,
+    });
+  });
+
+  // deconstructs album when closing modal
+  $(document).on('closed.fndtn.reveal', '[data-reveal]', function() {
+    $('.album-carousel').slick("unslick");
+  });
+
+  // adds public album option to album selector
   $("#map-albums").prepend('<option value="0">All Public Images</option>');
 
+  // changes album view when changing selector
   $("#map-albums").change(function() {
     show_album();
   });
 }
 
+// Django CSRF methods
 function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));

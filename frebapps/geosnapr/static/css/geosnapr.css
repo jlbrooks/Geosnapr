@@ -101,6 +101,11 @@
   margin-top: 1em;
 }
 
+.user-image {
+  width: 64px;
+  height: auto;
+}
+
 #sidr {
   display: none;
 }

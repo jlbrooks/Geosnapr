@@ -172,8 +172,10 @@ function upload_image(event) {
       }
     },
     error: function (data) {
-      console.log(data);
-      console.log("fail");
+      // Stop the spinner
+      spinner.stop();
+      $("#upload-notification").html("Error communicating with server! Try again soon?");
+      $("#upload-notification").addClass("alert-box alert radius");
     }
   });
 }

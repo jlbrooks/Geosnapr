@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.files import File
 from django.conf import settings
 from urllib.request import urlopen
+from urllib.error import URLError
 import json
 
 bad_api_key_error = {
@@ -159,7 +160,11 @@ def post_image(request):
 
     if src_type == 'url':
         img_temp = NamedTemporaryFile()
-        img_temp.write(urlopen(src).read())
+        try:
+            img_temp.write(urlopen(src).read())
+        except URLError as e:
+            # Thrown if there's a network error
+            return JsonResponse(bad_format_errors(["Error with image source: %s" % (e.reason)]), status=400)
         img_temp.flush()
         pic = File(img_temp)
     else:

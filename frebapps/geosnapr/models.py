@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.template.defaultfilters import filesizeformat
 from decimal import Decimal
 import uuid
+from PIL import Image as pil_Image
 
 class Profile(models.Model):
     user = models.OneToOneField(User)
@@ -191,14 +192,15 @@ class Image(models.Model):
         # Image must exist
         if not image:
             err.append('Image must be present')
+        else:
+            try:
+                pil_Image.open(image)
+            except IOError:
+                err.append("Unsupported image type")
 
-        # Image must actually be an image
-        if image.content_type.split('/')[0] not in settings.CONTENT_TYPES:
-            err.append('Uploaded file must be an image')
-
-        if image._size > settings.MAX_UPLOAD_SIZE:
-            err.append('Uploaded file exceeds maximum allowable size: %s. Your filesize: %s' %
-                (filesizeformat(settings.MAX_UPLOAD_SIZE), filesizeformat(image._size)))
+            if image.size > settings.MAX_UPLOAD_SIZE:
+                err.append('Uploaded file exceeds maximum allowable size: %s. Your filesize: %s' %
+                    (filesizeformat(settings.MAX_UPLOAD_SIZE), filesizeformat(image.size)))
 
         # Lat must exist
         if not lat:
@@ -207,6 +209,13 @@ class Image(models.Model):
         # Lat must exist
         if not lng:
             err.append('Longitude must be present')
+
+        # Truncate lat and lng
+        try:
+            lat = '%.6f' % float(lat)
+            lng = '%.6f' % float(lng)
+        except:
+            err.append('Could not parse lat or lng')
 
         # Set caption to empty string if not present
         if not caption:
@@ -221,10 +230,6 @@ class Image(models.Model):
         # Return if we have any errors
         if err:
             return None,err
-
-        # Truncate lat and lng
-        lat = '%.6f' % float(lat)
-        lng = '%.6f' % float(lng)
 
         # Create the image object
         pic = cls.objects.create(image=image, lat=Decimal(lat), lng=Decimal(lng), caption=caption, user=user)

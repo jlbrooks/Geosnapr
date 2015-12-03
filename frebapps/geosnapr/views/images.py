@@ -5,6 +5,7 @@ from django.core.files.temp import NamedTemporaryFile
 from django.core.files import File
 from geosnapr.models import Image, Album
 from urllib.request import urlopen
+from urllib.error import URLError
 from .main import index, main_map
 
 @login_required
@@ -19,9 +20,13 @@ def upload(request):
     if request.POST.get('external'):
         url = request.POST.get('url')
         img_temp = NamedTemporaryFile()
-        img_temp.write(urlopen(url).read())
-        img_temp.flush()
-        pic = File(img_temp)
+        try:
+            img_temp.write(urlopen(url).read())
+            img_temp.flush()
+            pic = File(img_temp)
+        except URLError as e:
+            # Error reading file
+            pic = None
     else:
         pic = request.FILES.get('pic')
 

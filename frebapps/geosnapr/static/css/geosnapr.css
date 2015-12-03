@@ -1,4 +1,4 @@
-/* Login Page CSS Styling */
+/* General Theme */
 
 .josefin {
   font-family: 'Josefin Sans', sans-serif;
@@ -8,6 +8,27 @@
 .josefin-black {
   font-family: 'Josefin Sans', sans-serif;
 }
+
+.font-large {
+  font-weight: 700;
+  font-size: 4em;
+}
+
+.font-small {
+  font-weight: 400;
+  font-size: 1em;
+}
+
+.button {
+  background-color: #0091ea !important;
+}
+
+.button:hover,
+.button:focus {
+background-color: #01579B !important;
+}
+
+/* Login Page CSS Styling */
 
 .viewport { /* fills viewport of the page */
   min-height: 100vh;
@@ -142,6 +163,15 @@ padding-left: 0;
 
 /* Map Page CSS Styling */
 
+.mapsize {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: #000000
+}
+
 .image-fit {
   max-height: 75vh;
   width: auto;
@@ -183,38 +213,6 @@ padding-left: 0;
 
 .faded {
   opacity: .5;
-}
-
-.button-inline {
-    padding: 0.725rem 1.75rem 0.7775rem 1.75rem;
-    font-size: 0.8125rem;
-}
-
-
-
-.back {
-  position: relative;
-  z-index: -1;
-}
-
-.font-large {
-  font-weight: 700;
-  font-size: 4em;
-}
-
-.font-small {
-  font-weight: 400;
-  font-size: 1em;
-}
-
-
-.mapsize {
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  background-color: #000000
 }
 
 .full {
@@ -352,9 +350,8 @@ select {
 }
 
 
-
-
 /* Google Maps InfoWindow CSS */
+
 .gm-style-iw {
    top: 0 !important;
    left: 0 !important;

@@ -204,7 +204,12 @@ function initialize() {
       $('#albumcarousel').empty();
       $('#albumcarousel').on('click', '.slick-slide', function () {
         var id = $(this).attr('data-id');
-        openImageEditForm(markers[id].image);
+        var image = markers[id].image;
+        if (image.username == currentUsername) {
+          openImageEditForm(image);
+        } else {
+          openImageViewForm(image);
+        }
       });
       $('#albumcarousel').append(htmlcontent);
       $('#album-modal').foundation('reveal','open');

@@ -58,9 +58,9 @@
       <h3 class="accheadertitle josefin">Create</h3>
     </div>
     <div class="create-content">
-      <a href="#" data-reveal-id="uploadModal" class="button round expand">Upload New Image</a>
-      <a href="#" data-reveal-id="createAlbumModal" class="button round expand">Create New Album</a>
       {% if user.profile.insta_access_key %}
+      <a href="#" data-reveal-id="uploadModal" class="button round expand">Upload from File/Instagram</a>
+      <a href="#" data-reveal-id="createAlbumModal" class="button round expand">Create New Album</a>
       <a href="{{insta_account_url}}">
         <div tabindex="0" class="button round success expand">
           <p class="josefin inline">Instagram Linked</p>
@@ -68,6 +68,8 @@
         </div>
       </a>
       {% else %}
+      <a href="#" data-reveal-id="uploadModal" class="button round expand">Upload from File</a>
+      <a href="#" data-reveal-id="createAlbumModal" class="button round expand">Create New Album</a>
       <a href="{{insta_auth_url}}">
         <div tabindex="0" class="button round alert expand">
           <p class="josefin inline">Link your Instagram</p>

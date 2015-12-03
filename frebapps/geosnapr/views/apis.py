@@ -103,6 +103,13 @@ def swagger(request):
     return render(request, 'swagger.html', context)
 
 @csrf_exempt
+def api_description(request):
+    context = {
+        "host": settings.HOSTNAME
+    }
+    return render(request, 'json/geosnapr.json')
+
+@csrf_exempt
 def route_image_method(request):
     if request.method == 'POST':
         return post_image(request)

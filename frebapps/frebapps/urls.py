@@ -38,6 +38,7 @@ urlpatterns = [
     url(r'^get_album$', images.get_album, name='get_album'),
     url(r'^get_public$', images.get_public, name='get_public'),
     # API urls
+    url(r'^v1/doc/geosnapr.json$', apis.api_description, name="api_description"),
     url(r'^v1/doc$', apis.swagger, name='swagger'),
     url(r'^v1/image$', apis.route_image_method, name='api_image_method'),
     url(r'^v1/image/(?P<image_id>[0-9]+)$', apis.route_image_id_method, name='api_image_id_method'),

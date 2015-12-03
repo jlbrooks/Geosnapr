@@ -31,7 +31,7 @@
       if (url && url.length > 1) {
         url = decodeURIComponent(url[1]);
       } else {
-        url = "{% static "geosnapr.json" %}";
+        url = "{% url 'api_description' %}";
       }
 
       // Pre load translate...

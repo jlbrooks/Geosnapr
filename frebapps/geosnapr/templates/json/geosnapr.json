@@ -1,0 +1,745 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "These are the API docs for the Geosnapr application. All requests require an API key, sent as the `api_key` GET parameter. If you are authenticated with Geosnapr, your API key should be filled in the upper right. Otherwise, you can obtain the key from the profile tab on the main site.",
+    "version": "1.0.0",
+    "title": "Geosnapr",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "url": "https://geosnapr.com",
+      "name": "Jacob Brooks and Guochen Shen",
+      "email": "jacobbro@andrew.cmu.edu"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "{{host}}",
+  "basePath": "/v1",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "tags": [
+    {
+      "name": "images",
+      "description": "Access to Geosnapr images"
+    },
+    {
+      "name": "albums",
+      "description": "Access to Geosnapr image albums"
+    }
+  ],
+  "paths": {
+    "/image": {
+      "post": {
+        "tags": [
+          "images"
+        ],
+        "summary": "Add a new image to the map",
+        "description": "",
+        "operationId": "addImage",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "image",
+            "description": "Image object to be created",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ImagePost"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Client error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Bad API key",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "200": {
+            "descipton": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/ImageGet"
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "images"
+        ],
+        "summary": "Edit an image",
+        "description": "",
+        "operationId": "editImage",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "image",
+            "description": "Image object to be edited. The lat, lng, and caption fields will be updated only if they are present. Albums to be added should be placed in the relationships->albums->add list, likewise with remove.",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ImagePatch"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Client error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Bad API key",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "200": {
+            "descipton": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/ImageGet"
+            }
+          }
+        }
+      }
+    },
+    "/image/{imageId}": {
+      "get": {
+        "tags": [
+          "images"
+        ],
+        "summary": "Find image by id",
+        "description": "",
+        "operationId": "getImageById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "imageId",
+            "description": "ID of the image to be retrieved",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Image not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Bad API key",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/ImageGet"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "images"
+        ],
+        "summary": "Delete image by id",
+        "description": "",
+        "operationId": "deleteImageById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "imageId",
+            "description": "ID of the image to be deleted",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Image not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Bad API key",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "200": {
+            "description": "Image successfully deleted"
+          }
+        }
+      }
+    },
+    "/album": {
+      "get": {
+        "tags": [
+          "albums"
+        ],
+        "summary": "List all albums for user",
+        "description": "Retrieves all the albums for the user associated with the given api key",
+        "operationId": "getAlbumList",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "403": {
+            "description": "Bad API key",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "200": {
+            "descipton": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/AlbumList"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "albums"
+        ],
+        "summary": "Add a new Album to your account",
+        "description": "",
+        "operationId": "addAlbum",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "image",
+            "description": "Album object to be created",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AlbumPost"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Client error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Bad API key",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "200": {
+            "descipton": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/AlbumGet"
+            }
+          }
+        }
+      }
+    },
+    "/album/{albumId}": {
+      "get": {
+        "tags": [
+          "albums"
+        ],
+        "summary": "Find album by ID",
+        "description": "Retrieves data for the given album ID, including all related image IDs",
+        "operationId": "getAlbum",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "albumId",
+            "description": "ID of the album to be retrieved",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "403": {
+            "description": "Bad API key",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "200": {
+            "descipton": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/AlbumGet"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "albums"
+        ],
+        "summary": "Delete album by id",
+        "description": "",
+        "operationId": "deleteAlbumById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "albumId",
+            "description": "ID of the album to be deleted",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Album not found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Bad API key",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "200": {
+            "description": "Album successfully deleted"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ImagePost": {
+      "required": [
+        "data"
+      ],
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/ImagePostData"
+        }
+      }
+    },
+    "ImagePatch": {
+      "required": [
+        "data"
+      ],
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/ImagePatchData"
+        }
+      }
+    },
+    "ImageGet": {
+      "required": [
+        "data"
+      ],
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/ImageGetData"
+        }
+      }
+    },
+    "AlbumList": {
+      "required": [
+        "data"
+      ],
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AlbumListData"
+          }
+        }
+      }
+    },
+    "AlbumGet": {
+      "required": [
+        "data"
+      ],
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/AlbumGetData"
+        }
+      }
+    },
+    "AlbumPost": {
+      "required": [
+        "data"
+      ],
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/AlbumPostData"
+        }
+      }
+    },
+    "AlbumGetData": {
+      "required": [
+        "type",
+        "id",
+        "attributes"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "albums"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "example": 52
+        },
+        "attributes": {
+          "$ref": "#/definitions/AlbumAttributes"
+        },
+        "relationships": {
+          "$ref": "#/definitions/AlbumRelationships"
+        }
+      }
+    },
+    "AlbumListData": {
+      "required": [
+        "type",
+        "id",
+        "attributes"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "albums"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "example": 52
+        },
+        "attributes": {
+          "$ref": "#/definitions/AlbumAttributes"
+        }
+      }
+    },
+    "AlbumPostData": {
+      "required": [
+        "type",
+        "attributes"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "albums"
+        },
+        "attributes": {
+          "$ref": "#/definitions/AlbumAttributes"
+        }
+      }
+    },
+    "AlbumAttributes": {
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Spring Break"
+        }
+      }
+    },
+    "AlbumRelationships": {
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/SimpleUser"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SimpleImage"
+          }
+        }
+      }
+    },
+    "ImagePostData": {
+      "required": [
+        "type",
+        "src_type",
+        "attributes"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "images"
+        },
+        "src_type": {
+          "type": "string",
+          "example": "url",
+          "enum": [
+            "url"
+          ]
+        },
+        "attributes": {
+          "$ref": "#/definitions/ImageAttributes"
+        },
+        "relationships": {
+          "$ref": "#/definitions/ImagePostRelationships"
+        }
+      }
+    },
+    "ImagePatchData": {
+      "required": [
+        "type",
+        "id",
+        "attributes"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "images"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "example": 52
+        },
+        "attributes": {
+          "$ref": "#/definitions/ImagePatchAttributes"
+        },
+        "relationships": {
+          "$ref": "#/definitions/ImagePatchRelationships"
+        }
+      }
+    },
+    "ImageGetData": {
+      "required": [
+        "type",
+        "id",
+        "attributes"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "images"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "example": 52
+        },
+        "attributes": {
+          "$ref": "#/definitions/ImageAttributes"
+        },
+        "relationships": {
+          "$ref": "#/definitions/ImageRelationships"
+        }
+      }
+    },
+    "ImageAttributes": {
+      "required": [
+        "src",
+        "lat",
+        "lng",
+      ],
+      "properties": {
+        "src": {
+          "type": "string",
+          "example": "http://example.com/foo.jpg"
+        },
+        "lat": {
+          "type": "number",
+          "format": "double",
+          "example": 40.11
+        },
+        "lng": {
+          "type": "number",
+          "format": "double",
+          "example": -80.2,
+        },
+        "caption": {
+          "type": "string"
+        }
+      }
+    },
+    "ImagePatchAttributes": {
+      "properties": {
+        "lat": {
+          "type": "number",
+          "format": "double",
+          "example": 40.11
+        },
+        "lng": {
+          "type": "number",
+          "format": "double",
+          "example": -80.2,
+        },
+        "caption": {
+          "type": "string"
+        }
+      }
+    },
+    "ImageRelationships": {
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/SimpleUser"
+        },
+        "albums": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SimpleAlbum"
+          }
+        }
+      }
+    },
+    "ImagePostRelationships": {
+      "properties": {
+        "albums": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SimpleAlbum"
+          }
+        }
+      }
+    },
+    "ImagePatchRelationships": {
+      "properties": {
+        "albums": {
+          "$ref": "#/definitions/AddRemoveAlbum"
+        }
+      }
+    },
+    "AddRemoveAlbum": {
+      "properties": {
+        "add": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SimpleAlbum"
+          }
+        },
+        "remove": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SimpleAlbum"
+          }
+        }
+      }
+    },
+    "SimpleUser": {
+      "required": [
+        "type",
+        "id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "users"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "SimpleAlbum": {
+      "required": [
+        "type",
+        "id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "albums"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "SimpleImage": {
+      "required": [
+        "type",
+        "id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "images"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "ErrorResponse": {
+      "required": [
+        "errors"
+      ],
+      "properties": {
+        "errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Error"
+          }
+        }
+      }
+    },
+    "Error": {
+      "required": [
+        "status",
+        "detail"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "4xx"
+        },
+        "detail": {
+          "type": "string",
+          "example": "Detail concerning specific error"
+        }
+      }
+    }
+  }
+}

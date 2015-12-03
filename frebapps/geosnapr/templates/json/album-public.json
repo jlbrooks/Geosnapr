@@ -1,4 +1,4 @@
 {
     "public": "{{public}}",
-    "images": [{% for album in albums %}{% for image in album.images.all %}{% include 'json/image.json' %}{% if not forloop.last %}, {% endif %}{%endfor %}{% endfor %}]
+    "images": [{% for album in albums %}{% for image in album.images.all %}{% include 'json/image.json' %}{% if not forloop.last %}, {% endif %}{%endfor %}{% if not forloop.last %}, {% endif %}{% endfor %}]
 }

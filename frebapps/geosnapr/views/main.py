@@ -125,3 +125,9 @@ def delete_profile(request):
     request.user.delete()
     # Redirect to front page
     return redirect(index)
+
+def handler404(request):
+    return render('404.html', {})
+
+def handler500(request):
+    return render('500.html', {})

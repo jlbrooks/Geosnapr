@@ -27,7 +27,8 @@ function initialize() {
     center: new google.maps.LatLng(40.4433, -79.9436),
     mapTypeControl: false,
     streetViewControl: false,
-    zoomControl: true
+    zoomControl: true,
+    styles: [{ featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }]}]
   };
 
   map = new google.maps.Map(document.getElementById('map-canvas'),
@@ -162,7 +163,70 @@ function initialize() {
     }
   });
 
+  google.maps.event.addListener(markerclustererpublic, 'mouseover', function(cluster) {
+    if (cluster.infoWindow != undefined) {
+      cluster.infoWindow.open();
+    }
+    else {
+      var markers = cluster.getMarkers();
+      var content = "<div class='infowindow-container'>";
+
+      for (var i = 0; i < markers.length; ++i) {
+        var marker = markers[i]
+
+        if (i % 3 == 0) {
+          var htmlcontent = `
+            <div class="row">`
+          content = content + htmlcontent
+        }
+        var htmlcontent = `
+          <div class="columns large-4 thumbnail-container">
+            <img border="0" class="thumbnail" src="` + marker.image.image + `">
+            <p>` + marker.image.caption + `</p>
+          </div>`;
+        content = content + htmlcontent;
+
+        if (i % 3 == 2) {
+          var htmlcontent = `</div>`;
+          content = content + htmlcontent;
+        }
+      };
+
+      if (markers.length % 3 == 1) {
+        htmlcontent = `<div class="columns large-4 thumbnail-container"></div>
+          <div class="columns large-4 thumbnail-container"></div>
+          </div></div>`;
+        content = content + htmlcontent;
+      }
+
+      if (markers.length % 3 == 2) {
+        htmlcontent = `<div class="columns large-4 thumbnail-container"></div>
+          </div></div>`;
+        content = content + htmlcontent;
+      }
+
+      var infobubble = new InfoBubble({
+        content: content,
+        disableAutoPan: true,
+        hideCloseButton: true,
+        borderWidth: 0,
+        padding: 0,
+        position: (cluster.getCenter()),
+        pixelOffset: [0,32]
+      });
+
+      infobubble.open(map);
+      cluster.infoWindow = infobubble;
+    }
+  });
+
   google.maps.event.addListener(markerclusterer, 'mouseout', function(cluster) {
+    if (cluster.infoWindow != undefined) {
+      cluster.infoWindow.close();
+    }
+  });
+
+  google.maps.event.addListener(markerclustererpublic, 'mouseout', function(cluster) {
     if (cluster.infoWindow != undefined) {
       cluster.infoWindow.close();
     }
@@ -170,6 +234,14 @@ function initialize() {
 
   google.maps.event.addListener(map, 'zoom_changed', function() {
     var clusters = markerclusterer.getClusters();
+    for (var i = 0; i < clusters.length; ++i) {
+      var cluster = clusters[i];
+      if (cluster.infoWindow != null) {
+        cluster.infoWindow.close();
+        delete cluster.infoWindow;
+      }
+    }
+    clusters = markerclustererpublic.getClusters();
     for (var i = 0; i < clusters.length; ++i) {
       var cluster = clusters[i];
       if (cluster.infoWindow != null) {
@@ -207,6 +279,36 @@ function initialize() {
     $('#albumcarousel').append(htmlcontent);
     $('#album-modal').foundation('reveal','open');
   });
+
+  // opens album modal for album clusters
+  google.maps.event.addListener(markerclustererpublic, 'clusterclick', function(cluster) {
+    var markers = cluster.getMarkers();
+    var htmlcontent = "";
+    if (cluster.infoWindow != null) {
+        cluster.infoWindow.close();
+    }
+
+    for (var i = 0; i < markers.length; ++i) {
+      var marker = markers[i];
+      var content = `<div data-id="` + i + `"><div class="row">
+        <div class="columns large-8">
+        <img src="`+ marker.image.image + `"/></div>
+        <div class="columns large-4">
+        <p>` + marker.image.caption + `</p>
+        </div>
+        </div></div>`;
+      htmlcontent = htmlcontent + content;
+
+    }
+    $('#albumcarousel').empty();
+    $('#albumcarousel').on('click', '.slick-slide', function () {
+      var id = $(this).attr('data-id');
+      openImageEditForm(markers[id].image);
+    });
+    $('#albumcarousel').append(htmlcontent);
+    $('#album-modal').foundation('reveal','open');
+  });
+
 
   // creates slick carousel for album viewing
   $(document).on('opened.fndtn.reveal', '[data-reveal]', function() {
@@ -277,7 +379,7 @@ function loadImages(map) {
       data: {"latN":latN,"latS":latS,"lngE":lngE,"lngW":lngW},
 
       success: function(json) {
-          addMarkers(json);
+          addMarkers(json, false);
       },
       error: function(json, error) {
           console.log(json);
@@ -335,7 +437,7 @@ function getInstaImages() {
           div.appendChild(img);
           parent.slick('slickAdd',div);
         }
-        
+
         //Callback to get more instagram images
         if (next_insta_url != '') {
           $("#insta-images").children(".slick-next").click(function() {

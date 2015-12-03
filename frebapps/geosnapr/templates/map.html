@@ -1,10 +1,4 @@
-{% extends "_base.html" %}
-
-{% load staticfiles %}
-
-{% block title %}GeoSnapr{% endblock title %}
-
-{% block resources %}
+{% extends "_base.html" %} {% load staticfiles %} {% block title %}GeoSnapr{% endblock title %} {% block resources %}
 <link href="{% static "slick/slick.css" %}" rel="stylesheet" type='text/css'>
 <link href="{% static "slick/slick-theme.css" %}" rel="stylesheet" type='text/css'>
 <link href="{% static "select2/css/select2.min.css" %}" rel="stylesheet" type='text/css'>
@@ -12,7 +6,6 @@
 
 <script src="{% static "infobubble/infobubble.js" %}"></script>
 <script src="{% static "sidr/jquery.sidr.min.js" %}"></script>
-<script src="{% static "js/image.js" %}"></script>
 <script src="{% static "js/maps.js" %}"></script>
 <script src="{% static "js/maps-display.js" %}"></script>
 <script src="{% static "js/maps-markers.js" %}"></script>
@@ -20,23 +13,19 @@
 <script src="{% static "jQuery-fileExif/jquery.exif.js" %}"></script>
 <script src="{% static "markerclusterer/markerclusterer.js" %}"></script>
 <script src="{% static "js/maps-initialize.js" %}"></script>
-{% endblock resources %}
-
-{% block content %}
+{% endblock resources %} {% block content %}
 <div class="mapsize" id="map-canvas">
 </div>
 
 <div class="row viewport">
   <div class="columns large-4 medium-6 small-12 top-margin-small">
-      <input type="text" id="locationsearch" placeholder="Search..."/>
-  </div>
-  <div class="columns large-2 large-offset-1 medium-3 small-9 top-margin-small end">
-
-    {% include "__album_select.html" with id="map-albums" all_images=True %}
+    <input type="text" id="locationsearch" placeholder="Search..." />
   </div>
 
   <div class="columns large-1 large-offset-3 medium-1 medium-offset-2 small-3 user-margin">
-    <a id="sidrtoggle" href="#sidr"><img src="{% static "img/user-small.png" %}" class="user-image"></a>
+    <a id="sidrtoggle" href="#sidr">
+      <img src="{% static "img/user-small.png" %}" class="user-image">
+    </a>
   </div>
 </div>
 
@@ -47,29 +36,36 @@
 <div id="sidr">
   <ul>
     <li><a href="#" id="edit-profile" data-reveal-id="editProfileModal">Edit Profile</a></li>
-    <li><a href="#", id="get-api-key", data-reveal-id="apiKeyModal">View API Key</a></li>
+    <li><a href="#" , id="get-api-key" , data-reveal-id="apiKeyModal">View API Key</a></li>
     <li><a href="{%url 'logout' %}">Logout</a></li>
   </ul>
 </div>
 
-<div class="accordion full-width row">
-  <div id="accordion" class="columns large-3 large-offset-9 overflow-hidden create-header">
+<div class="full-width row">
+
+  <div class="columns large-2 medium-3 small-9 top-margin-small album-select overflow-hidden">
+    {% include "__album_select.html" with id="map-albums" all_images=True %}
+  </div>
+
+  <div id="accordion" class="accordion columns large-3 large-offset-9 overflow-hidden create-header">
     <div class="accheader create">
       <h3 class="accheadertitle josefin">Create</h3>
     </div>
     <div class="create-content">
-      <a href="#" data-reveal-id="uploadModal" class="button round expand">Upload New Image</a>
-      <a href="#" data-reveal-id="createAlbumModal" class="button round expand">Create New Album</a>
       {% if user.profile.insta_access_key %}
+      <a href="#" data-reveal-id="uploadModal" class="button radius expand">Upload from File/Instagram</a>
+      <a href="#" data-reveal-id="createAlbumModal" class="button radius expand">Create New Album</a>
       <a href="{{insta_account_url}}">
-        <div tabindex="0" class="button round success expand">
+        <div tabindex="0" class="button radius success expand">
           <p class="josefin inline">Instagram Linked</p>
           <img src="{% static "img/insta_glyph_colored.png" %}" alt="Instagram" class="oauth-img tip-top inline" data-tooltip aria-haspopup="true" title="View your Instagram app permissions">
         </div>
       </a>
       {% else %}
+      <a href="#" data-reveal-id="uploadModal" class="button radius expand">Upload from File</a>
+      <a href="#" data-reveal-id="createAlbumModal" class="button radius expand">Create New Album</a>
       <a href="{{insta_auth_url}}">
-        <div tabindex="0" class="button round alert expand">
+        <div tabindex="0" class="button radius alert expand">
           <p class="josefin inline">Link your Instagram</p>
           <img src="{% static "img/insta_glyph_colored.png" %}" alt="Instagram" class="oauth-img faded tip-top inline" data-tooltip aria-haspopup="true" title="Link your account to Instagram!">
         </div>
@@ -79,22 +75,14 @@
   </div>
 </div>
 
-
-
 <!-- Pop-up modals -->
 
 {% include "modals/__photoModal.html" %}
-
 {% include "modals/__albumModal.html" %}
-
 {% include "modals/__uploadModal.html" %}
-
 {% include "modals/__createAlbumModal.html" %}
-
 {% include "modals/__editProfileModal.html" %}
-
-{% include "modals/__confirmDeleteModal.html" %}
-
+{% include "modals/__confirmDeleteModal.html"%}
 {% include "modals/__apiKeyModal.html" %}
 
 <script type="text/javascript" src="{% static "slick/slick.js" %}"></script>
@@ -102,6 +90,7 @@
 <script type="text/javascript" src="{% static "select2/js/select2.min.js" %}"></script>
 
 {% if error %}
-  <script type="text/javascript">alertMsg("{{error}}", "alert")</script>
-{% endif %}
-{% endblock content %}
+<script type="text/javascript">
+  alertMsg("{{error}}", "alert")
+</script>
+{% endif %} {% endblock content %}

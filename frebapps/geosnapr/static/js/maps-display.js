@@ -159,7 +159,7 @@ function upload_image(event) {
         $("#upload-notification").addClass("alert-box alert radius");
       } else {
         // Add a new marker
-        addMarkers([data.image]);
+        addMarkers([data.image], false);
         // Remove the form dataå
         clearImageForm();
         //$("#upload-img").val(null);
@@ -355,7 +355,7 @@ function show_album() {
       success: function(data) {
         console.log(data);
         var images = data.images;
-        addMarkersPublic(images);
+        addMarkers(images, true);
 
         var markers = markerclustererpublic.getMarkers();
 

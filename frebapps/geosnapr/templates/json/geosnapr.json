@@ -70,7 +70,7 @@
             }
           },
           "200": {
-            "descipton": "Successful Operation",
+            "description": "Successful Operation",
             "schema": {
               "$ref": "#/definitions/ImageGet"
             }
@@ -115,7 +115,7 @@
             }
           },
           "200": {
-            "descipton": "Successful Operation",
+            "description": "Successful Operation",
             "schema": {
               "$ref": "#/definitions/ImageGet"
             }
@@ -223,7 +223,7 @@
             }
           },
           "200": {
-            "descipton": "Successful Operation",
+            "description": "Successful Operation",
             "schema": {
               "$ref": "#/definitions/AlbumList"
             }
@@ -268,7 +268,7 @@
             }
           },
           "200": {
-            "descipton": "Successful Operation",
+            "description": "Successful Operation",
             "schema": {
               "$ref": "#/definitions/AlbumGet"
             }
@@ -305,7 +305,7 @@
             }
           },
           "200": {
-            "descipton": "Successful Operation",
+            "description": "Successful Operation",
             "schema": {
               "$ref": "#/definitions/AlbumGet"
             }

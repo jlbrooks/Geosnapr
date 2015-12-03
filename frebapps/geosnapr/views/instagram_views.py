@@ -7,6 +7,7 @@ from instagram import client, InstagramClientError, InstagramAPIError
 from urllib.request import urlopen
 
 def instagram_callback(request):
+    data = {}
     # Import here to prevent circularity issues
     from .main import index, main_map
 
@@ -25,7 +26,9 @@ def instagram_callback(request):
 
     code = request.GET.get('code')
     if not code:
-        print(request.GET)
+        # They denied us :(
+        request.session['error'] = 'Instagram error: ' + request.GET.get('error_description')
+        return redirect(index)
     try:
         access_token, user_info = unauthenticated_api.exchange_code_for_access_token(code)
         # Is this an authenticated user, or anonymous?
@@ -42,9 +45,9 @@ def instagram_callback(request):
             print(user_info)
             return redirect(index)
     except InstagramClientError as e:
-        data['error'] = e.error_message
+        request.session['error'] = e.error_message
     except InstagramAPIError as e:
-        data['error'] = e.error_message
+        request.session['error'] = e.error_message
 
     return redirect(index)
 

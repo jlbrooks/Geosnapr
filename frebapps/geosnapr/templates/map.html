@@ -41,8 +41,7 @@
 </div>
 
 
-<div class="alert-box success" id="message" style="display: none;">
-  <a class="close" href="#">×</a>
+<div class="alert-box success round" id="message" style="display: none;">
 </div>
 
 <div id="sidr">
@@ -101,4 +100,8 @@
 <script type="text/javascript" src="{% static "slick/slick.js" %}"></script>
 <script type="text/javascript" src="{% static "spin/spin.min.js" %}"></script>
 <script type="text/javascript" src="{% static "select2/js/select2.min.js" %}"></script>
+
+{% if error %}
+  <script type="text/javascript">alertMsg("{{error}}", "alert")</script>
+{% endif %}
 {% endblock content %}

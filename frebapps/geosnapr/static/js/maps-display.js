@@ -2,23 +2,22 @@
 // Alert functions
 ///////////////////////////////
 
-function fadeAlert() {
+function fadeAlert(type) {
   var msg = $("#message");
   msg.fadeOut(500, function () {
-    msg.removeClass();
-    msg.addClass("alert-box");
+    msg.removeClass(type);
     msg.html();
   });
 }
 
-function alertSuccess(content) {
+function alertMsg(content, type) {
   var msg = $("#message");
-  msg.addClass("success");
+  msg.addClass(type);
   msg.html(content);
   msg.fadeIn(500);
 
   // Fade the alert
-  setTimeout(fadeAlert, 3000);
+  setTimeout(function() {fadeAlert(type)}, 3000);
 }
 
 function geocodeForm(lat, lng, latElem, lngElem, resultElem) {
@@ -96,7 +95,7 @@ function edit_profile(event) {
         msg.html(data.errors[0]);
         msg.addClass("error");
       } else {
-        alertSuccess(data.msg);
+        alertMsg(data.msg);
         // Close the modal
         $('#editProfileModal').foundation('reveal', 'close');
       }
@@ -171,7 +170,7 @@ function upload_image(event) {
       $('#uploadModal').foundation('reveal', 'close');
       // Stop the spinner
       spinner.stop();
-      alertSuccess(data.message);
+      alertMsg(data.message, "success");
     },
     error: function (data) {
       console.log(data);
@@ -259,7 +258,7 @@ function edit_image() {
       $('#uploadModal').foundation('reveal', 'close');
       // Stop the spinner
       spinner.stop();
-      alertSuccess(data.message);
+      alertMsg(data.message, "success");
     },
     error: function(data) {
       console.log('error');
@@ -304,7 +303,7 @@ function create_album() {
       $('#uploadModal').foundation('reveal', 'close');
       // Stop the spinner
       spinner.stop();
-      alertSuccess(data.message);
+      alertMsg(data.message, "success");
     },
     error: function(data) {
 

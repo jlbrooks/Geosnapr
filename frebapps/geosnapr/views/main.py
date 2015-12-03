@@ -78,8 +78,11 @@ def main_map(request):
         'insta_auth_url': insta_auth_url,
         'insta_account_url': 'https://instagram.com/accounts/manage_access/',
         'albums': Album.objects.filter(user=request.user),
-        'api_key': request.user.profile.get_or_create_api_key()
+        'api_key': request.user.profile.get_or_create_api_key(),
+        'error': request.session.get('error')
     }
+    # Clear the error
+    request.session['error'] = ''
 
     return render(request, 'map.html', context)
 

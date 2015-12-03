@@ -35,7 +35,7 @@ def login_view(request):
 
 def register(request):
     if request.method != 'POST':
-        return render(request, 'register.html')
+        return redirect(index)
     context = {}
     errs = []
     context['errors'] = errs
@@ -49,7 +49,7 @@ def register(request):
 
     if password != confirm_password:
         errs.append('Passwords do not match!')
-        return render(request, 'index.html', context)
+        return JsonResponse(context)
 
     # Create the new profile
     profile,errors = Profile.create(username=username, email=email,
@@ -57,14 +57,13 @@ def register(request):
 
     if errors:
         errs.extend(errors)
-        print(errors)
-        return render(request, 'index.html', context)
+        return JsonResponse(context)
 
     # Login the new user
     user = authenticate(username=username, password=password)
     login(request,user)
 
-    return redirect(index)
+    return JsonResponse(context)
 
 @login_required
 def main_map(request):

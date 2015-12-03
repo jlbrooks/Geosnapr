@@ -209,6 +209,12 @@ class ImageCreateTestCase(TestCase):
 
         self.assertEqual(i, None)
 
+    def test_create_bad_lat(self):
+        i,err = Image.create(username='jlbrooks', image=self.file_mock, lat="foo", lng=15.0, caption='hey')
+
+        self.assertEqual(i, None)
+
+
     # Don't test success until I find a way to mock file saving...
     # def test_create_full(self):
     #     i,err = Image.create(username='jlbrooks', image=self.file_mock, lat=10.0, lng=15.0, caption='hey')

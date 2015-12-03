@@ -277,11 +277,17 @@ class Image(models.Model):
 
         # Update lat
         if lat:
-            image.lat = Decimal('%.6f' % float(lat))
+            try:
+                image.lat = Decimal('%.6f' % float(lat))
+            except:
+                err.append('Could not parse latitude')
 
         # Update lng
         if lng:
-            image.lng = Decimal('%.6f' % float(lng))
+            try:
+                image.lng = Decimal('%.6f' % float(lng))
+            except:
+                err.append('Could not parse longitude')
 
         # Update caption
         if caption != None:
